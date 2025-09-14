@@ -294,33 +294,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Latest News Section */}
-      <section id="about" className="py-16 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="font-poppins font-bold text-3xl md:text-4xl text-center mb-12 text-foreground">
-            Latest Updates
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="space-y-3">
-              <h4 className="font-poppins font-semibold text-lg text-foreground">FDA Approves New Peanut Treatment</h4>
-              <p className="font-inter text-sm text-muted-foreground">Breakthrough therapy shows promise for children with severe peanut allergies.</p>
-            </div>
-            <div className="space-y-3">
-              <h4 className="font-poppins font-semibold text-lg text-foreground">School Policy Updates</h4>
-              <p className="font-inter text-sm text-muted-foreground">New guidelines for epinephrine administration in educational settings.</p>
-            </div>
-            <div className="space-y-3">
-              <h4 className="font-poppins font-semibold text-lg text-foreground">Restaurant Chain Goes Allergy-Friendly</h4>
-              <p className="font-inter text-sm text-muted-foreground">Major food chain implements comprehensive allergy safety protocols.</p>
-            </div>
-            <div className="space-y-3">
-              <h4 className="font-poppins font-semibold text-lg text-foreground">Research Breakthrough</h4>
-              <p className="font-inter text-sm text-muted-foreground">Scientists identify new pathway for preventing food allergic reactions.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Email Signup Section */}
       <section id="contact" className="py-20 px-4 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5">
         <div className="container mx-auto max-w-4xl text-center">
