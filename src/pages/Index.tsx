@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { ShoppingBag, Utensils, GraduationCap, Stethoscope, Heart, ShieldCheck, Star, AlertTriangle, Instagram, Youtube, Shield, AlertCircle, Wheat, Milk, Fish, Egg, Pill, Users, Zap } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import TreatmentModal from "@/components/TreatmentModal";
+import NewsFeed from "@/components/NewsFeed";
 
 const Index = () => {
   const [selectedTreatment, setSelectedTreatment] = useState<any>(null);
@@ -283,42 +284,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Highlights Section */}
-      <section id="highlights" className="py-16 px-4 bg-background-subtle">
+      {/* News & Updates Section */}
+      <section id="news" className="py-16 px-4 bg-background-subtle">
         <div className="container mx-auto max-w-6xl">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-center mb-12 text-foreground">
-            Community Highlights
+            Latest News & Updates
           </h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="rounded-2xl shadow-lg bg-gradient-to-br from-secondary/5 to-secondary/10 border-secondary/20">
-              <CardContent className="p-8">
-                <div className="flex items-center space-x-3 mb-4">
-                  <Star className="w-6 h-6 text-secondary" />
-                  <h3 className="font-poppins font-semibold text-xl text-foreground">Recognition Spotlight</h3>
-                </div>
-                <p className="font-inter text-muted-foreground mb-4">
-                  <strong className="text-foreground">Restaurant of the Month:</strong> Green Garden Bistro
-                </p>
-                <p className="font-inter text-sm text-muted-foreground">
-                  Exceptional allergy protocols, dedicated prep areas, and staff trained in cross-contamination prevention.
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="rounded-2xl shadow-lg bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20">
-              <CardContent className="p-8">
-                <div className="flex items-center space-x-3 mb-4">
-                  <AlertTriangle className="w-6 h-6 text-accent" />
-                  <h3 className="font-poppins font-semibold text-xl text-foreground">Community Watch-Out</h3>
-                </div>
-                <p className="font-inter text-muted-foreground mb-4">
-                  <strong className="text-foreground">Alert:</strong> Whole Foods Bakery Items
-                </p>
-                <p className="font-inter text-sm text-muted-foreground">
-                  Several burger buns now contain sesame. Always check ingredient labels and ask staff about recent changes.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          <NewsFeed />
         </div>
       </section>
 
@@ -394,10 +366,10 @@ const Index = () => {
             <div>
               <h4 className="font-poppins font-semibold text-lg mb-4">Quick Links</h4>
               <div className="space-y-2 font-inter">
-                <a href="#about" className="block hover:text-primary transition-colors">About</a>
+                <a href="#treatments" className="block hover:text-primary transition-colors">Treatments</a>
                 <a href="#resources" className="block hover:text-primary transition-colors">Resources</a>
+                <a href="#news" className="block hover:text-primary transition-colors">News</a>
                 <a href="#contact" className="block hover:text-primary transition-colors">Contact</a>
-                <a href="#" className="block hover:text-primary transition-colors">Privacy</a>
               </div>
             </div>
             <div>
