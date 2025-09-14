@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -207,33 +208,39 @@ const Index = () => {
             Everyday Living
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <CardContent className="p-8 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                  <ShoppingBag className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="font-poppins font-semibold text-xl text-foreground">Safe Shopping</h3>
-                <p className="font-inter text-muted-foreground">Navigate grocery stores with confidence and find allergy-friendly products.</p>
-              </CardContent>
-            </Card>
-            <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <CardContent className="p-8 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto">
-                  <Utensils className="w-8 h-8 text-secondary" />
-                </div>
-                <h3 className="font-poppins font-semibold text-xl text-foreground">Dining Out</h3>
-                <p className="font-inter text-muted-foreground">Discover restaurants that understand and accommodate food allergies safely.</p>
-              </CardContent>
-            </Card>
-            <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <CardContent className="p-8 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                  <GraduationCap className="w-8 h-8 text-accent" />
-                </div>
-                <h3 className="font-poppins font-semibold text-xl text-foreground">School & Teens</h3>
-                <p className="font-inter text-muted-foreground">Resources for managing allergies in school settings and teen independence.</p>
-              </CardContent>
-            </Card>
+            <Link to="/safe-shopping">
+              <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                <CardContent className="p-8 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                    <ShoppingBag className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="font-poppins font-semibold text-xl text-foreground">Safe Shopping</h3>
+                  <p className="font-inter text-muted-foreground">Navigate grocery stores with confidence and find allergy-friendly products.</p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/dining-out">
+              <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                <CardContent className="p-8 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto">
+                    <Utensils className="w-8 h-8 text-secondary" />
+                  </div>
+                  <h3 className="font-poppins font-semibold text-xl text-foreground">Dining Out</h3>
+                  <p className="font-inter text-muted-foreground">Discover restaurants that understand and accommodate food allergies safely.</p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/school-teens">
+              <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                <CardContent className="p-8 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
+                    <GraduationCap className="w-8 h-8 text-accent" />
+                  </div>
+                  <h3 className="font-poppins font-semibold text-xl text-foreground">School & Teens</h3>
+                  <p className="font-inter text-muted-foreground">Resources for managing allergies in school settings and teen independence.</p>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
       </section>
