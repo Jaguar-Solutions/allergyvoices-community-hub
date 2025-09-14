@@ -2,39 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Allergy Voices Design System - Modern, clean, professional
+All colors MUST be HSL for proper theming support.
 */
 
 @layer base {
   :root {
+    /* Brand Colors */
+    --allergy-blue: 217 91% 60%;          /* Primary: Soft Blue #3B82F6 */
+    --allergy-green: 166 76% 40%;         /* Secondary: Fresh Green #10B981 */
+    --allergy-orange: 45 93% 51%;         /* Accent: Warm Orange #F59E0B */
+    --allergy-gray: 220 14% 96%;          /* Light Gray #F9FAFB */
+    
+    /* Semantic Design Tokens */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 224 71% 4%;
+    --background-subtle: 220 14% 96%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 224 71% 4%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 224 71% 4%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;                /* Allergy Blue */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 217 91% 55%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 166 76% 40%;              /* Allergy Green */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 166 76% 35%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 45 93% 51%;                  /* Allergy Orange */
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 45 93% 46%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
 
     --radius: 0.5rem;
 
