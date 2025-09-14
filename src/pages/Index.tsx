@@ -3,13 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ShoppingBag, Utensils, GraduationCap, Stethoscope, Heart, ShieldCheck, Star, AlertTriangle, Instagram, Youtube } from "lucide-react";
-import heroImage from "@/assets/hero-family.jpg";
+import Navigation from "@/components/Navigation";
+import heroImage from "@/assets/hero-community.jpg";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Navigation />
+      
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background to-background-subtle py-20 px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-background to-background-subtle pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
@@ -30,11 +33,14 @@ const Index = () => {
               </div>
             </div>
             <div className="relative">
-              <img 
-                src={heroImage} 
-                alt="Diverse family eating safely together with care around food allergies"
-                className="rounded-2xl shadow-2xl w-full h-auto"
-              />
+              <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+                <img 
+                  src={heroImage} 
+                  alt="Diverse community sharing a safe meal together, representing food allergy awareness and inclusion"
+                  className="w-full h-auto object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -218,7 +224,12 @@ const Index = () => {
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="font-poppins font-bold text-2xl mb-4">Allergy Voices</h3>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                  <span className="font-poppins font-bold text-lg text-white">AV</span>
+                </div>
+                <h3 className="font-poppins font-bold text-2xl">Allergy Voices</h3>
+              </div>
               <p className="font-inter text-background/80">
                 Raising voices, changing menus.
               </p>
