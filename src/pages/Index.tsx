@@ -310,41 +310,21 @@ const Index = () => {
           <p className="font-inter text-lg text-muted-foreground mb-8">
             Get updates on safe dining, treatments, and advocacy campaigns.
           </p>
-          <div className="max-w-md mx-auto">
-            <form 
-              action="//app.mailerlite.com/webforms/submit/1797003"
-              method="POST"
-              className="flex flex-col sm:flex-row gap-4"
-              data-code="1797003"
-            >
-              <Input 
-                type="email" 
-                name="fields[email]"
-                placeholder="Enter your email" 
-                className="flex-1 rounded-xl border-border font-inter"
-                required
-              />
-              <input type="hidden" name="ml-submit" value="1" />
-              <Button type="submit" variant="hero" className="font-poppins">
-                Subscribe
-              </Button>
-            </form>
+          <div className="max-w-lg mx-auto">
+            <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
+              <iframe
+                src="https://landing.mailerlite.com/webforms/landing/1797003"
+                width="100%"
+                height="320"
+                frameBorder="0"
+                className="rounded-lg"
+                title="Newsletter Signup"
+              ></iframe>
+            </div>
             <p className="font-inter text-sm text-muted-foreground mt-4 text-center">
               <strong>Free bonus:</strong> Download our checklist "10 Questions to Ask Before Eating Out With Allergies"
             </p>
           </div>
-          
-          <script dangerouslySetInnerHTML={{
-            __html: `
-              (function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){
-              var c={ a:arguments,q:[]};var r=this.push(c);return "number"!=typeof r?r:f.bind(c.q);}
-              f.q=f.q||[];m[e]=m[e]||f.bind(f.q);m[e].q=m[e].q||f.q;r=a.createElement(i);
-              var _=a.getElementsByTagName(i)[0];r.async=1;r.src=l+'?v'+(~~(new Date().getTime()/1000000));
-              _.parentNode.insertBefore(r,_);})(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');
-              
-              var ml_account = ml('accounts', '1797003', 'load');
-            `
-          }} />
         </div>
       </section>
 
