@@ -312,18 +312,19 @@ const Index = () => {
           </p>
           <div className="max-w-md mx-auto">
             <form 
-              action="https://assets.mailerlite.com/webforms/submit/1797003/165567148584863442"
+              action="//app.mailerlite.com/webforms/submit/1797003"
               method="POST"
               className="flex flex-col sm:flex-row gap-4"
-              target="_blank"
+              data-code="1797003"
             >
               <Input 
                 type="email" 
-                name="email"
+                name="fields[email]"
                 placeholder="Enter your email" 
                 className="flex-1 rounded-xl border-border font-inter"
                 required
               />
+              <input type="hidden" name="ml-submit" value="1" />
               <Button type="submit" variant="hero" className="font-poppins">
                 Subscribe
               </Button>
@@ -332,6 +333,18 @@ const Index = () => {
               <strong>Free bonus:</strong> Download our checklist "10 Questions to Ask Before Eating Out With Allergies"
             </p>
           </div>
+          
+          <script dangerouslySetInnerHTML={{
+            __html: `
+              (function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){
+              var c={ a:arguments,q:[]};var r=this.push(c);return "number"!=typeof r?r:f.bind(c.q);}
+              f.q=f.q||[];m[e]=m[e]||f.bind(f.q);m[e].q=m[e].q||f.q;r=a.createElement(i);
+              var _=a.getElementsByTagName(i)[0];r.async=1;r.src=l+'?v'+(~~(new Date().getTime()/1000000));
+              _.parentNode.insertBefore(r,_);})(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');
+              
+              var ml_account = ml('accounts', '1797003', 'load');
+            `
+          }} />
         </div>
       </section>
 
