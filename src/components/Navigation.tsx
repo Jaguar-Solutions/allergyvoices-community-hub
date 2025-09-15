@@ -53,7 +53,14 @@ const Navigation = () => {
                 {item.name}
               </a>
             ))}
-            <Button variant="hero" size="sm" className="font-poppins">
+            <Button 
+              variant="hero" 
+              size="sm" 
+              className="font-poppins"
+              onClick={() => {
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               Join Community
             </Button>
           </div>
@@ -86,7 +93,15 @@ const Navigation = () => {
                 </a>
               ))}
               <div className="px-4 pt-2">
-                <Button variant="hero" size="sm" className="font-poppins w-full">
+                <Button 
+                  variant="hero" 
+                  size="sm" 
+                  className="font-poppins w-full"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
                   Join Community
                 </Button>
               </div>
