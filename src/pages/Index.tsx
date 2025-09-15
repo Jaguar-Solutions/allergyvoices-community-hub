@@ -310,17 +310,24 @@ const Index = () => {
           <p className="font-inter text-lg text-muted-foreground mb-8">
             Get updates on safe dining, treatments, and advocacy campaigns.
           </p>
-          <div className="max-w-lg mx-auto">
-            <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
-              <iframe
-                src="https://preview.mailerlite.io/forms/1797003/165567148584863442/share"
-                width="100%"
-                height="320"
-                frameBorder="0"
-                className="rounded-lg"
-                title="Newsletter Signup"
-              ></iframe>
-            </div>
+          <div className="max-w-md mx-auto">
+            <form 
+              action="https://assets.mailerlite.com/webforms/submit/1797003/165567148584863442"
+              method="POST"
+              className="flex flex-col sm:flex-row gap-4"
+              target="_blank"
+            >
+              <Input 
+                type="email" 
+                name="email"
+                placeholder="Enter your email" 
+                className="flex-1 rounded-xl border-border font-inter"
+                required
+              />
+              <Button type="submit" variant="hero" className="font-poppins">
+                Subscribe
+              </Button>
+            </form>
             <p className="font-inter text-sm text-muted-foreground mt-4 text-center">
               <strong>Free bonus:</strong> Download our checklist "10 Questions to Ask Before Eating Out With Allergies"
             </p>
