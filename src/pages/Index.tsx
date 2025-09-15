@@ -313,7 +313,7 @@ const Index = () => {
           <div className="max-w-lg mx-auto">
             <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
               <iframe
-                src="https://landing.mailerlite.com/webforms/landing/1797003"
+                src="https://preview.mailerlite.io/forms/1797003/165567148584863442/share"
                 width="100%"
                 height="320"
                 frameBorder="0"
