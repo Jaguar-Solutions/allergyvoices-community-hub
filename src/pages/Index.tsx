@@ -7,6 +7,7 @@ import { ShoppingBag, Utensils, GraduationCap, Stethoscope, Heart, ShieldCheck, 
 import Navigation from "@/components/Navigation";
 import TreatmentModal from "@/components/TreatmentModal";
 import NewsFeed from "@/components/NewsFeed";
+import { SubscriptionForm } from "@/components/SubscriptionForm";
 
 const Index = () => {
   const [selectedTreatment, setSelectedTreatment] = useState<any>(null);
@@ -312,14 +313,7 @@ const Index = () => {
           </p>
           <div className="max-w-lg mx-auto">
             <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
-              <iframe
-                src="https://preview.mailerlite.io/forms/1797003/165567148584863442/share"
-                width="100%"
-                height="320"
-                frameBorder="0"
-                className="rounded-lg"
-                title="Newsletter Signup"
-              ></iframe>
+              <SubscriptionForm />
             </div>
             <p className="font-inter text-sm text-muted-foreground mt-4 text-center">
               <strong>Free bonus:</strong> Download our checklist "10 Questions to Ask Before Eating Out With Allergies"
