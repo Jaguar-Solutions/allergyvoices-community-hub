@@ -9,6 +9,7 @@ import TreatmentModal from "@/components/TreatmentModal";
 import NewsFeed from "@/components/NewsFeed";
 import { BrevoSubscriptionForm } from "@/components/BrevoSubscriptionForm";
 import AdvocacySpotlight from "@/components/AdvocacySpotlight";
+import logoImage from "@/assets/allergy-voices-logo.png";
 
 
 const Index = () => {
@@ -336,7 +337,7 @@ const Index = () => {
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <img 
-                  src="/src/assets/allergy-voices-logo.png" 
+                  src={logoImage} 
                   alt="Allergy Voices Logo" 
                   className="w-10 h-10"
                 />
