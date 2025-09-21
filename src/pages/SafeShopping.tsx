@@ -20,12 +20,49 @@ const SafeShopping = () => {
           
           <div className="bg-card rounded-2xl shadow-lg border border-border p-8 md:p-12">
             <h1 className="font-poppins font-bold text-4xl md:text-5xl text-foreground mb-6">
-              Safe Shopping
+              Safe Shopping with Food Allergies
             </h1>
             
             <p className="font-inter text-lg text-muted-foreground leading-relaxed mb-8">
-              Shopping with food allergies means always being a label detective. The top 9 allergens must be clearly labeled in the U.S., but cross-contact and "may contain" warnings can still be confusing. Learning how to spot risks and choosing allergy-friendly brands can make grocery trips much safer.
+              Shopping for groceries when you or a loved one has food allergies can feel overwhelming. Ingredient labels change often, and cross-contact warnings are inconsistent. Here are a few tips:
             </p>
+            
+            <div className="space-y-6 mb-8">
+              <div className="bg-background-subtle p-6 rounded-lg">
+                <h3 className="font-poppins font-semibold text-xl text-foreground mb-3">Read labels every time</h3>
+                <p className="font-inter text-muted-foreground">
+                  Even for products you've bought before. Manufacturers can change ingredients without notice.
+                </p>
+              </div>
+              
+              <div className="bg-background-subtle p-6 rounded-lg">
+                <h3 className="font-poppins font-semibold text-xl text-foreground mb-3">Look for "contains" statements</h3>
+                <p className="font-inter text-muted-foreground">
+                  U.S. law requires the top 9 allergens to be clearly labeled.
+                </p>
+              </div>
+              
+              <div className="bg-background-subtle p-6 rounded-lg">
+                <h3 className="font-poppins font-semibold text-xl text-foreground mb-3">Know your safe brands</h3>
+                <p className="font-inter text-muted-foreground">
+                  Some companies, like Enjoy Life or MadeGood, are committed to allergy-friendly foods.
+                </p>
+              </div>
+              
+              <div className="bg-background-subtle p-6 rounded-lg">
+                <h3 className="font-poppins font-semibold text-xl text-foreground mb-3">Be cautious with bakery items</h3>
+                <p className="font-inter text-muted-foreground">
+                  Store bakeries often have cross-contact risks with nuts, sesame, and dairy.
+                </p>
+              </div>
+              
+              <div className="bg-background-subtle p-6 rounded-lg">
+                <h3 className="font-poppins font-semibold text-xl text-foreground mb-3">Stay updated</h3>
+                <p className="font-inter text-muted-foreground">
+                  Companies sometimes reformulate (like adding sesame to recipes). Joining advocacy groups helps you hear about changes quickly.
+                </p>
+              </div>
+            </div>
             
             <div className="space-y-4">
               <h3 className="font-poppins font-semibold text-xl text-foreground mb-4">

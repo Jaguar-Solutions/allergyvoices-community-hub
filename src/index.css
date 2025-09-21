@@ -10,8 +10,8 @@ All colors MUST be HSL for proper theming support.
   :root {
     /* Brand Colors */
     --allergy-blue: 217 91% 60%;          /* Primary: Soft Blue #3B82F6 */
-    --allergy-green: 166 76% 40%;         /* Secondary: Fresh Green #10B981 */
-    --allergy-orange: 45 93% 51%;         /* Accent: Warm Orange #F59E0B */
+    --allergy-green: 150 59% 45%;         /* Safe Green #3BA66B */
+    --allergy-warning: 9 86% 58%;         /* Warning Red/Orange #E94F37 */
     --allergy-gray: 220 14% 96%;          /* Light Gray #F9FAFB */
     
     /* Semantic Design Tokens */
@@ -29,13 +29,18 @@ All colors MUST be HSL for proper theming support.
     --primary-foreground: 0 0% 100%;
     --primary-hover: 217 91% 55%;
 
-    --secondary: 166 76% 40%;              /* Allergy Green */
+    --secondary: 150 59% 45%;              /* Safe Green #3BA66B */
     --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 166 76% 35%;
+    --secondary-hover: 150 59% 40%;
 
-    --accent: 45 93% 51%;                  /* Allergy Orange */
+    --accent: 9 86% 58%;                   /* Warning Red/Orange #E94F37 */
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 45 93% 46%;
+    --accent-hover: 9 86% 53%;
+
+    --positive: 150 59% 45%;               /* Safe Green for positive highlights */
+    --positive-foreground: 0 0% 100%;
+    --warning: 9 86% 58%;                  /* Warning color for call-outs */
+    --warning-foreground: 0 0% 100%;
 
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;

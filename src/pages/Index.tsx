@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ShoppingBag, Utensils, GraduationCap, Stethoscope, Heart, ShieldCheck, Star, AlertTriangle, Instagram, Youtube, Shield, AlertCircle, Wheat, Milk, Fish, Egg, Pill, Users, Zap } from "lucide-react";
+import { ShoppingBag, Utensils, GraduationCap, Stethoscope, Heart, ShieldCheck, Star, AlertTriangle, Instagram, Youtube, Shield, AlertCircle, Wheat, Milk, Fish, Egg, Pill, Users, Zap, Facebook, Linkedin } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import TreatmentModal from "@/components/TreatmentModal";
 import NewsFeed from "@/components/NewsFeed";
 import { BrevoSubscriptionForm } from "@/components/BrevoSubscriptionForm";
+import AdvocacySpotlight from "@/components/AdvocacySpotlight";
 
 
 const Index = () => {
@@ -101,8 +102,15 @@ const Index = () => {
                 >
                   Join the Community
                 </Button>
-                <Button variant="hero-secondary" size="hero" className="font-poppins">
-                  Learn More
+                <Button 
+                  variant="hero-secondary" 
+                  size="hero" 
+                  className="font-poppins"
+                  onClick={() => {
+                    window.location.href = '/restaurants';
+                  }}
+                >
+                  For Restaurants
                 </Button>
               </div>
             </div>
@@ -201,6 +209,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Advocacy Spotlight Section */}
+      <AdvocacySpotlight />
+
       {/* Mission Section */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-4xl text-center">
@@ -252,43 +263,41 @@ const Index = () => {
               </Card>
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* Treatments Section */}
-      <section id="treatments" className="py-16 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="font-poppins font-bold text-3xl md:text-4xl text-center mb-12 text-foreground">
-            Treatment Options
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {treatments.map((treatment) => {
-              const IconComponent = treatment.icon;
-              const colors = ['primary', 'secondary', 'accent', 'primary'];
-              const colorClass = colors[treatments.indexOf(treatment) % colors.length];
-              
-              return (
-                <Card key={treatment.id} className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <CardContent className="p-8 text-center space-y-4">
-                    <div className={`w-16 h-16 rounded-full bg-${colorClass}/10 flex items-center justify-center mx-auto`}>
-                      <IconComponent className={`w-8 h-8 text-${colorClass}`} />
-                    </div>
-                    <h3 className="font-poppins font-semibold text-lg text-foreground">
-                      {treatment.title}
-                    </h3>
-                    <p className="font-inter text-sm text-muted-foreground">
-                      {treatment.description}
-                    </p>
-                    <button
-                      onClick={() => openModal(treatment)}
-                      className="font-inter text-sm text-primary hover:text-primary/80 transition-colors underline underline-offset-4"
-                    >
-                      Learn more
-                    </button>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          
+          {/* Treatments under Resources */}
+          <div className="mt-16">
+            <h3 className="font-poppins font-bold text-2xl text-center mb-8 text-foreground">
+              Treatment Options
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {treatments.map((treatment) => {
+                const IconComponent = treatment.icon;
+                const colors = ['primary', 'secondary', 'accent', 'primary'];
+                const colorClass = colors[treatments.indexOf(treatment) % colors.length];
+                
+                return (
+                  <Card key={treatment.id} className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <CardContent className="p-8 text-center space-y-4">
+                      <div className={`w-16 h-16 rounded-full bg-${colorClass}/10 flex items-center justify-center mx-auto`}>
+                        <IconComponent className={`w-8 h-8 text-${colorClass}`} />
+                      </div>
+                      <h4 className="font-poppins font-semibold text-lg text-foreground">
+                        {treatment.title}
+                      </h4>
+                      <p className="font-inter text-sm text-muted-foreground">
+                        {treatment.description}
+                      </p>
+                      <button
+                        onClick={() => openModal(treatment)}
+                        className="font-inter text-sm text-primary hover:text-primary/80 transition-colors underline underline-offset-4"
+                      >
+                        Learn more
+                      </button>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -329,21 +338,28 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                  <span className="font-poppins font-bold text-lg text-white">AV</span>
-                </div>
+                <img 
+                  src="/src/assets/allergy-voices-logo.png" 
+                  alt="Allergy Voices Logo" 
+                  className="w-10 h-10"
+                />
                 <h3 className="font-poppins font-bold text-2xl">Allergy Voices</h3>
               </div>
-              <p className="font-inter text-background/80">
+              <p className="font-inter text-background/80 mb-4">
                 Raising voices, changing menus.
+              </p>
+              <p className="font-inter text-sm text-background/60">
+                Are you a restaurant? Learn how to become allergy-friendly.
               </p>
             </div>
             <div>
               <h4 className="font-poppins font-semibold text-lg mb-4">Quick Links</h4>
               <div className="space-y-2 font-inter">
-                <a href="#treatments" className="block hover:text-primary transition-colors">Treatments</a>
+                <Link to="/community" className="block hover:text-primary transition-colors">Community</Link>
+                <Link to="/restaurants" className="block hover:text-primary transition-colors">Restaurants</Link>
                 <a href="#resources" className="block hover:text-primary transition-colors">Resources</a>
                 <a href="#news" className="block hover:text-primary transition-colors">News</a>
+                <Link to="/about" className="block hover:text-primary transition-colors">About</Link>
                 <a href="#contact" className="block hover:text-primary transition-colors">Contact</a>
               </div>
             </div>
@@ -355,6 +371,12 @@ const Index = () => {
                 </a>
                 <a href="#" className="hover:text-primary transition-colors">
                   <Youtube className="w-6 h-6" />
+                </a>
+                <a href="#" className="hover:text-primary transition-colors">
+                  <Facebook className="w-6 h-6" />
+                </a>
+                <a href="#" className="hover:text-primary transition-colors">
+                  <Linkedin className="w-6 h-6" />
                 </a>
               </div>
             </div>
