@@ -7,6 +7,7 @@ import { ShoppingBag, Utensils, GraduationCap, Stethoscope, Heart, ShieldCheck, 
 import Navigation from "@/components/Navigation";
 import TreatmentModal from "@/components/TreatmentModal";
 import NewsFeed from "@/components/NewsFeed";
+import { BrevoSubscriptionForm } from "@/components/BrevoSubscriptionForm";
 
 
 const Index = () => {
@@ -313,15 +314,7 @@ const Index = () => {
           </p>
           <div className="max-w-lg mx-auto">
             <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
-              <iframe 
-                width="540" 
-                height="305" 
-                src="https://0d57fd3a.sibforms.com/serve/MUIFAJF_omgODh_mUi32Gyk-WkfW80ee66y3QsfR0um2jnI2BYnxEfnXPo3KatDSWC5tCG5B-N2gQnMVXUnmWLXu5oPUNsKfRKYcNbbxfSEctEFhT_aB40uKT1zRbttIsRzGXzjgVwp42QQVqSCiS8sHhymREXcCwJegUXlIr081xttw2OOB42JjxtWuTeFlWHBRRSsGcr6yt0FP" 
-                frameBorder="0" 
-                scrolling="auto" 
-                allowFullScreen 
-                className="block mx-auto max-w-full"
-              />
+              <BrevoSubscriptionForm />
             </div>
             <p className="font-inter text-sm text-muted-foreground mt-4 text-center">
               <strong>Free bonus:</strong> Download our checklist "10 Questions to Ask Before Eating Out With Allergies"
