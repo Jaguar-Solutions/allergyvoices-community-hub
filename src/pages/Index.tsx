@@ -325,9 +325,6 @@ const Index = () => {
             <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
               <BrevoSubscriptionForm />
             </div>
-            <p className="font-inter text-sm text-muted-foreground mt-4 text-center">
-              <strong>Free bonus:</strong> Download our checklist "10 Questions to Ask Before Eating Out With Allergies"
-            </p>
           </div>
         </div>
       </section>
