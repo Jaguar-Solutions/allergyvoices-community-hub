@@ -125,21 +125,23 @@ const FoodAllergyInfographics = () => {
               <TrendingUp className="w-5 h-5 text-primary" />
               <h3 className="font-poppins font-semibold text-xl text-foreground">Growing Trend</h3>
             </div>
-            <div className="flex-1 min-h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={growthData}>
-                  <XAxis dataKey="year" className="text-xs" />
-                  <YAxis domain={[3, 8]} className="text-xs" />
-                  <Line 
-                    type="monotone" 
-                    dataKey="prevalence" 
-                    stroke="hsl(var(--primary))" 
-                    strokeWidth={3}
-                    dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 4 }}
-                    className="animate-fade-in"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="w-full h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={growthData}>
+                    <XAxis dataKey="year" className="text-xs" />
+                    <YAxis domain={[3, 8]} className="text-xs" />
+                    <Line 
+                      type="monotone" 
+                      dataKey="prevalence" 
+                      stroke="hsl(var(--primary))" 
+                      strokeWidth={3}
+                      dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 4 }}
+                      className="animate-fade-in"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </div>
             <div className="flex items-center justify-between mt-4">
               <p className="text-xs text-muted-foreground">Childhood prevalence (%)</p>

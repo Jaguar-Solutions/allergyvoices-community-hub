@@ -27,6 +27,19 @@ const Navigation = () => {
     { name: 'Contact', href: '/#contact' },
   ];
 
+  const handleHashNavigation = (href: string) => {
+    if (href.startsWith('/#')) {
+      const hash = href.substring(2); // Remove '/#'
+      if (window.location.pathname === '/') {
+        // Already on home page, scroll to section
+        document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Navigate to home page with hash
+        window.location.href = href;
+      }
+    }
+  };
+
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       isScrolled 
@@ -52,13 +65,13 @@ const Navigation = () => {
           {navItems.map((item) => {
             const isHashLink = item.href.startsWith('/#');
             return isHashLink ? (
-              <a
+              <button
                 key={item.name}
-                href={item.href}
+                onClick={() => handleHashNavigation(item.href)}
                 className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
               >
                 {item.name}
-              </a>
+              </button>
             ) : (
               <Link
                 key={item.name}
@@ -73,13 +86,7 @@ const Navigation = () => {
               variant="hero" 
               size="sm" 
               className="font-poppins"
-              onClick={() => {
-                if (window.location.pathname === '/') {
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                  window.location.href = '/#contact';
-                }
-              }}
+              onClick={() => handleHashNavigation('/#contact')}
             >
               Join Community
             </Button>
@@ -105,14 +112,16 @@ const Navigation = () => {
               {navItems.map((item) => {
                 const isHashLink = item.href.startsWith('/#');
                 return isHashLink ? (
-                  <a
+                  <button
                     key={item.name}
-                    href={item.href}
-                    className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-4 py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      handleHashNavigation(item.href);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-4 py-2 text-left"
                   >
                     {item.name}
-                  </a>
+                  </button>
                 ) : (
                   <Link
                     key={item.name}
@@ -131,11 +140,7 @@ const Navigation = () => {
                   className="font-poppins w-full"
                   onClick={() => {
                     setIsMobileMenuOpen(false);
-                    if (window.location.pathname === '/') {
-                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                    } else {
-                      window.location.href = '/#contact';
-                    }
+                    handleHashNavigation('/#contact');
                   }}
                 >
                   Join Community
