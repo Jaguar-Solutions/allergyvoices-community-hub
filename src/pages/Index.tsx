@@ -10,7 +10,7 @@ import NewsFeed from "@/components/NewsFeed";
 import { BrevoSubscriptionForm } from "@/components/BrevoSubscriptionForm";
 import AdvocacySpotlight from "@/components/AdvocacySpotlight";
 import FoodAllergyInfographics from "@/components/FoodAllergyInfographics";
-import logoImage from "@/assets/allergy-voices-logo.png";
+import AVLogo from "@/components/AVLogo";
 
 
 const Index = () => {
@@ -250,11 +250,7 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <img 
-                  src={logoImage} 
-                  alt="Allergy Voices Logo" 
-                  className="w-10 h-10"
-                />
+                <AVLogo size={40} className="text-primary-foreground" />
                 <h3 className="font-poppins font-bold text-2xl">Allergy Voices</h3>
               </div>
               <p className="font-inter text-background/80 mb-4">
@@ -269,10 +265,10 @@ const Index = () => {
               <div className="space-y-2 font-inter">
                 <Link to="/community" className="block hover:text-primary transition-colors">Community</Link>
                 <Link to="/restaurants" className="block hover:text-primary transition-colors">Restaurants</Link>
-                <a href="#resources" className="block hover:text-primary transition-colors">Resources</a>
-                <a href="#news" className="block hover:text-primary transition-colors">News</a>
+                <a href="/#resources" className="block hover:text-primary transition-colors">Resources</a>
+                <a href="/#news" className="block hover:text-primary transition-colors">News</a>
                 <Link to="/about" className="block hover:text-primary transition-colors">About</Link>
-                <a href="#contact" className="block hover:text-primary transition-colors">Contact</a>
+                <a href="/#contact" className="block hover:text-primary transition-colors">Contact</a>
               </div>
             </div>
             <div>

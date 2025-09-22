@@ -21,10 +21,10 @@ const Navigation = () => {
     { name: 'Home', href: '/' },
     { name: 'Community', href: '/community' },
     { name: 'Restaurants', href: '/restaurants' },
-    { name: 'Resources', href: '#resources' },
-    { name: 'News', href: '#news' },
+    { name: 'Resources', href: '/#resources' },
+    { name: 'News', href: '/#news' },
     { name: 'About', href: '/about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '/#contact' },
   ];
 
   return (
@@ -40,7 +40,7 @@ const Navigation = () => {
             <img 
               src={logoImage} 
               alt="Allergy Voices Logo" 
-              className="w-10 h-10"
+              className="w-12 h-12"
             />
             <span className="font-poppins font-bold text-xl text-foreground">
               Allergy Voices
@@ -49,32 +49,36 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => {
-              const isExternal = item.href.startsWith('#');
-              return isExternal ? (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
-                >
-                  {item.name}
-                </a>
-              ) : (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
+          {navItems.map((item) => {
+            const isHashLink = item.href.startsWith('/#');
+            return isHashLink ? (
+              <a
+                key={item.name}
+                href={item.href}
+                className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+              >
+                {item.name}
+              </a>
+            ) : (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+              >
+                {item.name}
+              </Link>
+            );
+          })}
             <Button 
               variant="hero" 
               size="sm" 
               className="font-poppins"
               onClick={() => {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                if (window.location.pathname === '/') {
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  window.location.href = '/#contact';
+                }
               }}
             >
               Join Community
@@ -99,8 +103,8 @@ const Navigation = () => {
           <div className="md:hidden py-4 border-t border-border/20 bg-background/95 backdrop-blur-md">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => {
-                const isExternal = item.href.startsWith('#');
-                return isExternal ? (
+                const isHashLink = item.href.startsWith('/#');
+                return isHashLink ? (
                   <a
                     key={item.name}
                     href={item.href}
@@ -127,7 +131,11 @@ const Navigation = () => {
                   className="font-poppins w-full"
                   onClick={() => {
                     setIsMobileMenuOpen(false);
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    if (window.location.pathname === '/') {
+                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                      window.location.href = '/#contact';
+                    }
                   }}
                 >
                   Join Community
