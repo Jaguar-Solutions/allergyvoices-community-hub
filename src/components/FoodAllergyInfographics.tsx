@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { Users, Heart, AlertTriangle, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -32,18 +32,6 @@ const FoodAllergyInfographics = () => {
 
     return () => clearTimeout(timer);
   }, []);
-
-  // Allergen prevalence data
-  const allergenData = [
-    { name: 'Peanuts', prevalence: 85 },
-    { name: 'Milk', prevalence: 78 },
-    { name: 'Shellfish', prevalence: 72 },
-    { name: 'Tree Nuts', prevalence: 68 },
-    { name: 'Eggs', prevalence: 62 },
-    { name: 'Wheat', prevalence: 55 },
-    { name: 'Soy', prevalence: 48 },
-    { name: 'Sesame', prevalence: 35 }
-  ];
 
   // Growth trend data
   const growthData = [
@@ -128,38 +116,16 @@ const FoodAllergyInfographics = () => {
         </Card>
       </div>
 
-      {/* Right Column - Charts */}
-      <div className="space-y-6">
-        {/* Most Common Allergens */}
-        <Card className="bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20">
-          <CardContent className="p-6">
-            <h3 className="font-poppins font-semibold text-xl mb-4 text-foreground">Most Common Allergens</h3>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={allergenData} layout="horizontal">
-                  <XAxis type="number" domain={[0, 100]} hide />
-                  <YAxis dataKey="name" type="category" width={80} className="text-xs" />
-                  <Bar 
-                    dataKey="prevalence" 
-                    fill="hsl(var(--accent))" 
-                    radius={[0, 4, 4, 0]}
-                    className="animate-fade-in"
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <p className="text-xs text-muted-foreground mt-2">Relative prevalence among affected individuals</p>
-          </CardContent>
-        </Card>
-
-        {/* Growth Trend */}
-        <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-2 mb-4">
+      {/* Right Column - Growth Trend Chart */}
+      <div className="h-full flex">
+        {/* Growth Trend - Full Height */}
+        <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 flex-1">
+          <CardContent className="p-6 h-full flex flex-col">
+            <div className="flex items-center space-x-2 mb-6">
               <TrendingUp className="w-5 h-5 text-primary" />
               <h3 className="font-poppins font-semibold text-xl text-foreground">Growing Trend</h3>
             </div>
-            <div className="h-48">
+            <div className="flex-1 min-h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={growthData}>
                   <XAxis dataKey="year" className="text-xs" />
@@ -175,7 +141,7 @@ const FoodAllergyInfographics = () => {
                 </LineChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center justify-between mt-4">
               <p className="text-xs text-muted-foreground">Childhood prevalence (%)</p>
               <div className="text-right">
                 <p className="text-lg font-bold text-primary font-poppins">+50%</p>
