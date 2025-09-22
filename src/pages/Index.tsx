@@ -9,6 +9,7 @@ import TreatmentModal from "@/components/TreatmentModal";
 import NewsFeed from "@/components/NewsFeed";
 import { BrevoSubscriptionForm } from "@/components/BrevoSubscriptionForm";
 import AdvocacySpotlight from "@/components/AdvocacySpotlight";
+import FoodAllergyInfographics from "@/components/FoodAllergyInfographics";
 import logoImage from "@/assets/allergy-voices-logo.png";
 
 
@@ -116,95 +117,8 @@ const Index = () => {
               </div>
             </div>
             <div className="relative">
-              {/* Food Allergy Icons Display */}
-              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-background to-background-subtle border border-border/20 shadow-xl">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-8 items-center justify-center">
-                  {/* Main Alert Icon */}
-                  <div className="col-span-2 md:col-span-3 flex justify-center mb-4">
-                    <div className="relative">
-                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-accent/20 to-accent/30 flex items-center justify-center">
-                        <Shield className="w-12 h-12 text-accent" />
-                      </div>
-                      <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-destructive flex items-center justify-center">
-                        <AlertCircle className="w-5 h-5 text-white" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Common Allergen Icons */}
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center relative">
-                      <Wheat className="w-8 h-8 text-primary" />
-                      <div className="absolute inset-0 rounded-full border-2 border-destructive opacity-70"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-10 h-0.5 bg-destructive rotate-45"></div>
-                      </div>
-                    </div>
-                    <span className="text-xs font-inter text-muted-foreground">Gluten</span>
-                  </div>
-                  
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center relative">
-                      <div className="w-6 h-6 rounded-full bg-secondary"></div>
-                      <div className="absolute inset-0 rounded-full border-2 border-destructive opacity-70"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-10 h-0.5 bg-destructive rotate-45"></div>
-                      </div>
-                    </div>
-                    <span className="text-xs font-inter text-muted-foreground">Nuts</span>
-                  </div>
-                  
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center relative">
-                      <Milk className="w-8 h-8 text-accent" />
-                      <div className="absolute inset-0 rounded-full border-2 border-destructive opacity-70"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-10 h-0.5 bg-destructive rotate-45"></div>
-                      </div>
-                    </div>
-                    <span className="text-xs font-inter text-muted-foreground">Dairy</span>
-                  </div>
-                  
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center relative">
-                      <Egg className="w-8 h-8 text-primary" />
-                      <div className="absolute inset-0 rounded-full border-2 border-destructive opacity-70"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-10 h-0.5 bg-destructive rotate-45"></div>
-                      </div>
-                    </div>
-                    <span className="text-xs font-inter text-muted-foreground">Eggs</span>
-                  </div>
-                  
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center relative">
-                      <Fish className="w-8 h-8 text-secondary" />
-                      <div className="absolute inset-0 rounded-full border-2 border-destructive opacity-70"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-10 h-0.5 bg-destructive rotate-45"></div>
-                      </div>
-                    </div>
-                    <span className="text-xs font-inter text-muted-foreground">Seafood</span>
-                  </div>
-                  
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center relative">
-                      <div className="w-6 h-6 rounded bg-accent"></div>
-                      <div className="absolute inset-0 rounded-full border-2 border-destructive opacity-70"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-10 h-0.5 bg-destructive rotate-45"></div>
-                      </div>
-                    </div>
-                    <span className="text-xs font-inter text-muted-foreground">Sesame</span>
-                  </div>
-                </div>
-                
-                <div className="text-center mt-6">
-                  <p className="font-inter text-sm text-muted-foreground">
-                    Common food allergens requiring careful management
-                  </p>
-                </div>
-              </div>
+              {/* Food Allergy Infographics */}
+              <FoodAllergyInfographics />
             </div>
           </div>
         </div>
