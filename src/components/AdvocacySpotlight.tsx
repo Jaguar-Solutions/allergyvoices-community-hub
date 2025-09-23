@@ -12,18 +12,20 @@ export const AdvocacySpotlight = () => {
           Spotlight: Raising Voices, Changing Menus
         </h2>
         
-        <Card className="rounded-2xl shadow-lg max-w-4xl mx-auto border-l-4 border-l-accent">
+        <Card className="rounded-2xl shadow-lg max-w-4xl mx-auto border-l-4 border-l-accent relative">
           <CardContent className="p-8 md:p-12">
-            <div className="flex items-start space-x-4 mb-6">
-              <Badge variant="destructive" className="bg-accent hover:bg-accent/90">
+            {/* Call-out badge positioned at top of border */}
+            <div className="absolute -top-3 left-4">
+              <Badge variant="destructive" className="bg-accent hover:bg-accent/90 shadow-lg">
                 <AlertTriangle className="w-4 h-4 mr-1" />
                 Call-Out
               </Badge>
-              <div className="flex-1">
-                <h3 className="font-poppins font-bold text-2xl md:text-3xl mb-4 text-foreground">
-                  Whole Foods' "New Recipe" Leaves Allergy Families Behind
-                </h3>
-              </div>
+            </div>
+            
+            <div className="mb-6">
+              <h3 className="font-poppins font-bold text-2xl md:text-3xl mb-4 text-foreground">
+                Whole Foods' "New Recipe" Leaves Allergy Families Behind
+              </h3>
             </div>
             
             <div className="space-y-4 text-muted-foreground">
