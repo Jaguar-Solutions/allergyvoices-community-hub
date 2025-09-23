@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ShoppingBag, Utensils, GraduationCap, Stethoscope, Heart, ShieldCheck, Star, AlertTriangle, Instagram, Youtube, Shield, AlertCircle, Wheat, Milk, Fish, Egg, Pill, Users, Zap, Facebook, Linkedin } from "lucide-react";
+import { ShoppingBag, Utensils, GraduationCap, Stethoscope, Heart, ShieldCheck, Star, AlertTriangle, Instagram, Youtube, Shield, AlertCircle, Wheat, Milk, Fish, Egg, Pill, Users, Zap, Facebook, Linkedin, MessageSquare, Share2 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import TreatmentModal from "@/components/TreatmentModal";
 import NewsFeed from "@/components/NewsFeed";
-import { BrevoSubscriptionForm } from "@/components/BrevoSubscriptionForm";
+import { MailerLiteSubscriptionForm } from "@/components/BrevoSubscriptionForm";
 import AdvocacySpotlight from "@/components/AdvocacySpotlight";
 import FoodAllergyInfographics from "@/components/FoodAllergyInfographics";
 import AVLogo from "@/components/AVLogo";
@@ -82,37 +82,27 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background to-background-subtle pt-32 pb-20 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <h1 className="font-poppins font-bold text-5xl md:text-6xl leading-tight text-foreground">
+      <section className="relative overflow-hidden bg-gradient-to-br from-background to-background-subtle pt-32 pb-16 px-4">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
+            <div className="space-y-6">
+              <h1 className="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
                 Every ingredient matters.{' '}
                 <span className="text-primary">Every voice counts.</span>
               </h1>
-              <p className="font-inter text-xl text-muted-foreground leading-relaxed">
+              <p className="font-inter text-lg md:text-xl text-muted-foreground leading-relaxed">
                 Making life with food allergies safer, easier, and more inclusive.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  variant="hero" 
-                  size="hero" 
-                  className="font-poppins"
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  variant="hero"
+                  size="lg"
+                  className="font-poppins text-base px-6 py-3"
                   onClick={() => {
                     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 >
                   Join the Community
-                </Button>
-                <Button 
-                  variant="hero-secondary" 
-                  size="hero" 
-                  className="font-poppins"
-                  onClick={() => {
-                    window.location.href = '/restaurants';
-                  }}
-                >
-                  For Restaurants
                 </Button>
               </div>
             </div>
@@ -134,6 +124,92 @@ const Index = () => {
             <span className="font-semibold text-foreground">Allergy Voices</span> amplifies the voices of families, teens, and adults managing allergies. 
             We simplify resources, highlight businesses that do it right, and advocate for safer, more inclusive food choices.
           </p>
+        </div>
+      </section>
+
+      {/* Community Section */}
+      <section id="community" className="py-16 px-4 bg-background-subtle">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-6 text-foreground">
+              Join Our Community
+            </h2>
+            <p className="font-inter text-xl text-muted-foreground max-w-3xl mx-auto">
+              Connect with families, caregivers, teens, and adults who understand the daily challenges of living with food allergies. Together, we're stronger.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <Card className="rounded-2xl shadow-lg text-center">
+              <CardContent className="p-8 space-y-4">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <Users className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="font-poppins font-semibold text-xl">Share Experiences</h3>
+                <p className="font-inter text-muted-foreground">
+                  Connect with others who truly understand the challenges
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="rounded-2xl shadow-lg text-center">
+              <CardContent className="p-8 space-y-4">
+                <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto">
+                  <MessageSquare className="w-8 h-8 text-secondary" />
+                </div>
+                <h3 className="font-poppins font-semibold text-xl">Get Support</h3>
+                <p className="font-inter text-muted-foreground">
+                  Ask questions and receive guidance from experienced families
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="rounded-2xl shadow-lg text-center">
+              <CardContent className="p-8 space-y-4">
+                <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
+                  <Heart className="w-8 h-8 text-accent" />
+                </div>
+                <h3 className="font-poppins font-semibold text-xl">Build Advocacy</h3>
+                <p className="font-inter text-muted-foreground">
+                  Work together to advocate for safer practices and policies
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="rounded-2xl shadow-lg text-center">
+              <CardContent className="p-8 space-y-4">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <Share2 className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="font-poppins font-semibold text-xl">Share Resources</h3>
+                <p className="font-inter text-muted-foreground">
+                  Discover and share safe products, restaurants, and tips
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="text-center">
+            <Card className="rounded-2xl shadow-lg max-w-2xl mx-auto">
+              <CardContent className="p-12">
+                <h3 className="font-poppins font-bold text-3xl mb-6 text-foreground">
+                  Ready to Connect?
+                </h3>
+                <p className="font-inter text-lg text-muted-foreground mb-8">
+                  Join our newsletter to stay connected with the community and get updates on safe dining, treatments, and advocacy campaigns.
+                </p>
+                <Button 
+                  size="lg" 
+                  className="font-poppins"
+                  onClick={() => {
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Join the Community
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 
@@ -236,10 +312,21 @@ const Index = () => {
           <p className="font-inter text-lg text-muted-foreground mb-8">
             Get updates on safe dining, treatments, and advocacy campaigns.
           </p>
-          <div className="max-w-lg mx-auto">
+          <div className="max-w-lg mx-auto mb-8">
             <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
-              <BrevoSubscriptionForm />
+              <MailerLiteSubscriptionForm />
             </div>
+          </div>
+          <div className="text-center">
+            <p className="font-inter text-muted-foreground mb-2">
+              Have questions or want to get in touch?
+            </p>
+            <a 
+              href="mailto:info@allergyvoices.com" 
+              className="font-inter text-primary hover:text-primary-hover font-semibold text-lg transition-colors"
+            >
+              info@allergyvoices.com
+            </a>
           </div>
         </div>
       </section>
@@ -257,18 +344,17 @@ const Index = () => {
                 Raising voices, changing menus.
               </p>
               <p className="font-inter text-sm text-background/60">
-                Are you a restaurant? Learn how to become allergy-friendly.
+                Are you a restaurant? Learn how to become allergy-friendly.<br/>
+                Email us at: restaurants@allergyvoices.com
               </p>
             </div>
             <div>
               <h4 className="font-poppins font-semibold text-lg mb-4">Quick Links</h4>
               <div className="space-y-2 font-inter">
-                <Link to="/community" className="block hover:text-primary transition-colors">Community</Link>
                 <Link to="/restaurants" className="block hover:text-primary transition-colors">Restaurants</Link>
                 <a href="/#resources" className="block hover:text-primary transition-colors">Resources</a>
                 <a href="/#news" className="block hover:text-primary transition-colors">News</a>
                 <Link to="/about" className="block hover:text-primary transition-colors">About</Link>
-                <a href="/#contact" className="block hover:text-primary transition-colors">Contact</a>
               </div>
             </div>
             <div>
@@ -291,7 +377,7 @@ const Index = () => {
           </div>
           <div className="border-t border-background/20 pt-8 text-center">
             <p className="font-inter text-background/60">
-              © 2024 Allergy Voices. All rights reserved.
+              © 2025 Allergy Voices. All rights reserved.
             </p>
           </div>
         </div>
