@@ -44,24 +44,24 @@ const FoodAllergyInfographics = () => {
   ];
 
   return (
-    <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 max-w-5xl mx-auto">
       {/* Left Column - Main Stats */}
-      <div className="space-y-6">
+      <div className="space-y-3 lg:space-y-4">
         {/* Total Americans */}
         <Card className="relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
-                <Users className="w-8 h-8 text-primary" />
+          <CardContent className="p-3 lg:p-4">
+            <div className="flex items-center space-x-2 lg:space-x-3">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                <Users className="w-5 h-5 lg:w-6 lg:h-6 text-primary" />
               </div>
-              <div>
-                <div className="flex items-baseline space-x-2">
-                  <span className="text-4xl font-bold text-primary font-poppins">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-baseline space-x-1 flex-wrap">
+                  <span className="text-xl lg:text-2xl font-bold text-primary font-poppins">
                     {totalCount}M
                   </span>
-                  <span className="text-lg text-muted-foreground">Americans</span>
+                  <span className="text-xs lg:text-sm text-muted-foreground whitespace-nowrap">Americans</span>
                 </div>
-                <p className="text-sm text-muted-foreground">Total with food allergies (~10%)</p>
+                <p className="text-xs text-muted-foreground">Total with food allergies (~10%)</p>
               </div>
             </div>
           </CardContent>
@@ -69,47 +69,47 @@ const FoodAllergyInfographics = () => {
 
         {/* Children Affected */}
         <Card className="relative overflow-hidden bg-gradient-to-br from-secondary/5 to-secondary/10 border-secondary/20">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-4 mb-4">
-              <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center">
-                <Heart className="w-8 h-8 text-secondary" />
+          <CardContent className="p-3 lg:p-4">
+            <div className="flex items-center space-x-2 lg:space-x-3 mb-2 lg:mb-3">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-secondary/20 flex items-center justify-center flex-shrink-0">
+                <Heart className="w-5 h-5 lg:w-6 lg:h-6 text-secondary" />
               </div>
-              <div>
-                <div className="flex items-baseline space-x-2">
-                  <span className="text-4xl font-bold text-secondary font-poppins">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-baseline space-x-1 flex-wrap">
+                  <span className="text-xl lg:text-2xl font-bold text-secondary font-poppins">
                     {childrenCount}M
                   </span>
-                  <span className="text-lg text-muted-foreground">Children</span>
+                  <span className="text-xs lg:text-sm text-muted-foreground whitespace-nowrap">Children</span>
                 </div>
-                <p className="text-sm text-muted-foreground">1 in 13 kids affected</p>
+                <p className="text-xs text-muted-foreground">1 in 13 kids affected</p>
               </div>
             </div>
             {/* Progress bar showing 1 in 13 */}
-            <div className="w-full bg-secondary/10 rounded-full h-3">
+            <div className="w-full bg-secondary/10 rounded-full h-2">
               <div 
-                className="bg-gradient-to-r from-secondary to-secondary/80 h-3 rounded-full transition-all duration-1000 ease-out"
+                className="bg-gradient-to-r from-secondary to-secondary/80 h-2 rounded-full transition-all duration-1000 ease-out"
                 style={{ width: `${(1/13) * 100}%` }}
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-2">Percentage of children with food allergies</p>
+            <p className="text-xs text-muted-foreground mt-1">Percentage of children with food allergies</p>
           </CardContent>
         </Card>
 
         {/* Hospital Visits */}
         <Card className="relative overflow-hidden bg-gradient-to-br from-destructive/5 to-destructive/10 border-destructive/20">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-full bg-destructive/20 flex items-center justify-center">
-                <AlertTriangle className="w-8 h-8 text-destructive" />
+          <CardContent className="p-3 lg:p-4">
+            <div className="flex items-center space-x-2 lg:space-x-3">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-destructive/20 flex items-center justify-center flex-shrink-0">
+                <AlertTriangle className="w-5 h-5 lg:w-6 lg:h-6 text-destructive" />
               </div>
-              <div>
-                <div className="flex items-baseline space-x-2">
-                  <span className="text-4xl font-bold text-destructive font-poppins">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-baseline space-x-1 flex-wrap">
+                  <span className="text-xl lg:text-2xl font-bold text-destructive font-poppins">
                     {hospitalCount}K
                   </span>
-                  <span className="text-lg text-muted-foreground">ER Visits</span>
+                  <span className="text-xs lg:text-sm text-muted-foreground whitespace-nowrap">ER Visits</span>
                 </div>
-                <p className="text-sm text-muted-foreground">Annual food allergy emergencies</p>
+                <p className="text-xs text-muted-foreground">Annual food allergy emergencies</p>
               </div>
             </div>
           </CardContent>
@@ -120,33 +120,46 @@ const FoodAllergyInfographics = () => {
       <div className="h-full flex">
         {/* Growth Trend - Full Height */}
         <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 flex-1">
-          <CardContent className="p-6 h-full flex flex-col">
-            <div className="flex items-center space-x-2 mb-6">
-              <TrendingUp className="w-5 h-5 text-primary" />
-              <h3 className="font-poppins font-semibold text-xl text-foreground">Growing Trend</h3>
+          <CardContent className="p-3 lg:p-4 h-full flex flex-col">
+            <div className="flex items-center space-x-2 mb-3 lg:mb-4">
+              <TrendingUp className="w-4 h-4 text-primary" />
+              <h3 className="font-poppins font-semibold text-base lg:text-lg text-foreground">Growing Trend</h3>
             </div>
-            <div className="flex-1 flex items-center justify-center">
-              <div className="w-full h-64">
+            <div className="flex-1 flex items-center justify-center min-h-0">
+              <div className="w-full h-40 lg:h-48">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={growthData}>
-                    <XAxis dataKey="year" className="text-xs" />
-                    <YAxis domain={[3, 8]} className="text-xs" />
+                  <LineChart data={growthData} margin={{ top: 10, right: 10, left: 20, bottom: 10 }}>
+                    <XAxis 
+                      dataKey="year" 
+                      className="text-xs"
+                      tick={{ fontSize: 8 }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <YAxis 
+                      domain={[3, 8]} 
+                      className="text-xs"
+                      tick={{ fontSize: 8 }}
+                      axisLine={false}
+                      tickLine={false}
+                      tickFormatter={(value) => `${value}%`}
+                    />
                     <Line 
                       type="monotone" 
                       dataKey="prevalence" 
                       stroke="hsl(var(--primary))" 
-                      strokeWidth={3}
-                      dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 4 }}
+                      strokeWidth={2}
+                      dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 3 }}
                       className="animate-fade-in"
                     />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className="flex items-center justify-between mt-4">
-              <p className="text-xs text-muted-foreground">Childhood prevalence (%)</p>
-              <div className="text-right">
-                <p className="text-lg font-bold text-primary font-poppins">+50%</p>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-2 lg:mt-3 gap-2">
+              <p className="text-xs text-muted-foreground">Childhood food allergy prevalence</p>
+              <div className="text-left sm:text-right">
+                <p className="text-sm font-bold text-primary font-poppins">+50%</p>
                 <p className="text-xs text-muted-foreground">Since 1997</p>
               </div>
             </div>

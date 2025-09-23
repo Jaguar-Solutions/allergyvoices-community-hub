@@ -1,22 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Mail } from 'lucide-react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
-export const BrevoSubscriptionForm = () => {
+export const MailerLiteSubscriptionForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
   const { toast } = useToast();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!recaptchaValue) {
+      toast({
+        title: "Please complete the reCAPTCHA",
+        description: "Please verify that you are not a robot.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const formData = new FormData(e.target as HTMLFormElement);
+      const formData = new FormData();
+      const email = (e.target as HTMLFormElement).email.value;
       
-      const response = await fetch('https://0d57fd3a.sibforms.com/serve/MUIFAEUJZ2CVMblTePr5z5yBGiSdo98RX0hzDgdahWOUJbzJEmeA1MRLo83sY7sXvvCRKmiQaidhhnwfpmkQQOnPCl1o3jvfufQNo2MJl-JIZvWdJnhnYxR9wiLLiHZ_h0WzTxc46IBeMJ7XmCT0mNJ4Fz6yCAMHEbuHAOe7OTTWP386Jfo67yBUqVeEbxuRY4UmmvYQg2r-Cul1', {
+      formData.append('fields[email]', email);
+      formData.append('ml-submit', '1');
+      formData.append('anticsrf', 'true');
+      formData.append('g-recaptcha-response', recaptchaValue);
+      
+      const response = await fetch('https://assets.mailerlite.com/jsonp/1797003/forms/165567148584863442/subscribe', {
         method: 'POST',
         body: formData,
         mode: 'no-cors'
@@ -29,6 +48,8 @@ export const BrevoSubscriptionForm = () => {
       
       // Reset form
       (e.target as HTMLFormElement).reset();
+      setRecaptchaValue(null);
+      recaptchaRef.current?.reset();
     } catch (error) {
       toast({
         title: "Subscription failed",
@@ -40,24 +61,34 @@ export const BrevoSubscriptionForm = () => {
     }
   };
 
+  const handleRecaptchaChange = (value: string | null) => {
+    setRecaptchaValue(value);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Hidden fields required by Brevo */}
-      <input type="hidden" name="email_address_check" value="" />
-      <input type="hidden" name="locale" value="en" />
-      
       <div className="space-y-2">
         <Label htmlFor="email" className="text-sm font-medium text-foreground">
           Email Address *
         </Label>
         <Input
           id="email"
-          name="EMAIL"
+          name="email"
           type="email"
           placeholder="Enter your email address"
           className="w-full"
           disabled={isLoading}
           required
+        />
+      </div>
+
+      {/* reCAPTCHA */}
+      <div className="flex justify-center">
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          sitekey="6Lf1KHQUAAAAAFNKEX1hdSWCS3mRMv4FlFaNslaD"
+          onChange={handleRecaptchaChange}
+          theme="light"
         />
       </div>
 
@@ -74,7 +105,7 @@ export const BrevoSubscriptionForm = () => {
         ) : (
           <>
             <Mail className="w-4 h-4 mr-2" />
-            Get My Free Checklist
+            Subscribe
           </>
         )}
       </Button>

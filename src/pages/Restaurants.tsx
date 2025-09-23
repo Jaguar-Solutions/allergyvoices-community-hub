@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import { Users, Star, Shield, Clock } from "lucide-react";
+import { MailerLiteSubscriptionForm } from "@/components/BrevoSubscriptionForm";
 
 const Restaurants = () => {
   return (
@@ -86,6 +87,49 @@ const Restaurants = () => {
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="py-12 px-4 bg-foreground text-background">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">AV</span>
+                </div>
+                <h3 className="font-poppins font-bold text-2xl">Allergy Voices</h3>
+              </div>
+              <p className="font-inter text-background/80 mb-4">
+                Raising voices, changing menus.
+              </p>
+              <p className="font-inter text-sm text-background/60">
+                Are you a restaurant? Learn how to become allergy-friendly.<br/>
+                Email us at: restaurants@allergyvoices.com
+              </p>
+            </div>
+            <div>
+              <h4 className="font-poppins font-semibold text-lg mb-4">Quick Links</h4>
+              <div className="space-y-2 font-inter">
+                <a href="/#resources" className="block hover:text-primary transition-colors">Resources</a>
+                <a href="/#news" className="block hover:text-primary transition-colors">News</a>
+                <a href="/about" className="block hover:text-primary transition-colors">About</a>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-poppins font-semibold text-lg mb-4">Contact</h4>
+              <div className="space-y-2 font-inter">
+                <p className="text-background/80">info@allergyvoices.com</p>
+                <p className="text-background/80">restaurants@allergyvoices.com</p>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-background/20 pt-8 text-center">
+            <p className="font-inter text-background/60">
+              © 2025 Allergy Voices. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

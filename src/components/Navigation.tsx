@@ -19,12 +19,10 @@ const Navigation = () => {
 
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'Community', href: '/community' },
     { name: 'Restaurants', href: '/restaurants' },
     { name: 'Resources', href: '/#resources' },
     { name: 'News', href: '/#news' },
     { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/#contact' },
   ];
 
   const handleHashNavigation = (href: string) => {
