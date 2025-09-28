@@ -4,7 +4,7 @@ const MAILERLITE_GROUP_ID = '166741334640559674';
 const MAILERLITE_API_BASE = 'https://connect.mailerlite.com/api';
 
 // Alternative: Use MailerLite form submission endpoint
-const MAILERLITE_FORM_ENDPOINT = 'https://preview.mailerlite.io/forms/1797003/165567148584863442/subscribe';
+const MAILERLITE_FORM_ENDPOINT = 'https://assets.mailerlite.com/jsonp/1797003/forms/166816265764078710/subscribe';
 
 export interface RestaurantSubmissionData {
   restaurantName: string;
@@ -38,90 +38,45 @@ export interface MailerLiteResponse {
 }
 
 /**
- * Add a restaurant submission to MailerLite using the same method as the working subscription form
+ * Add a restaurant submission to MailerLite using the restaurant form endpoint
  */
 export async function addRestaurantToMailerLite(
-  submissionData: RestaurantSubmissionData
+  email: string,
+  restaurantName: string
 ): Promise<MailerLiteResponse> {
   try {
-    // Use the same approach as the working subscription form
+    // Use the restaurant form structure (simplified - just email)
     const formData = new FormData();
     
-    // Basic subscriber info
-    formData.append('fields[email]', submissionData.email);
-    formData.append('fields[name]', submissionData.restaurantName);
+    // Basic subscriber info (matching the restaurant form structure)
+    formData.append('fields[email]', email);
     
-    // Restaurant-specific fields
-    formData.append('fields[restaurant_name]', submissionData.restaurantName);
-    formData.append('fields[contact_person]', submissionData.contactPerson || '');
-    formData.append('fields[phone_number]', submissionData.phoneNumber || '');
-    formData.append('fields[city]', submissionData.city);
-    formData.append('fields[state]', submissionData.state);
-    formData.append('fields[cuisine_type]', submissionData.cuisineType);
-    formData.append('fields[website]', submissionData.website || '');
-    formData.append('fields[has_allergen_menu]', submissionData.hasAllergenMenu);
-    formData.append('fields[allergen_menu_link]', submissionData.allergenMenuLink || '');
-    formData.append('fields[staff_training]', submissionData.staffTraining);
-    formData.append('fields[training_program]', submissionData.trainingProgram || '');
-    formData.append('fields[equipment_cleaning]', submissionData.equipmentCleaning);
-    formData.append('fields[dedicated_prep_area]', submissionData.dedicatedPrepArea);
-    formData.append('fields[guest_disclosure]', submissionData.guestDisclosure);
-    formData.append('fields[allergy_point_of_contact]', submissionData.allergyPointOfContact);
-    formData.append('fields[allergen_free_options]', submissionData.allergenFreeOptions.join(', '));
-    formData.append('fields[dedicated_prep]', submissionData.dedicatedPrep);
-    formData.append('fields[notes]', submissionData.notes || '');
-    formData.append('fields[score]', submissionData.score.toString());
-    formData.append('fields[grade]', submissionData.grade);
-    formData.append('fields[submission_date]', new Date().toISOString());
-    formData.append('fields[source]', 'restaurant_submission_form');
-    
-    // Required MailerLite form fields (same as working subscription form)
+    // Required MailerLite form fields
     formData.append('ml-submit', '1');
     formData.append('anticsrf', 'true');
-    
-    // Add group assignment if possible
-    formData.append('fields[group_id]', MAILERLITE_GROUP_ID);
 
-    console.log('📧 Adding to MailerLite using working subscription method:', {
-      email: submissionData.email,
-      name: submissionData.restaurantName,
-      group: MAILERLITE_GROUP_ID,
+    console.log('📧 Adding restaurant to MailerLite:', {
+      email: email,
+      restaurant: restaurantName,
       endpoint: MAILERLITE_FORM_ENDPOINT
     });
 
-    // Log all form data being sent
-    console.log('📧 Form data being sent:');
-    for (const [key, value] of formData.entries()) {
-      console.log(`  ${key}: ${value}`);
-    }
-
-    // Use the same endpoint and method as the working subscription form
+    // Use the restaurant form endpoint
     const response = await fetch(MAILERLITE_FORM_ENDPOINT, {
       method: 'POST',
       body: formData,
-      mode: 'no-cors' // This is the key - same as working subscription form
+      mode: 'no-cors'
     });
 
     console.log('📧 MailerLite response status:', response.status);
     console.log('📧 MailerLite response type:', response.type);
     console.log('📧 MailerLite response ok:', response.ok);
-    console.log('✅ Successfully submitted to MailerLite via form (same method as subscription)');
-    
-    // Additional logging for debugging
-    console.log('📧 Submission details:');
-    console.log('  - Email:', submissionData.email);
-    console.log('  - Restaurant:', submissionData.restaurantName);
-    console.log('  - City:', submissionData.city);
-    console.log('  - State:', submissionData.state);
-    console.log('  - Score:', submissionData.score);
-    console.log('  - Grade:', submissionData.grade);
-    console.log('  - Group ID:', MAILERLITE_GROUP_ID);
-    console.log('  - Timestamp:', new Date().toISOString());
+    console.log('✅ Successfully submitted restaurant to MailerLite');
 
     return {
       success: true,
       message: 'Restaurant successfully added to MailerLite',
-      data: { method: 'form_submission', group: MAILERLITE_GROUP_ID }
+      data: { method: 'form_submission', email: email }
     };
 
   } catch (error) {
@@ -140,7 +95,8 @@ export async function addRestaurantToMailerLite(
  * This uses the existing EmailJS setup that was already working
  */
 export async function sendThankYouEmail(
-  submissionData: RestaurantSubmissionData
+  email: string,
+  restaurantName: string
 ): Promise<MailerLiteResponse> {
   try {
     // Import EmailJS dynamically to avoid issues
@@ -151,13 +107,13 @@ export async function sendThankYouEmail(
     
     // Prepare email template parameters
     const templateParams = {
-      to_email: submissionData.email,
-      to_name: submissionData.restaurantName,
+      to_email: email,
+      to_name: restaurantName,
       from_name: 'AllergyVoices Team',
       from_email: 'info@allergyvoices.com',
       reply_to: 'info@allergyvoices.com',
       subject: 'Thank you for joining the AllergyVoices Pilot',
-      message: `Hello ${submissionData.restaurantName},
+      message: `Hello ${restaurantName},
 
 Thank you for submitting your information to the AllergyVoices grading program. Your responses are now under review.
 
@@ -172,16 +128,16 @@ We're excited to highlight your commitment to safer dining and will notify you o
 AllergyVoices | info@allergyvoices.com | Raleigh, NC
 This pilot expands region by region beginning Q1 2026.`,
       // Common EmailJS template variables
-      user_email: submissionData.email,
-      user_name: submissionData.restaurantName,
-      restaurant_name: submissionData.restaurantName,
-      email: submissionData.email,
-      name: submissionData.restaurantName
+      user_email: email,
+      user_name: restaurantName,
+      restaurant_name: restaurantName,
+      email: email,
+      name: restaurantName
     };
     
     console.log('📧 Sending thank-you email via EmailJS:', {
-      to: submissionData.email,
-      restaurant: submissionData.restaurantName
+      to: email,
+      restaurant: restaurantName
     });
     
     // Send email using EmailJS
@@ -204,9 +160,9 @@ This pilot expands region by region beginning Q1 2026.`,
     
     // Fallback: Log email details if EmailJS fails
     console.log('📧 Fallback - Email details for manual sending:');
-    console.log('📧 To:', submissionData.email);
+    console.log('📧 To:', email);
     console.log('📧 Subject: Thank you for joining the AllergyVoices Pilot');
-    console.log('📧 Restaurant:', submissionData.restaurantName);
+    console.log('📧 Restaurant:', restaurantName);
 
     return {
       success: false,

@@ -139,7 +139,7 @@ const RestaurantSubmissionForm = () => {
 
       // Add to MailerLite
       try {
-        await addRestaurantToMailerLite(submissionData);
+        await addRestaurantToMailerLite(formData.email, formData.restaurantName);
         console.log('✅ Added to MailerLite');
       } catch (error) {
         console.warn('⚠️ MailerLite error (non-critical):', error);
@@ -147,7 +147,7 @@ const RestaurantSubmissionForm = () => {
 
       // Send thank you email
       try {
-        await sendThankYouEmail(submissionData);
+        await sendThankYouEmail(formData.email, formData.restaurantName);
         console.log('✅ Thank you email sent');
       } catch (error) {
         console.warn('⚠️ Email sending error (non-critical):', error);
