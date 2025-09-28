@@ -10,6 +10,9 @@ import DiningOut from "./pages/DiningOut";
 import SchoolTeens from "./pages/SchoolTeens";
 import About from "./pages/About";
 import Restaurants from "./pages/Restaurants";
+import RestaurantSubmission from "./pages/RestaurantSubmission";
+import RestaurantDirectory from "./pages/RestaurantDirectory";
+import AdminPanel from "./pages/AdminPanel";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +29,9 @@ const App = () => (
             <Route path="/school-teens" element={<SchoolTeens />} />
             <Route path="/about" element={<About />} />
             <Route path="/restaurants" element={<Restaurants />} />
+            <Route path="/restaurant-submission" element={<RestaurantSubmission />} />
+            <Route path="/restaurant-directory" element={<RestaurantDirectory />} />
+            <Route path="/admin" element={<AdminPanel />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
