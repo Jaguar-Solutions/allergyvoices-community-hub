@@ -9,7 +9,8 @@ const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Check if we're in dev mode - only show dev items when explicitly enabled
-  const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
+  // const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
+  const isDevMode = false;
 
   useEffect(() => {
     const handleScroll = () => {
