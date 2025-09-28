@@ -8,6 +8,9 @@ const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Check if we're in dev mode
+  const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -17,15 +20,24 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
+  // Base navigation items
+  const baseNavItems = [
     { name: 'Home', href: '/' },
     { name: 'Restaurants', href: '/restaurants' },
-    { name: 'Directory', href: '/restaurant-directory' },
-    { name: 'Submit Restaurant', href: '/restaurant-submission' },
     { name: 'Resources', href: '/#resources' },
     { name: 'News', href: '/#news' },
     { name: 'About', href: '/about' },
   ];
+
+  // Add dev-only items
+  const devNavItems = [
+    { name: 'Directory (Dev)', href: '/restaurant-directory' },
+  ];
+
+  // Combine nav items based on dev mode
+  const navItems = isDevMode 
+    ? [...baseNavItems, ...devNavItems]
+    : baseNavItems;
 
   const handleHashNavigation = (href: string) => {
     if (href.startsWith('/#')) {

@@ -3,89 +3,123 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
-import { Users, Star, Shield, Clock } from "lucide-react";
-import { MailerLiteSubscriptionForm } from "@/components/BrevoSubscriptionForm";
+import { TrendingUp, Award, Megaphone, Users } from "lucide-react";
+import RestaurantSubmissionForm from "@/components/RestaurantSubmissionForm";
 
 const Restaurants = () => {
+  const scrollToForm = () => {
+    document.getElementById('submission-form')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <main className="pt-32 pb-16 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <Badge variant="secondary" className="mb-4">
-            Coming Soon
-          </Badge>
-          
-          <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-8 text-foreground">
-            Restaurants
-          </h1>
-          
-          <p className="font-inter text-xl text-muted-foreground mb-12">
-            We're building something exciting: an Allergy-Friendly Restaurant Guide.
-          </p>
-          
-          <Card className="rounded-2xl shadow-lg mb-12 text-left">
-            <CardContent className="p-8">
-              <h2 className="font-poppins font-semibold text-2xl mb-6 text-foreground">
-                More than reviews — a grading system that matters
-              </h2>
-              
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <div className="space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-secondary" />
-                  </div>
-                  <h3 className="font-poppins font-semibold text-lg">Staff Training</h3>
-                  <p className="font-inter text-sm text-muted-foreground">
-                    Restaurants that properly train their staff on allergen protocols
-                  </p>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Star className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-poppins font-semibold text-lg">Cross-Contact Prevention</h3>
-                  <p className="font-inter text-sm text-muted-foreground">
-                    Proper kitchen protocols to prevent allergen cross-contamination
-                  </p>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                    <Clock className="w-6 h-6 text-accent" />
-                  </div>
-                  <h3 className="font-poppins font-semibold text-lg">Clear Information</h3>
-                  <p className="font-inter text-sm text-muted-foreground">
-                    Transparent allergen information and menu labeling
-                  </p>
-                </div>
-              </div>
-              
-              <p className="font-inter text-muted-foreground mb-6">
-                We're currently designing the grading criteria and gathering input from both allergy families and restaurant partners.
-              </p>
-            </CardContent>
-          </Card>
-          
-          <div className="space-y-6">
+      <main className="pt-20">
+        {/* Hero Section */}
+        <section className="py-16 px-4 bg-gradient-to-br from-primary/5 to-secondary/5">
+          <div className="container mx-auto max-w-4xl text-center">
+            <Badge variant="secondary" className="mb-6">
+              Pilot Program
+            </Badge>
+            
+            <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6 text-foreground">
+              Put Your Restaurant on the Allergy-Friendly Map
+            </h1>
+            
+            <p className="font-inter text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+              Join our pilot program in the Triangle and be among the first to earn the AllergyVoices Approved™ badge.
+            </p>
+            
             <Button 
               size="lg" 
               className="font-poppins"
-              onClick={() => {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={scrollToForm}
             >
-              <Users className="w-5 h-5 mr-2" />
-              Join the Community
+              Submit Your Restaurant
             </Button>
+          </div>
+        </section>
+
+        {/* Benefits + Pilot Section (Condensed) */}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <TrendingUp className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="font-poppins font-semibold text-xl">Reach More Customers</h3>
+                <p className="font-inter text-muted-foreground">
+                  33 million Americans live with food allergies, and families are actively searching for safe places to eat.
+                </p>
+              </div>
+              
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto">
+                  <Award className="w-8 h-8 text-secondary" />
+                </div>
+                <h3 className="font-poppins font-semibold text-xl">Earn Trust</h3>
+                <p className="font-inter text-muted-foreground">
+                  Show your commitment with the AllergyVoices Approved™ badge that families recognize and trust.
+                </p>
+              </div>
+              
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
+                  <Megaphone className="w-8 h-8 text-accent" />
+                </div>
+                <h3 className="font-poppins font-semibold text-xl">Get Featured</h3>
+                <p className="font-inter text-muted-foreground">
+                  Our campaigns and directory will highlight approved restaurants in North Carolina and nationwide.
+                </p>
+              </div>
+            </div>
             
+            {/* Pilot Context Text */}
+            <div className="text-center mb-8">
+              <p className="font-inter text-lg text-muted-foreground max-w-4xl mx-auto">
+                We're starting in North Carolina's Triangle area (Raleigh, Cary, Durham, Chapel Hill) as our pilot region. 
+                But restaurants nationwide are welcome to submit now. Applications will be reviewed as we expand, with the full rollout beginning in 2026. 
+                Early submissions will be prioritized for review and showcasing.
+              </p>
+            </div>
+            
+            {/* AllergyVoices Approved Badge */}
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-48 h-48 flex items-center justify-center">
+                <img 
+                  src={`/badge.png?v=${Date.now()}`}
+                  alt="AllergyVoices Approved Badge" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <p className="font-inter text-sm text-muted-foreground max-w-md text-center">
+                Restaurants that meet our review standards will receive this AllergyVoices Approved™ certification.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Submission Form Section */}
+        <section id="submission-form" className="py-16 px-4 bg-muted/20">
+          <div className="container mx-auto max-w-4xl">
+            <RestaurantSubmissionForm />
+          </div>
+        </section>
+
+        {/* Community Note */}
+        <section className="py-12 px-4">
+          <div className="container mx-auto max-w-4xl text-center">
+            <div className="flex items-center justify-center mb-4">
+              <Users className="w-6 h-6 text-primary mr-2" />
+              <span className="font-poppins font-semibold text-lg text-foreground">Help Spread the Word</span>
+            </div>
             <p className="font-inter text-muted-foreground">
-              Want to help shape it? Join our community and share your feedback.
+              Not a restaurant owner? Help us spread the word — share this with your favorite local restaurant.
             </p>
           </div>
-        </div>
+        </section>
       </main>
 
       {/* Footer */}

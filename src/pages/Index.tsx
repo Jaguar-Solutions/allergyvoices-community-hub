@@ -104,6 +104,16 @@ const Index = () => {
                 >
                   Join the Community
                 </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="font-poppins text-base px-6 py-3"
+                  asChild
+                >
+                  <Link to="/restaurants">
+                    Submit a Restaurant
+                  </Link>
+                </Button>
               </div>
             </div>
             <div className="relative">
