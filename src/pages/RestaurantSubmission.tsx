@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { AlertCircle, CheckCircle, Star } from "lucide-react";
 import { addRestaurantToMailerLite, sendThankYouEmail, type RestaurantSubmissionData } from '@/lib/mailerlite';
 import { addRestaurant, addQuestionnaire } from '@/lib/supabase';
+import { calculateScore, getGradeColors, getGradeIcon } from '@/lib/scoring';
 
 interface RestaurantSubmission {
   restaurantName: string;
@@ -90,35 +91,6 @@ const RestaurantSubmissionPage = () => {
     }));
   };
 
-  const calculateScore = (data: RestaurantSubmission): { score: number; grade: string } => {
-    let score = 0;
-    
-    // Yes/Always = 2 points, Sometimes = 1 point, No/Never = 0 points
-    if (data.hasAllergenMenu === 'Yes') score += 2;
-    if (data.staffTraining === 'Yes') score += 2;
-    if (data.staffTraining === 'Some staff') score += 1;
-    if (data.equipmentCleaning === 'Always') score += 2;
-    if (data.equipmentCleaning === 'Sometimes') score += 1;
-    if (data.dedicatedPrepArea === 'Yes') score += 2;
-    if (data.dedicatedPrepArea === 'Sometimes') score += 1;
-    if (data.guestDisclosure === 'Always') score += 2;
-    if (data.guestDisclosure === 'Sometimes') score += 1;
-    if (data.allergyPointOfContact === 'Yes') score += 2;
-    if (data.dedicatedPrep === 'Yes') score += 2;
-    if (data.dedicatedPrep === 'Some') score += 1;
-    
-    // Bonus points
-    if (data.allergenMenuLink) score += 2;
-    score += data.allergenFreeOptions.length;
-    
-    // Determine grade
-    let grade = 'Needs Improvement';
-    if (score >= 16) grade = 'Gold';
-    else if (score >= 10) grade = 'Silver';
-    else if (score >= 5) grade = 'Bronze';
-    
-    return { score, grade };
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -243,12 +215,6 @@ const RestaurantSubmissionPage = () => {
 
 
   const { score, grade } = calculateScore(formData);
-  const gradeColors = {
-    'Gold': 'bg-green-100 text-green-800 border-green-200',
-    'Silver': 'bg-gray-100 text-gray-800 border-gray-200',
-    'Bronze': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-    'Needs Improvement': 'bg-red-100 text-red-800 border-red-200'
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -715,7 +681,8 @@ const RestaurantSubmissionPage = () => {
                     <Star className="w-5 h-5 text-green-600" />
                     <span className="font-semibold text-gray-900">Score: {score} points</span>
                   </div>
-                  <Badge className={`px-3 py-1 rounded-full border ${gradeColors[grade as keyof typeof gradeColors]}`}>
+                  <Badge className={`px-3 py-1 rounded-full border ${getGradeColors(grade)}`}>
+                    <span className="mr-1">{getGradeIcon(grade)}</span>
                     {grade}
                   </Badge>
                 </div>

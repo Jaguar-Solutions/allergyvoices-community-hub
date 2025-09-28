@@ -6,13 +6,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { AlertCircle, CheckCircle, Eye, Edit, Star, Filter, Search } from "lucide-react";
 import { getRestaurants, updateRestaurantStatus, addRestaurantRating, publishRestaurant, deleteRestaurant, updateRestaurant, updateQuestionnaire } from '@/lib/supabase';
+import { calculateScore, getGradeColors, getGradeIcon } from '@/lib/scoring';
 
 interface RestaurantSubmission {
   id: string;
   restaurantName: string;
+  email?: string;
+  phoneNumber?: string;
   city: string;
+  state?: string;
   otherCity?: string;
   cuisineType: string;
   otherCuisine?: string;
@@ -202,10 +207,32 @@ const AdminPanel = () => {
     setIsEditing(true);
   };
 
+  // Calculate score based on current edit data
+  const calculateEditScore = () => {
+    if (!editData) return { score: 0, grade: 'Needs Improvement' };
+    
+    return calculateScore({
+      hasAllergenMenu: editData.hasAllergenMenu || 'No',
+      staffTraining: editData.staffTraining || 'No',
+      equipmentCleaning: editData.equipmentCleaning || 'Never',
+      dedicatedPrepArea: editData.dedicatedPrepArea || 'No',
+      guestDisclosure: editData.guestDisclosure || 'Never',
+      allergyPointOfContact: editData.allergyPointOfContact || 'No',
+      dedicatedPrep: editData.dedicatedPrep || 'No',
+      allergenMenuLink: editData.allergenMenuLink,
+      allergenFreeOptions: editData.allergenFreeOptions || []
+    });
+  };
+
+  const currentScore = calculateEditScore();
+
   const handleSaveEdit = async () => {
     if (!selectedSubmission) return;
 
     try {
+      // Calculate updated score and grade
+      const { score, grade } = currentScore;
+
       // Update restaurant basic info
       const restaurantResult = await updateRestaurant(selectedSubmission.id, {
         name: editData.restaurantName,
@@ -220,7 +247,7 @@ const AdminPanel = () => {
         return;
       }
 
-      // Update questionnaire responses
+      // Update questionnaire responses with calculated score
       const questionnaireResult = await updateQuestionnaire(selectedSubmission.id, {
         cuisineType: editData.cuisineType,
         website: editData.website,
@@ -235,8 +262,8 @@ const AdminPanel = () => {
         allergenFreeOptions: editData.allergenFreeOptions,
         dedicatedPrep: editData.dedicatedPrep,
         notes: editData.notes,
-        score: editData.score,
-        grade: editData.grade
+        score: score,
+        grade: grade
       });
 
       if (!questionnaireResult.success) {
@@ -244,9 +271,14 @@ const AdminPanel = () => {
         return;
       }
 
-      // Update local state
+      // Update local state with calculated score
       setSubmissions(prev => prev.map(submission =>
-        submission.id === selectedSubmission.id ? { ...submission, ...editData } : submission
+        submission.id === selectedSubmission.id ? { 
+          ...submission, 
+          ...editData, 
+          score: score, 
+          grade: grade 
+        } : submission
       ));
       setFilteredSubmissions(prev => prev.map(submission =>
         submission.id === selectedSubmission.id ? { ...submission, ...editData } : submission
@@ -628,98 +660,295 @@ const AdminPanel = () => {
                   </Button>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="edit-restaurantName">Restaurant Name</Label>
-                    <Input
-                      id="edit-restaurantName"
-                      value={editData.restaurantName || ''}
-                      onChange={(e) => setEditData({...editData, restaurantName: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-email">Email</Label>
-                    <Input
-                      id="edit-email"
-                      type="email"
-                      value={editData.email || ''}
-                      onChange={(e) => setEditData({...editData, email: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-phoneNumber">Phone</Label>
-                    <Input
-                      id="edit-phoneNumber"
-                      value={editData.phoneNumber || ''}
-                      onChange={(e) => setEditData({...editData, phoneNumber: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-city">City</Label>
-                    <Input
-                      id="edit-city"
-                      value={editData.city || ''}
-                      onChange={(e) => setEditData({...editData, city: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-state">State</Label>
-                    <Input
-                      id="edit-state"
-                      value={editData.state || ''}
-                      onChange={(e) => setEditData({...editData, state: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-cuisineType">Cuisine Type</Label>
-                    <Input
-                      id="edit-cuisineType"
-                      value={editData.cuisineType || ''}
-                      onChange={(e) => setEditData({...editData, cuisineType: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-website">Website</Label>
-                    <Input
-                      id="edit-website"
-                      value={editData.website || ''}
-                      onChange={(e) => setEditData({...editData, website: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-score">Score</Label>
-                    <Input
-                      id="edit-score"
-                      type="number"
-                      value={editData.score || 0}
-                      onChange={(e) => setEditData({...editData, score: parseInt(e.target.value) || 0})}
-                    />
+                {/* Restaurant Information */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-primary border-b pb-2">Restaurant Information</h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="edit-restaurantName">Restaurant Name</Label>
+                      <Input
+                        id="edit-restaurantName"
+                        value={editData.restaurantName || ''}
+                        onChange={(e) => setEditData({...editData, restaurantName: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-email">Email</Label>
+                      <Input
+                        id="edit-email"
+                        type="email"
+                        value={editData.email || ''}
+                        onChange={(e) => setEditData({...editData, email: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-phoneNumber">Phone</Label>
+                      <Input
+                        id="edit-phoneNumber"
+                        value={editData.phoneNumber || ''}
+                        onChange={(e) => setEditData({...editData, phoneNumber: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-city">City</Label>
+                      <Input
+                        id="edit-city"
+                        value={editData.city || ''}
+                        onChange={(e) => setEditData({...editData, city: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-state">State</Label>
+                      <Input
+                        id="edit-state"
+                        value={editData.state || ''}
+                        onChange={(e) => setEditData({...editData, state: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-cuisineType">Cuisine Type</Label>
+                      <Select value={editData.cuisineType || ''} onValueChange={(value) => setEditData({...editData, cuisineType: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select cuisine type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="American">American</SelectItem>
+                          <SelectItem value="Italian">Italian</SelectItem>
+                          <SelectItem value="Chinese">Chinese</SelectItem>
+                          <SelectItem value="Mexican">Mexican</SelectItem>
+                          <SelectItem value="Indian">Indian</SelectItem>
+                          <SelectItem value="Bakery">Bakery</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-website">Website</Label>
+                      <Input
+                        id="edit-website"
+                        placeholder="https://example.com"
+                        value={editData.website || ''}
+                        onChange={(e) => setEditData({...editData, website: e.target.value})}
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <Label htmlFor="edit-grade">Grade</Label>
-                  <Select value={editData.grade || ''} onValueChange={(value) => setEditData({...editData, grade: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select grade" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Gold">Gold</SelectItem>
-                      <SelectItem value="Silver">Silver</SelectItem>
-                      <SelectItem value="Bronze">Bronze</SelectItem>
-                      <SelectItem value="Needs Improvement">Needs Improvement</SelectItem>
-                    </SelectContent>
-                  </Select>
+                {/* Allergen Information */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-primary border-b pb-2">Allergen Information</h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="edit-hasAllergenMenu">Allergen Menu Available</Label>
+                      <Select value={editData.hasAllergenMenu || 'No'} onValueChange={(value) => setEditData({...editData, hasAllergenMenu: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Yes">Yes</SelectItem>
+                          <SelectItem value="No">No</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-allergenMenuLink">Allergen Menu Link</Label>
+                      <Input
+                        id="edit-allergenMenuLink"
+                        placeholder="https://example.com/allergen-menu"
+                        value={editData.allergenMenuLink || ''}
+                        onChange={(e) => setEditData({...editData, allergenMenuLink: e.target.value})}
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                <div>
-                  <Label htmlFor="edit-notes">Notes</Label>
-                  <Textarea
-                    id="edit-notes"
-                    value={editData.notes || ''}
-                    onChange={(e) => setEditData({...editData, notes: e.target.value})}
-                    rows={3}
-                  />
+                {/* Training & Procedures */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-primary border-b pb-2">Training & Procedures</h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="edit-staffTraining">Staff Training</Label>
+                      <Select value={editData.staffTraining || 'No'} onValueChange={(value) => setEditData({...editData, staffTraining: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Yes">Yes</SelectItem>
+                          <SelectItem value="Some staff">Some staff</SelectItem>
+                          <SelectItem value="No">No</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-trainingProgram">Training Program</Label>
+                      <Input
+                        id="edit-trainingProgram"
+                        placeholder="Describe training program"
+                        value={editData.trainingProgram || ''}
+                        onChange={(e) => setEditData({...editData, trainingProgram: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-equipmentCleaning">Equipment Cleaning</Label>
+                      <Select value={editData.equipmentCleaning || 'Never'} onValueChange={(value) => setEditData({...editData, equipmentCleaning: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Always">Always</SelectItem>
+                          <SelectItem value="Sometimes">Sometimes</SelectItem>
+                          <SelectItem value="Never">Never</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-dedicatedPrepArea">Dedicated Prep Area</Label>
+                      <Select value={editData.dedicatedPrepArea || 'No'} onValueChange={(value) => setEditData({...editData, dedicatedPrepArea: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Yes">Yes</SelectItem>
+                          <SelectItem value="Sometimes">Sometimes</SelectItem>
+                          <SelectItem value="No">No</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-guestDisclosure">Guest Disclosure</Label>
+                      <Select value={editData.guestDisclosure || 'Never'} onValueChange={(value) => setEditData({...editData, guestDisclosure: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Always">Always</SelectItem>
+                          <SelectItem value="Sometimes">Sometimes</SelectItem>
+                          <SelectItem value="Never">Never</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-allergyPointOfContact">Allergy Point of Contact</Label>
+                      <Select value={editData.allergyPointOfContact || 'No'} onValueChange={(value) => setEditData({...editData, allergyPointOfContact: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Yes">Yes</SelectItem>
+                          <SelectItem value="No">No</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-dedicatedPrep">Dedicated Prep</Label>
+                      <Select value={editData.dedicatedPrep || 'No'} onValueChange={(value) => setEditData({...editData, dedicatedPrep: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Yes">Yes</SelectItem>
+                          <SelectItem value="Some">Some</SelectItem>
+                          <SelectItem value="No">No</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+
+
+                {/* Allergen-Free Options */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-primary border-b pb-2">Allergen-Free Options</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 p-4 border rounded-lg bg-gray-50">
+                    {[
+                      'Peanut-Free',
+                      'Tree-Nut-Free', 
+                      'Egg-Free',
+                      'Dairy-Free',
+                      'Gluten-Free',
+                      'Sesame-Free',
+                      'Soy-Free',
+                      'Shellfish-Free'
+                    ].map((allergen) => (
+                      <div key={allergen} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`edit-allergen-${allergen}`}
+                          checked={editData.allergenFreeOptions?.includes(allergen) || false}
+                          onCheckedChange={(checked) => {
+                            const currentOptions = editData.allergenFreeOptions || [];
+                            if (checked) {
+                              setEditData({
+                                ...editData,
+                                allergenFreeOptions: [...currentOptions, allergen]
+                              });
+                            } else {
+                              setEditData({
+                                ...editData,
+                                allergenFreeOptions: currentOptions.filter(option => option !== allergen)
+                              });
+                            }
+                          }}
+                        />
+                        <Label 
+                          htmlFor={`edit-allergen-${allergen}`} 
+                          className="text-sm cursor-pointer"
+                        >
+                          {allergen}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Select all allergen-free options that this restaurant offers
+                  </p>
+                </div>
+
+                {/* Live Scoring & Rating */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-primary border-b pb-2">Live Scoring & Rating</h4>
+                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <h5 className="font-semibold text-gray-900">Current Score</h5>
+                        <p className="text-sm text-gray-600">Score updates automatically as you edit</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-blue-600">{currentScore.score}/25</div>
+                        <div className="text-sm text-gray-600">points</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm font-medium text-gray-700">Grade:</span>
+                        <Badge className={`px-3 py-1 ${getGradeColors(currentScore.grade)}`}>
+                          <span className="mr-1">{getGradeIcon(currentScore.grade)}</span>
+                          {currentScore.grade}
+                        </Badge>
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {currentScore.score >= 16 && 'Gold: 16+ points'}
+                        {currentScore.score >= 10 && currentScore.score < 16 && 'Silver: 10-15 points'}
+                        {currentScore.score >= 5 && currentScore.score < 10 && 'Bronze: 5-9 points'}
+                        {currentScore.score < 5 && 'Needs Improvement: <5 points'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Additional Information */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-primary border-b pb-2">Additional Information</h4>
+                  <div>
+                    <Label htmlFor="edit-notes">Notes</Label>
+                    <Textarea
+                      id="edit-notes"
+                      placeholder="Add any additional notes about this restaurant..."
+                      value={editData.notes || ''}
+                      onChange={(e) => setEditData({...editData, notes: e.target.value})}
+                      rows={4}
+                    />
+                  </div>
                 </div>
 
                 <div className="flex justify-end space-x-2">
