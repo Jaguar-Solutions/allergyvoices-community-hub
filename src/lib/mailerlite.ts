@@ -4,7 +4,7 @@ const MAILERLITE_GROUP_ID = '166741334640559674';
 const MAILERLITE_API_BASE = 'https://connect.mailerlite.com/api';
 
 // Alternative: Use MailerLite form submission endpoint
-const MAILERLITE_FORM_ENDPOINT = 'https://assets.mailerlite.com/jsonp/1797003/forms/165567148584863442/subscribe';
+const MAILERLITE_FORM_ENDPOINT = 'https://preview.mailerlite.io/forms/1797003/165567148584863442/subscribe';
 
 export interface RestaurantSubmissionData {
   restaurantName: string;

@@ -35,7 +35,7 @@ export const MailerLiteSubscriptionForm = () => {
       formData.append('anticsrf', 'true');
       formData.append('g-recaptcha-response', recaptchaValue);
       
-      const response = await fetch('https://assets.mailerlite.com/jsonp/1797003/forms/165567148584863442/subscribe', {
+      const response = await fetch('https://preview.mailerlite.io/forms/1797003/165567148584863442/subscribe', {
         method: 'POST',
         body: formData,
         mode: 'no-cors'
