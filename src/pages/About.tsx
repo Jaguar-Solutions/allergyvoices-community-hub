@@ -14,7 +14,7 @@ const About = () => {
           
           <div className="prose prose-lg max-w-none">
             <p className="font-inter text-lg text-muted-foreground mb-6">
-              Allergy Voices was started by a parent of a child with food allergies who wanted to make life safer and more inclusive for all allergy sufferers and caregivers. What began as one family's search for safe dining and reliable information has grown into a community-driven advocacy effort.
+              Allergy Voices began with one family's struggle to find safe places to eat with their child who has food allergies. What started as a personal search for clarity has grown into a community-driven effort to make life safer, easier, and more inclusive for all allergy sufferers and caregivers.
             </p>
             
             <p className="font-inter text-lg text-muted-foreground mb-6">
@@ -22,11 +22,26 @@ const About = () => {
             </p>
             
             <p className="font-inter text-lg text-muted-foreground mb-6">
-              We believe change happens when we work together. That means sharing knowledge, supporting each other, and also campaigning to local governments and businesses. From asking restaurants to publish clear allergen listings to holding food companies accountable for recipe changes, we want to ensure people with food allergies are not left out of the decision-making process.
+              We believe real change happens when we work together. That means:
+            </p>
+            
+            <ul className="font-inter text-lg text-muted-foreground mb-6 ml-6 space-y-2">
+              <li>• Sharing knowledge and stories.</li>
+              <li>• Supporting each other as families and caregivers.</li>
+              <li>• Encouraging restaurants and businesses to be allergy-friendly.</li>
+              <li>• Advocating at the state and national level for stronger transparency and allergy safety laws.</li>
+            </ul>
+            
+            <p className="font-inter text-lg text-muted-foreground mb-6">
+              At Allergy Voices, we're more than a directory — we're a movement. From asking restaurants to publish clear allergen listings, to holding food companies accountable for recipe changes, to pushing for mandatory allergy-friendly practices, we aim to ensure no one with food allergies is left out of the decision-making process.
+            </p>
+            
+            <p className="font-inter text-lg text-muted-foreground mb-6">
+              This initiative belongs to the community. Every caregiver, teen, adult, and ally has a voice that can drive change. Your stories, suggestions, and participation are not just welcome — they are what make Allergy Voices possible.
             </p>
             
             <p className="font-inter text-lg text-muted-foreground">
-              At Allergy Voices, every story matters. Every caregiver, teen, and adult living with allergies has a voice that can drive change. Together, we can make dining, shopping, and living with allergies safer and more inclusive.
+              Together, we can make dining, shopping, and living with food allergies safer and more inclusive for everyone.
             </p>
           </div>
         </div>
