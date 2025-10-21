@@ -159,7 +159,10 @@ const RestaurantSubmissionPage = () => {
       }
 
       // Add to MailerLite (for email marketing)
-      const mailerLiteResult = await addRestaurantToMailerLite(submissionData);
+      const mailerLiteResult = await addRestaurantToMailerLite(
+        submissionData.email,
+        submissionData.restaurantName
+      );
       
       if (!mailerLiteResult.success) {
         console.warn('⚠️ MailerLite error:', mailerLiteResult.error);
@@ -169,7 +172,10 @@ const RestaurantSubmissionPage = () => {
       }
 
       // Send thank-you email
-      const emailResult = await sendThankYouEmail(submissionData);
+      const emailResult = await sendThankYouEmail(
+        submissionData.email,
+        submissionData.restaurantName
+      );
       
       if (!emailResult.success) {
         console.warn('⚠️ Email sending failed:', emailResult.error);
