@@ -59,9 +59,9 @@ export const AdvocacySpotlight = () => {
           }}
           className="w-full max-w-5xl mx-auto"
         >
-          <CarouselContent>
+          <CarouselContent className="-ml-2 md:-ml-4">
             {spotlightItems.map((item) => (
-              <CarouselItem key={item.id} className="md:basis-full">
+              <CarouselItem key={item.id} className="md:basis-full pl-2 md:pl-4 pt-4">
                 <Card className={`rounded-2xl shadow-lg border-l-4 relative ${
                   item.type === "good-news" 
                     ? "border-l-primary" 
