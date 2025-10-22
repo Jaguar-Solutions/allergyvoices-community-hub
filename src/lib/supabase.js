@@ -327,10 +327,18 @@ export async function getPublishedRestaurants() {
       console.log('🔍 Supabase: Fetching published restaurants...');
     }
     
+    // Exclude email and phone from public queries to protect PII
     const { data, error } = await supabase
       .from('restaurants')
       .select(`
-        *,
+        id,
+        name,
+        city,
+        state,
+        status,
+        submitted_at,
+        created_at,
+        updated_at,
         restaurant_questionnaires ( responses ),
         restaurant_ratings ( rating, comments, reviewed_by, created_at )
       `)
