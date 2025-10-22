@@ -13,6 +13,7 @@ import Restaurants from "./pages/Restaurants";
 import RestaurantSubmission from "./pages/RestaurantSubmission";
 import RestaurantDirectory from "./pages/RestaurantDirectory";
 import AdminPanel from "./pages/AdminPanel";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="/restaurant-submission" element={<Navigate to="/restaurants" replace />} />
               {/* Only show directory route in dev mode */}
               {isDevMode && <Route path="/restaurant-directory" element={<RestaurantDirectory />} />}
+              <Route path="/auth" element={<Auth />} />
               <Route path="/admin" element={<AdminPanel />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

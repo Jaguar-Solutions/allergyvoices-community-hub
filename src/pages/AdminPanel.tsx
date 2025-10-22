@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,9 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { AlertCircle, CheckCircle, Eye, Edit, Star, Filter, Search } from "lucide-react";
-import { getRestaurants, updateRestaurantStatus, addRestaurantRating, publishRestaurant, deleteRestaurant, updateRestaurant, updateQuestionnaire } from '@/lib/supabase';
+import { AlertCircle, CheckCircle, Eye, Edit, Star, Filter, Search, LogOut } from "lucide-react";
+import { getRestaurants, updateRestaurantStatus, addRestaurantRating, publishRestaurant, deleteRestaurant, updateRestaurant, updateQuestionnaire, supabase } from '@/lib/supabase';
 import { calculateScore, getGradeColors, getGradeIcon } from '@/lib/scoring';
+import { User, Session } from '@supabase/supabase-js';
+import { toast } from 'sonner';
 
 interface RestaurantSubmission {
   id: string;
@@ -40,25 +43,68 @@ interface RestaurantSubmission {
 }
 
 const AdminPanel = () => {
+  const navigate = useNavigate();
   const [submissions, setSubmissions] = useState<RestaurantSubmission[]>([]);
   const [filteredSubmissions, setFilteredSubmissions] = useState<RestaurantSubmission[]>([]);
   const [selectedSubmission, setSelectedSubmission] = useState<RestaurantSubmission | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [gradeFilter, setGradeFilter] = useState<string>('all');
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState<Partial<RestaurantSubmission>>({});
 
-  // Mock authentication - in production, use proper auth
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === 'admin123') { // Simple password for demo
-      setIsAuthenticated(true);
-    } else {
-      alert('Invalid password');
-    }
+  // Check authentication and admin role
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      if (session?.user) {
+        // Check if user is admin
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+
+        if (roleData) {
+          setIsAdmin(true);
+        } else {
+          toast.error('Access denied. Admin privileges required.');
+          navigate('/auth');
+        }
+      } else {
+        navigate('/auth');
+      }
+      setLoading(false);
+    };
+
+    checkAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (!session) {
+          navigate('/auth');
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    toast.success('Signed out successfully');
+    navigate('/auth');
   };
 
   // Load real data from Supabase
@@ -119,10 +165,10 @@ const AdminPanel = () => {
       }
     };
 
-    if (isAuthenticated) {
+    if (isAdmin) {
       loadRestaurants();
     }
-  }, [isAuthenticated]);
+  }, [isAdmin]);
 
   // Filter submissions
   useEffect(() => {
@@ -319,40 +365,19 @@ const AdminPanel = () => {
     }
   };
 
-  if (!isAuthenticated) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-4">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-8">
-            <div className="text-center space-y-6">
-              <div className="space-y-2">
-                <h1 className="font-poppins font-bold text-2xl text-foreground">Admin Login</h1>
-                <p className="text-muted-foreground">Enter password to access the admin panel</p>
-              </div>
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter admin password"
-                    required
-                  />
-                </div>
-                <Button type="submit" variant="hero" className="w-full">
-                  Login
-                </Button>
-              </form>
-              <p className="text-xs text-muted-foreground">
-                Demo password: admin123
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
       </div>
     );
+  }
+
+  if (!isAdmin) {
+    return null; // Will redirect via useEffect
   }
 
   return (
@@ -367,8 +392,9 @@ const AdminPanel = () => {
             </div>
             <Button
               variant="outline"
-              onClick={() => setIsAuthenticated(false)}
+              onClick={handleLogout}
             >
+              <LogOut className="w-4 h-4 mr-2" />
               Logout
             </Button>
           </div>
