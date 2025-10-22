@@ -1,1 +1,7 @@
 project_id = "nqbmglzfcuxkjckrgvkn"
+
+[functions.mailerlite-subscribe]
+verify_jwt = false
+
+[functions.send-thank-you-email]
+verify_jwt = false

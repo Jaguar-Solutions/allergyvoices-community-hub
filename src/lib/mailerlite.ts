@@ -1,10 +1,5 @@
-// MailerLite API configuration and service functions
-const MAILERLITE_API_KEY = 'mlsn.d4730e112d29f40b2338eabe832fe74b225f4be9dd1cd0dd7ab1cea63e9ce431';
-const MAILERLITE_GROUP_ID = '166741334640559674';
-const MAILERLITE_API_BASE = 'https://connect.mailerlite.com/api';
-
-// Alternative: Use MailerLite form submission endpoint
-const MAILERLITE_FORM_ENDPOINT = 'https://assets.mailerlite.com/jsonp/1797003/forms/166816265764078710/subscribe';
+// API calls now handled securely through Edge Functions
+import { supabase } from '@/integrations/supabase/client';
 
 export interface RestaurantSubmissionData {
   restaurantName: string;
@@ -32,142 +27,91 @@ export interface RestaurantSubmissionData {
 
 export interface MailerLiteResponse {
   success: boolean;
-  message: string;
+  message?: string;
   data?: any;
   error?: string;
 }
 
 /**
- * Add a restaurant submission to MailerLite using the restaurant form endpoint
+ * Add a restaurant's email to MailerLite group via secure Edge Function
+ * 
+ * @param email - Restaurant owner's email address
+ * @param restaurantName - Name of the restaurant
+ * @returns Promise<MailerLiteResponse> - Response with success status and data/error
  */
 export async function addRestaurantToMailerLite(
-  email: string,
+  email: string, 
   restaurantName: string
 ): Promise<MailerLiteResponse> {
   try {
-    // Use the restaurant form structure (simplified - just email)
-    const formData = new FormData();
+    console.log('📧 Adding restaurant to MailerLite:', restaurantName);
     
-    // Basic subscriber info (matching the restaurant form structure)
-    formData.append('fields[email]', email);
-    
-    // Required MailerLite form fields
-    formData.append('ml-submit', '1');
-    formData.append('anticsrf', 'true');
-
-    console.log('📧 Adding restaurant to MailerLite:', {
-      email: email,
-      restaurant: restaurantName,
-      endpoint: MAILERLITE_FORM_ENDPOINT
+    const { data, error } = await supabase.functions.invoke('mailerlite-subscribe', {
+      body: { email, restaurantName }
     });
 
-    // Use the restaurant form endpoint
-    const response = await fetch(MAILERLITE_FORM_ENDPOINT, {
-      method: 'POST',
-      body: formData,
-      mode: 'no-cors'
-    });
+    if (error) {
+      console.error('❌ MailerLite Edge Function error:', error);
+      return {
+        success: false,
+        error: error.message || 'Failed to add to MailerLite'
+      };
+    }
 
-    console.log('📧 MailerLite response status:', response.status);
-    console.log('📧 MailerLite response type:', response.type);
-    console.log('📧 MailerLite response ok:', response.ok);
-    console.log('✅ Successfully submitted restaurant to MailerLite');
-
+    console.log('✅ Successfully added to MailerLite');
     return {
       success: true,
       message: 'Restaurant successfully added to MailerLite',
-      data: { method: 'form_submission', email: email }
+      data
     };
-
   } catch (error) {
-    console.error('❌ MailerLite Integration Error:', error);
-
+    console.error('❌ Error adding to MailerLite:', error);
     return {
       success: false,
-      message: 'Failed to connect to MailerLite',
       error: error instanceof Error ? error.message : 'Unknown error occurred'
     };
   }
 }
 
 /**
- * Send a thank-you email via EmailJS
- * This uses the existing EmailJS setup that was already working
+ * Send a thank you email to the restaurant after submission via secure Edge Function
+ * 
+ * @param email - Restaurant owner's email address
+ * @param restaurantName - Name of the restaurant
+ * @returns Promise<MailerLiteResponse> - Response with success status
  */
 export async function sendThankYouEmail(
-  email: string,
+  email: string, 
   restaurantName: string
 ): Promise<MailerLiteResponse> {
   try {
-    // Import EmailJS dynamically to avoid issues
-    const emailjs = await import('@emailjs/browser');
+    console.log('📧 Sending thank you email to:', restaurantName);
     
-    // Initialize EmailJS with your public key
-    emailjs.default.init('cBhC6zT4OHtubKlho');
-    
-    // Prepare email template parameters
-    const templateParams = {
-      to_email: email,
-      to_name: restaurantName,
-      from_name: 'AllergyVoices Team',
-      from_email: 'info@allergyvoices.com',
-      reply_to: 'info@allergyvoices.com',
-      subject: 'Thank you for joining the AllergyVoices Pilot',
-      message: `Hello ${restaurantName},
-
-Thank you for submitting your information to the AllergyVoices grading program. Your responses are now under review.
-
-• Restaurants that meet our highest standards will be awarded Gold Certification and may display the official AllergyVoices Approved™ badge on their menus, websites, and materials.
-• Restaurants earning Silver or Bronze recognition will still be featured in our public directory, helping families identify allergy-friendly dining options.
-• If improvements are needed, we'll share guidance so you can work toward higher recognition in the future.
-
-We're excited to highlight your commitment to safer dining and will notify you once your review is complete.
-
-— The AllergyVoices Team
-
-AllergyVoices | info@allergyvoices.com | Raleigh, NC
-This pilot expands region by region beginning Q1 2026.`,
-      // Common EmailJS template variables
-      user_email: email,
-      user_name: restaurantName,
-      restaurant_name: restaurantName,
-      email: email,
-      name: restaurantName
-    };
-    
-    console.log('📧 Sending thank-you email via EmailJS:', {
-      to: email,
-      restaurant: restaurantName
+    const { data, error } = await supabase.functions.invoke('send-thank-you-email', {
+      body: { email, restaurantName }
     });
-    
-    // Send email using EmailJS
-    const response = await emailjs.default.send(
-      'service_w0i2gik', // Your EmailJS service ID
-      'template_iuhyupd', // Your EmailJS template ID
-      templateParams
-    );
-    
-    console.log('✅ Thank-you email sent successfully via EmailJS:', response);
 
+    if (error) {
+      console.error('⚠️ Email Edge Function error (non-critical):', error);
+      return {
+        success: true,
+        data: null,
+        error: 'Email service temporarily unavailable, but submission was recorded'
+      };
+    }
+
+    console.log('✅ Email sent successfully');
     return {
       success: true,
       message: 'Thank-you email sent successfully',
-      data: response
+      data
     };
-
   } catch (error) {
-    console.error('❌ EmailJS sending error:', error);
-    
-    // Fallback: Log email details if EmailJS fails
-    console.log('📧 Fallback - Email details for manual sending:');
-    console.log('📧 To:', email);
-    console.log('📧 Subject: Thank you for joining the AllergyVoices Pilot');
-    console.log('📧 Restaurant:', restaurantName);
-
+    console.error('❌ Error in sendThankYouEmail:', error);
     return {
-      success: false,
-      message: 'Failed to send thank-you email',
-      error: error instanceof Error ? error.message : 'Unknown error occurred'
+      success: true,
+      data: null,
+      error: error instanceof Error ? error.message : 'Email service error'
     };
   }
 }

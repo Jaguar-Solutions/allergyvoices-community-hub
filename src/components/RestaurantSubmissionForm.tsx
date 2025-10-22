@@ -12,6 +12,18 @@ import { AlertCircle, CheckCircle, Star } from "lucide-react";
 import { addRestaurantToMailerLite, sendThankYouEmail, type RestaurantSubmissionData } from '@/lib/mailerlite';
 import { addRestaurant, addQuestionnaire } from '@/lib/supabase';
 import { calculateScore, getGradeColors, getGradeIcon } from '@/lib/scoring';
+import { z } from 'zod';
+
+// Validation schema for restaurant submission
+const restaurantSchema = z.object({
+  restaurantName: z.string().trim().min(1, "Restaurant name is required").max(200, "Restaurant name must be less than 200 characters"),
+  email: z.string().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  phoneNumber: z.string().max(20, "Phone number must be less than 20 characters").optional(),
+  city: z.string().trim().min(1, "City is required").max(100, "City must be less than 100 characters"),
+  state: z.string().min(1, "State is required"),
+  website: z.string().max(500, "Website URL must be less than 500 characters").optional().or(z.literal('')),
+  notes: z.string().max(2000, "Notes must be less than 2000 characters").optional().or(z.literal('')),
+});
 
 interface RestaurantSubmission {
   restaurantName: string;
@@ -83,6 +95,22 @@ const RestaurantSubmissionForm = () => {
     setSubmitMessage('');
 
     try {
+      // Validate form data
+      const validationResult = restaurantSchema.safeParse({
+        restaurantName: formData.restaurantName,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber || undefined,
+        city: formData.city,
+        state: formData.state,
+        website: formData.website || '',
+        notes: formData.notes || '',
+      });
+
+      if (!validationResult.success) {
+        const firstError = validationResult.error.errors[0];
+        throw new Error(firstError.message);
+      }
+
       const { score, grade } = calculateScore(formData);
       const submissionData: RestaurantSubmissionData = {
         ...formData,
