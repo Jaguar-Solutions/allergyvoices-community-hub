@@ -14,6 +14,8 @@ import RestaurantSubmission from "./pages/RestaurantSubmission";
 import RestaurantDirectory from "./pages/RestaurantDirectory";
 import AdminPanel from "./pages/AdminPanel";
 import Auth from "./pages/Auth";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,8 @@ const App = () => {
               <Route path="/dining-out" element={<DiningOut />} />
               <Route path="/school-teens" element={<SchoolTeens />} />
               <Route path="/about" element={<About />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/restaurants" element={<Restaurants />} />
               <Route path="/restaurant-submission" element={<Navigate to="/restaurants" replace />} />
               {/* Only show directory route in dev mode */}

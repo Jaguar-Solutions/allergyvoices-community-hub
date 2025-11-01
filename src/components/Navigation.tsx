@@ -27,6 +27,7 @@ const Navigation = () => {
     { name: 'Restaurants', href: '/restaurants' },
     { name: 'Resources', href: '/#resources' },
     { name: 'News', href: '/#news' },
+    { name: 'Blog', href: '/blog' },
     { name: 'About', href: '/about' },
   ];
 
