@@ -1,123 +1,51 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { ShoppingBag, Utensils, GraduationCap, Stethoscope, Heart, ShieldCheck, Star, AlertTriangle, Instagram, Youtube, Shield, AlertCircle, Wheat, Milk, Fish, Egg, Pill, Users, Zap, Facebook, Linkedin, MessageSquare, Share2 } from "lucide-react";
+import { ShoppingBag, Users, Heart, Instagram, Youtube, Facebook, Linkedin } from "lucide-react";
 import Navigation from "@/components/Navigation";
-import TreatmentModal from "@/components/TreatmentModal";
 import NewsFeed from "@/components/NewsFeed";
 import { MailerLiteSubscriptionForm } from "@/components/BrevoSubscriptionForm";
 import AdvocacySpotlight from "@/components/AdvocacySpotlight";
 import FoodAllergyInfographics from "@/components/FoodAllergyInfographics";
 import AVLogo from "@/components/AVLogo";
+import SEOHead from "@/components/SEOHead";
 
 
 const Index = () => {
-  const [selectedTreatment, setSelectedTreatment] = useState<any>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const treatments = [
-    {
-      id: 'oit',
-      title: 'Oral Immunotherapy (OIT)',
-      description: 'Gradual exposure therapy to build tolerance under medical supervision.',
-      icon: Stethoscope,
-      fdaStatus: 'Approved for peanut (Palforzia® ages 4–17); used off-label for milk, egg, etc.',
-      effectiveness: '~60–80% of patients desensitized; raises threshold but not a cure.',
-      allergens: 'Peanut (approved), Milk, Egg (off-label).',
-      link: { url: 'https://www.fda.gov/vaccines-blood-biologics/allergenics/palforzia', text: 'FDA OIT Information' }
-    },
-    {
-      id: 'patches',
-      title: 'Patches (Epicutaneous)',
-      description: 'Innovative patch-based treatment for gradual desensitization.',
-      icon: Heart,
-      fdaStatus: 'Not yet approved (Phase 3 trials).',
-      effectiveness: '~35–50% of children desensitized vs ~10% placebo.',
-      allergens: 'Peanut (primary), Milk (in trials).',
-      link: { url: 'https://clinicaltrials.gov/ct2/show/NCT03211247', text: 'Viaskin Peanut Trials' }
-    },
-    {
-      id: 'biologics',
-      title: 'Biologics',
-      description: 'Advanced treatments like Xolair and Dupilumab for severe allergies.',
-      icon: ShieldCheck,
-      fdaStatus: 'Xolair® approved 2024 for food allergy; Dupilumab still in trials.',
-      effectiveness: '~65–70% reduced severe reactions vs <10% placebo.',
-      allergens: 'Multiple foods (non-specific).',
-      link: { url: 'https://www.fda.gov/news-events/press-announcements/fda-approves-first-medication-treat-multiple-food-allergies', text: 'FDA Xolair Approval' }
-    },
-    {
-      id: 'emerging',
-      title: 'Emerging Treatments',
-      description: 'New and experimental therapies showing promise in research.',
-      icon: Zap,
-      fdaStatus: 'Various experimental treatments in different stages of research and trials.',
-      effectiveness: 'Outcomes vary by treatment type; most are still investigational.',
-      allergens: 'Multiple allergens depending on specific treatment.',
-      additionalInfo: `
-        <p class="mb-3"><strong>TIP (Tolerance Induction Program):</strong> Proprietary clinic-based program (not FDA-approved). Claims multi-allergen treatment; outcomes vary.</p>
-        <p class="mb-3"><strong>Sublingual Immunotherapy (SLIT):</strong> Drops under tongue; partial desensitization, fewer severe reactions than OIT; still investigational.</p>
-        <p class="mb-3"><strong>Probiotic + OIT (PPOIT):</strong> Small trial showed ~80% tolerance vs ~4% placebo; long-term results promising but not yet approved.</p>
-        <p class="mb-3"><strong>Chinese Herbal Therapy (FAHF-2):</strong> Early studies showed safety but no strong benefit; still being studied.</p>
-        <p><strong>Other Biologics (Dupilumab, IL-33 blockers, etc.):</strong> In trials; early results encouraging but not yet available.</p>
-      `,
-      link: { url: 'https://www.niaid.nih.gov/diseases-conditions/food-allergy-research', text: 'NIH Food Allergy Research' }
-    }
-  ];
-
-  const openModal = (treatment: any) => {
-    setSelectedTreatment(treatment);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedTreatment(null);
-  };
-
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead 
+        title="Allergy Voices - Making Dining Safer for Everyone"
+        description="Join thousands of families making dining safer for everyone. Access resources, connect with community, and advocate for safer food practices."
+        keywords="food allergies, allergy-friendly restaurants, food allergy resources, safe dining, allergy community, policy advocacy"
+      />
       <Navigation />
       
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-background to-background-subtle pt-32 pb-16 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-8 items-start">
-            <div className="space-y-6">
-              <h1 className="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
-                Every ingredient matters.{' '}
-                <span className="text-primary">Every voice counts.</span>
+        <div className="container mx-auto max-w-6xl text-center">
+          <div className="space-y-8">
+            <div>
+              <h1 className="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground mb-6">
+                Together, we make dining safer for everyone.
               </h1>
-              <p className="font-inter text-lg md:text-xl text-muted-foreground leading-relaxed">
-                Making life with food allergies safer, easier, and more inclusive.
+              <p className="font-inter text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto mb-8">
+                Empowering families, amplifying voices, and driving positive allergy change.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  variant="hero"
-                  size="lg"
-                  className="font-poppins text-base px-6 py-3"
-                  onClick={() => {
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  Join the Community
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="font-poppins text-base px-6 py-3"
-                  asChild
-                >
-                  <Link to="/restaurants">
-                    Submit a Restaurant
-                  </Link>
-                </Button>
-              </div>
+              <Button
+                size="lg"
+                className="font-poppins text-base px-8 py-6"
+                onClick={() => {
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Join the Voices
+              </Button>
             </div>
-            <div className="relative">
-              {/* Food Allergy Infographics */}
+            
+            {/* Metrics */}
+            <div className="pt-8">
               <FoodAllergyInfographics />
             </div>
           </div>
@@ -127,178 +55,60 @@ const Index = () => {
       {/* Advocacy Spotlight Section */}
       <AdvocacySpotlight />
 
-      {/* Mission Section */}
+      {/* Three Feature Cards: Learn / Connect / Advocate */}
       <section className="py-16 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <p className="font-inter text-lg leading-relaxed text-muted-foreground">
-            <span className="font-semibold text-foreground">Allergy Voices</span> amplifies the voices of families, teens, and adults managing allergies. 
-            We simplify resources, highlight businesses that do it right, and advocate for safer, more inclusive food choices.
-          </p>
-        </div>
-      </section>
-
-      {/* Community Section */}
-      <section id="community" className="py-16 px-4 bg-background-subtle">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-6 text-foreground">
-              Join Our Community
-            </h2>
-            <p className="font-inter text-xl text-muted-foreground max-w-3xl mx-auto">
-              Connect with families, caregivers, teens, and adults who understand the daily challenges of living with food allergies. Together, we're stronger.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <Card className="rounded-2xl shadow-lg text-center">
-              <CardContent className="p-8 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                  <Users className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="font-poppins font-semibold text-xl">Share Experiences</h3>
-                <p className="font-inter text-muted-foreground">
-                  Connect with others who truly understand the challenges
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="rounded-2xl shadow-lg text-center">
-              <CardContent className="p-8 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto">
-                  <MessageSquare className="w-8 h-8 text-secondary" />
-                </div>
-                <h3 className="font-poppins font-semibold text-xl">Get Support</h3>
-                <p className="font-inter text-muted-foreground">
-                  Ask questions and receive guidance from experienced families
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="rounded-2xl shadow-lg text-center">
-              <CardContent className="p-8 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                  <Heart className="w-8 h-8 text-accent" />
-                </div>
-                <h3 className="font-poppins font-semibold text-xl">Build Advocacy</h3>
-                <p className="font-inter text-muted-foreground">
-                  Work together to advocate for safer practices and policies
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="rounded-2xl shadow-lg text-center">
-              <CardContent className="p-8 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                  <Share2 className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="font-poppins font-semibold text-xl">Share Resources</h3>
-                <p className="font-inter text-muted-foreground">
-                  Discover and share safe products, restaurants, and tips
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-          
-          <div className="text-center">
-            <Card className="rounded-2xl shadow-lg max-w-2xl mx-auto">
-              <CardContent className="p-12">
-                <h3 className="font-poppins font-bold text-3xl mb-6 text-foreground">
-                  Ready to Connect?
-                </h3>
-                <p className="font-inter text-lg text-muted-foreground mb-8">
-                  Join our newsletter to stay connected with the community and get updates on safe dining, treatments, and advocacy campaigns.
-                </p>
-                <Button 
-                  size="lg" 
-                  className="font-poppins"
-                  onClick={() => {
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  Join the Community
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Everyday Living Section */}
-      <section id="resources" className="py-16 px-4 bg-background-subtle">
         <div className="container mx-auto max-w-6xl">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-center mb-12 text-foreground">
-            Everyday Living
+            How We Help
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <Link to="/safe-shopping">
-              <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+              <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer h-full">
                 <CardContent className="p-8 text-center space-y-4">
                   <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                     <ShoppingBag className="w-8 h-8 text-primary" />
                   </div>
-                  <h3 className="font-poppins font-semibold text-xl text-foreground">Safe Shopping</h3>
-                  <p className="font-inter text-muted-foreground">Navigate grocery stores with confidence and find allergy-friendly products.</p>
+                  <h3 className="font-poppins font-semibold text-2xl text-foreground">Learn</h3>
+                  <p className="font-inter text-muted-foreground">
+                    Access resources for safe shopping, dining out, school settings, and treatment options.
+                  </p>
                 </CardContent>
               </Card>
             </Link>
-            <Link to="/dining-out">
-              <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
-                <CardContent className="p-8 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto">
-                    <Utensils className="w-8 h-8 text-secondary" />
-                  </div>
-                  <h3 className="font-poppins font-semibold text-xl text-foreground">Dining Out</h3>
-                  <p className="font-inter text-muted-foreground">Discover restaurants that understand and accommodate food allergies safely.</p>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link to="/school-teens">
-              <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
-                <CardContent className="p-8 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                    <GraduationCap className="w-8 h-8 text-accent" />
-                  </div>
-                  <h3 className="font-poppins font-semibold text-xl text-foreground">School & Teens</h3>
-                  <p className="font-inter text-muted-foreground">Resources for managing allergies in school settings and teen independence.</p>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
-          
-          {/* Treatments under Resources */}
-          <div className="mt-16">
-            <h3 className="font-poppins font-bold text-2xl text-center mb-8 text-foreground">
-              Treatment Options
-            </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {treatments.map((treatment) => {
-                const IconComponent = treatment.icon;
-                const colors = ['primary', 'secondary', 'accent', 'primary'];
-                const colorClass = colors[treatments.indexOf(treatment) % colors.length];
-                
-                return (
-                  <Card key={treatment.id} className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <CardContent className="p-8 text-center space-y-4">
-                      <div className={`w-16 h-16 rounded-full bg-${colorClass}/10 flex items-center justify-center mx-auto`}>
-                        <IconComponent className={`w-8 h-8 text-${colorClass}`} />
-                      </div>
-                      <h4 className="font-poppins font-semibold text-lg text-foreground">
-                        {treatment.title}
-                      </h4>
-                      <p className="font-inter text-sm text-muted-foreground">
-                        {treatment.description}
-                      </p>
-                      <button
-                        onClick={() => openModal(treatment)}
-                        className="font-inter text-sm text-primary hover:text-primary/80 transition-colors underline underline-offset-4"
-                      >
-                        Learn more
-                      </button>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
+            
+            <Card 
+              className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer h-full"
+              onClick={() => {
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <CardContent className="p-8 text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto">
+                  <Users className="w-8 h-8 text-secondary" />
+                </div>
+                <h3 className="font-poppins font-semibold text-2xl text-foreground">Connect</h3>
+                <p className="font-inter text-muted-foreground">
+                  Join a community of families who understand the challenges of food allergies.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card 
+              className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer h-full"
+              onClick={() => {
+                document.getElementById('news')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <CardContent className="p-8 text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
+                  <Heart className="w-8 h-8 text-accent" />
+                </div>
+                <h3 className="font-poppins font-semibold text-2xl text-foreground">Advocate</h3>
+                <p className="font-inter text-muted-foreground">
+                  Stay informed on policy changes and join campaigns for safer food practices.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -307,20 +117,20 @@ const Index = () => {
       <section id="news" className="py-16 px-4 bg-background-subtle">
         <div className="container mx-auto max-w-6xl">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-center mb-12 text-foreground">
-            Latest News & Updates
+            Latest Allergy News
           </h2>
           <NewsFeed />
         </div>
       </section>
 
-      {/* Email Signup Section */}
+      {/* Email Signup CTA Banner */}
       <section id="contact" className="py-20 px-4 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-4 text-foreground">
-            Be the First to Know
+            Your story can make a difference.
           </h2>
           <p className="font-inter text-lg text-muted-foreground mb-8">
-            Get updates on safe dining, treatments, and advocacy campaigns.
+            Join thousands of families making dining safer for everyone. Get updates on allergy-aware restaurants, policy changes, and resources.
           </p>
           <div className="max-w-lg mx-auto mb-8">
             <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
@@ -338,6 +148,20 @@ const Index = () => {
               info@allergyvoices.com
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section className="py-16 px-4 bg-background-subtle">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-6 text-foreground">
+            About Allergy Voices
+          </h2>
+          <p className="font-inter text-lg leading-relaxed text-muted-foreground">
+            <span className="font-semibold text-foreground">Allergy Voices</span> is a community-driven platform dedicated to making life with food allergies safer and more inclusive. 
+            We amplify the voices of families, teens, and adults managing allergies by providing essential resources, highlighting allergy-aware businesses, and advocating for safer food practices. 
+            Together, we're creating a world where everyone can dine with confidence.
+          </p>
         </div>
       </section>
 
@@ -392,15 +216,6 @@ const Index = () => {
           </div>
         </div>
       </footer>
-
-      {/* Treatment Modal */}
-      {selectedTreatment && (
-        <TreatmentModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          treatment={selectedTreatment}
-        />
-      )}
     </div>
   );
 };

@@ -170,6 +170,30 @@ export type Database = {
         }
         Relationships: []
       }
+      site_metrics: {
+        Row: {
+          families_joined: number
+          id: string
+          policy_updates_tracked: number
+          restaurants_tracked: number
+          updated_at: string | null
+        }
+        Insert: {
+          families_joined?: number
+          id?: string
+          policy_updates_tracked?: number
+          restaurants_tracked?: number
+          updated_at?: string | null
+        }
+        Update: {
+          families_joined?: number
+          id?: string
+          policy_updates_tracked?: number
+          restaurants_tracked?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
