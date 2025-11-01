@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ShoppingBag, Users, Heart, Instagram, Youtube, Facebook, Linkedin, BookOpen, MessageCircle, Megaphone, ArrowRight, ExternalLink } from "lucide-react";
+import { ShoppingBag, Users, Heart, Instagram, Youtube, Facebook, Linkedin, BookOpen, MessageCircle, Megaphone, ArrowRight } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import FoodAllergyInfographics from "@/components/FoodAllergyInfographics";
+import NewsFeed from "@/components/NewsFeed";
 import AVLogo from "@/components/AVLogo";
 import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,28 +14,10 @@ import { useToast } from "@/hooks/use-toast";
 
 
 const Index = () => {
-  const [newsArticles, setNewsArticles] = useState<any[]>([]);
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
-
-  // Fetch latest news
-  useEffect(() => {
-    const fetchNews = async () => {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('published_at', { ascending: false })
-        .limit(3);
-
-      if (data && !error) {
-        setNewsArticles(data);
-      }
-    };
-
-    fetchNews();
-  }, []);
 
   // Handle email signup
   const handleEmailSignup = async (e: React.FormEvent) => {
@@ -200,62 +183,7 @@ const Index = () => {
             Latest Allergy News
           </h2>
           
-          {newsArticles.length > 0 ? (
-            <>
-              <div className="grid md:grid-cols-3 gap-8 mb-8">
-                {newsArticles.map((article) => (
-                  <Card key={article.id} className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
-                    <CardContent className="p-6 space-y-4">
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-poppins font-semibold text-lg text-foreground line-clamp-2">
-                          {article.title}
-                        </h3>
-                      </div>
-                      
-                      {article.source && (
-                        <p className="text-sm text-muted-foreground">
-                          {article.source} • {new Date(article.published_at).toLocaleDateString('en-US', { 
-                            month: 'short', 
-                            day: 'numeric', 
-                            year: 'numeric' 
-                          })}
-                        </p>
-                      )}
-                      
-                      {article.summary && (
-                        <p className="font-inter text-sm text-muted-foreground line-clamp-3">
-                          {article.summary}
-                        </p>
-                      )}
-                      
-                      <a
-                        href={article.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-primary hover:text-primary-hover font-medium text-sm transition-colors"
-                      >
-                        Read More <ExternalLink className="w-4 h-4" />
-                      </a>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-              
-              <div className="text-center">
-                <Link to="/news">
-                  <Button variant="outline" size="lg" className="font-poppins">
-                    View All News <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </Link>
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-12">
-              <p className="font-inter text-muted-foreground">
-                No news articles available yet. Check back soon!
-              </p>
-            </div>
-          )}
+          <NewsFeed />
         </div>
       </section>
 
