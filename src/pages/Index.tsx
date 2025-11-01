@@ -1,18 +1,89 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ShoppingBag, Users, Heart, Instagram, Youtube, Facebook, Linkedin } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ShoppingBag, Users, Heart, Instagram, Youtube, Facebook, Linkedin, BookOpen, MessageCircle, Megaphone, ArrowRight, ExternalLink } from "lucide-react";
 import Navigation from "@/components/Navigation";
-import NewsFeed from "@/components/NewsFeed";
-import { MailerLiteSubscriptionForm } from "@/components/BrevoSubscriptionForm";
-import AdvocacySpotlight from "@/components/AdvocacySpotlight";
 import FoodAllergyInfographics from "@/components/FoodAllergyInfographics";
 import AVLogo from "@/components/AVLogo";
 import SEOHead from "@/components/SEOHead";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 
 const Index = () => {
+  const [newsArticles, setNewsArticles] = useState<any[]>([]);
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { toast } = useToast();
+
+  // Fetch latest news
+  useEffect(() => {
+    const fetchNews = async () => {
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .order('published_at', { ascending: false })
+        .limit(3);
+
+      if (data && !error) {
+        setNewsArticles(data);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
+  // Handle email signup
+  const handleEmailSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('subscribers')
+        .insert([{ email }]);
+
+      if (error) {
+        if (error.code === '23505') { // Unique violation
+          toast({
+            title: "Already subscribed",
+            description: "This email is already on our list!",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        setIsSuccess(true);
+        setEmail('');
+        toast({
+          title: "Thanks for joining!",
+          description: "Welcome to the Allergy Voices community.",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead 
@@ -24,54 +95,53 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-background to-background-subtle pt-32 pb-16 px-4">
-        <div className="container mx-auto max-w-6xl text-center">
-          <div className="space-y-8">
-            <div>
-              <h1 className="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground mb-6">
-                Together, we make dining safer for everyone.
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
+            <div className="space-y-6">
+              <h1 className="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
+                Every ingredient matters.{' '}
+                <span className="text-primary">Every voice counts.</span>
               </h1>
-              <p className="font-inter text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto mb-8">
-                Empowering families, amplifying voices, and driving positive allergy change.
+              <p className="font-inter text-lg md:text-xl text-muted-foreground leading-relaxed">
+                Empowering families, amplifying voices, and driving change.
               </p>
               <Button
                 size="lg"
-                className="font-poppins text-base px-8 py-6"
+                className="font-poppins text-base px-6 py-3"
                 onClick={() => {
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
                 Join the Voices
               </Button>
             </div>
-            
-            {/* Metrics */}
-            <div className="pt-8">
+            <div className="relative">
+              {/* Food Allergy Infographics */}
               <FoodAllergyInfographics />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Advocacy Spotlight Section */}
-      <AdvocacySpotlight />
-
       {/* Three Feature Cards: Learn / Connect / Advocate */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="font-poppins font-bold text-3xl md:text-4xl text-center mb-12 text-foreground">
-            How We Help
-          </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <Link to="/safe-shopping">
               <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer h-full">
                 <CardContent className="p-8 text-center space-y-4">
                   <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                    <ShoppingBag className="w-8 h-8 text-primary" />
+                    <BookOpen className="w-8 h-8 text-primary" />
                   </div>
                   <h3 className="font-poppins font-semibold text-2xl text-foreground">Learn</h3>
                   <p className="font-inter text-muted-foreground">
-                    Access resources for safe shopping, dining out, school settings, and treatment options.
+                    Practical resources for daily allergy life — shopping, dining, schools, and treatments.
                   </p>
+                  <div className="pt-2">
+                    <span className="text-primary text-sm font-medium flex items-center justify-center gap-1">
+                      View Resources <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
                 </CardContent>
               </Card>
             </Link>
@@ -79,17 +149,22 @@ const Index = () => {
             <Card 
               className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer h-full"
               onClick={() => {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
               <CardContent className="p-8 text-center space-y-4">
                 <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto">
-                  <Users className="w-8 h-8 text-secondary" />
+                  <MessageCircle className="w-8 h-8 text-secondary" />
                 </div>
                 <h3 className="font-poppins font-semibold text-2xl text-foreground">Connect</h3>
                 <p className="font-inter text-muted-foreground">
-                  Join a community of families who understand the challenges of food allergies.
+                  Stories and experiences from families navigating food allergies together.
                 </p>
+                <div className="pt-2">
+                  <span className="text-secondary text-sm font-medium flex items-center justify-center gap-1">
+                    Join Community <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
               </CardContent>
             </Card>
             
@@ -101,43 +176,142 @@ const Index = () => {
             >
               <CardContent className="p-8 text-center space-y-4">
                 <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                  <Heart className="w-8 h-8 text-accent" />
+                  <Megaphone className="w-8 h-8 text-accent" />
                 </div>
                 <h3 className="font-poppins font-semibold text-2xl text-foreground">Advocate</h3>
                 <p className="font-inter text-muted-foreground">
-                  Stay informed on policy changes and join campaigns for safer food practices.
+                  Policy updates and how to take action for safer food practices.
                 </p>
+                <div className="pt-2">
+                  <span className="text-accent text-sm font-medium flex items-center justify-center gap-1">
+                    Get Involved <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </section>
 
-      {/* News & Updates Section */}
+      {/* Latest Allergy News Section */}
       <section id="news" className="py-16 px-4 bg-background-subtle">
         <div className="container mx-auto max-w-6xl">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-center mb-12 text-foreground">
             Latest Allergy News
           </h2>
-          <NewsFeed />
+          
+          {newsArticles.length > 0 ? (
+            <>
+              <div className="grid md:grid-cols-3 gap-8 mb-8">
+                {newsArticles.map((article) => (
+                  <Card key={article.id} className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <CardContent className="p-6 space-y-4">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-poppins font-semibold text-lg text-foreground line-clamp-2">
+                          {article.title}
+                        </h3>
+                      </div>
+                      
+                      {article.source && (
+                        <p className="text-sm text-muted-foreground">
+                          {article.source} • {new Date(article.published_at).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric', 
+                            year: 'numeric' 
+                          })}
+                        </p>
+                      )}
+                      
+                      {article.summary && (
+                        <p className="font-inter text-sm text-muted-foreground line-clamp-3">
+                          {article.summary}
+                        </p>
+                      )}
+                      
+                      <a
+                        href={article.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-primary hover:text-primary-hover font-medium text-sm transition-colors"
+                      >
+                        Read More <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              
+              <div className="text-center">
+                <Link to="/news">
+                  <Button variant="outline" size="lg" className="font-poppins">
+                    View All News <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-12">
+              <p className="font-inter text-muted-foreground">
+                No news articles available yet. Check back soon!
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Email Signup CTA Banner */}
-      <section id="contact" className="py-20 px-4 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5">
+      <section id="signup" className="py-20 px-4 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-4 text-foreground">
             Your story can make a difference.
           </h2>
           <p className="font-inter text-lg text-muted-foreground mb-8">
-            Join thousands of families making dining safer for everyone. Get updates on allergy-aware restaurants, policy changes, and resources.
+            Join thousands of families making dining safer for everyone.
           </p>
-          <div className="max-w-lg mx-auto mb-8">
-            <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
-              <MailerLiteSubscriptionForm />
+          
+          {isSuccess ? (
+            <div className="max-w-md mx-auto bg-card rounded-2xl p-8 shadow-lg border border-border">
+              <div className="flex items-center justify-center w-16 h-16 bg-secondary/10 rounded-full mx-auto mb-4">
+                <Heart className="w-8 h-8 text-secondary" />
+              </div>
+              <h3 className="font-poppins font-semibold text-xl mb-2 text-foreground">
+                Thanks for joining our community!
+              </h3>
+              <p className="font-inter text-muted-foreground mb-4">
+                You'll receive updates on allergy-aware restaurants, policy changes, and resources.
+              </p>
+              <Button
+                variant="outline"
+                onClick={() => setIsSuccess(false)}
+                className="font-poppins"
+              >
+                Sign Up Another Email
+              </Button>
             </div>
-          </div>
-          <div className="text-center">
+          ) : (
+            <form onSubmit={handleEmailSignup} className="max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 font-inter"
+                  required
+                />
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={isSubmitting}
+                  className="font-poppins"
+                >
+                  {isSubmitting ? 'Joining...' : 'Join the Voices'}
+                </Button>
+              </div>
+            </form>
+          )}
+          
+          <div className="text-center mt-8">
             <p className="font-inter text-muted-foreground mb-2">
               Have questions or want to get in touch?
             </p>

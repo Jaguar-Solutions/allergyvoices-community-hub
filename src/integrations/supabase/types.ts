@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      news: {
+        Row: {
+          created_at: string | null
+          id: string
+          published_at: string
+          source: string | null
+          summary: string | null
+          title: string
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          published_at: string
+          source?: string | null
+          summary?: string | null
+          title: string
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          published_at?: string
+          source?: string | null
+          summary?: string | null
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -191,6 +221,24 @@ export type Database = {
           policy_updates_tracked?: number
           restaurants_tracked?: number
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      subscribers: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
         }
         Relationships: []
       }
