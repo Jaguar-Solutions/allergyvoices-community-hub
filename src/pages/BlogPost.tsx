@@ -4,11 +4,12 @@ import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, User } from "lucide-react";
 import { SubscriptionForm } from "@/components/SubscriptionForm";
+import fdaThresholdsHero from "@/assets/fda-thresholds-hero.png";
 
 const blogContent: Record<string, any> = {
   "fda-food-allergen-thresholds": {
     title: "FDA Explores Food Allergen Thresholds: What Families Should Know",
-    date: "2025-01-15",
+    date: "2025-11-02",
     author: "Allergy Voices Team",
     metaDescription: "Learn what food allergen thresholds are, what the FDA is considering, what other countries are doing, and what that means for families managing food allergies.",
     content: (
@@ -248,17 +249,12 @@ const BlogPost = () => {
           <article className="max-w-4xl mx-auto">
             <header className="mb-12">
               {/* Hero Image */}
-              <div className="aspect-[21/9] bg-gradient-to-br from-primary/20 via-primary/10 to-background rounded-3xl mb-8 relative overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center px-4">
-                    <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-4xl">📊</span>
-                    </div>
-                    <p className="font-inter text-sm text-muted-foreground">
-                      Food allergen threshold concept illustration
-                    </p>
-                  </div>
-                </div>
+              <div className="aspect-[21/9] rounded-3xl mb-8 overflow-hidden">
+                <img 
+                  src={fdaThresholdsHero} 
+                  alt="Food allergen threshold concept illustration showing a family dining and a clipboard with threshold chart" 
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               <h1 className="font-poppins text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
