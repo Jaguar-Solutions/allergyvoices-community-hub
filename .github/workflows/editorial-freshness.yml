@@ -1,0 +1,51 @@
+name: Editorial freshness report
+
+# Walks /content/ once a week and updates a single recurring GitHub issue
+# listing content past the freshness threshold (default 90 days). The issue
+# is your "things to refresh" backlog &mdash; one-tap reminder, no PRs, no merges.
+
+on:
+  schedule:
+    - cron: "0 14 * * 1" # Mondays at 14:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build freshness report
+        run: npx tsx scripts/editorial-freshness.ts
+
+      - name: Create or update freshness issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TITLE="Editorial freshness report"
+          # Find an existing open issue with the freshness label
+          existing=$(gh issue list --label "freshness-report" --state open --limit 1 --json number --jq '.[0].number' || echo "")
+          if [ -n "$existing" ]; then
+            echo "Updating existing issue #$existing"
+            gh issue edit "$existing" --body-file stale-report.md
+          else
+            echo "Creating new freshness issue"
+            # Ensure the label exists (idempotent)
+            gh label create "freshness-report" --color "fbca04" --description "Recurring report of stale content" --force >/dev/null 2>&1 || true
+            gh issue create \
+              --title "$TITLE" \
+              --label "freshness-report" \
+              --body-file stale-report.md
+          fi

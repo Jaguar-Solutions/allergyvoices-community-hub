@@ -1,0 +1,49 @@
+name: Topic suggestions — PubMed + ClinicalTrials.gov
+
+# Polls free public APIs (NCBI E-utilities + ClinicalTrials.gov v2) for recent
+# food-allergy publications and recruiting trials. Creates or updates a
+# single recurring GitHub issue with the report. Nothing is auto-published;
+# this is a topic queue for editorial triage.
+
+on:
+  schedule:
+    - cron: "0 14 * * 1" # Mondays at 14:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  suggest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build topic-suggestions report
+        run: npx tsx scripts/ingest/pubmed-articles.ts
+
+      - name: Create or update topic-suggestions issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          existing=$(gh issue list --label "topic-suggestions" --state open --limit 1 --json number --jq '.[0].number' || echo "")
+          if [ -n "$existing" ]; then
+            echo "Updating existing issue #$existing"
+            gh issue edit "$existing" --body-file topic-suggestions.md
+          else
+            echo "Creating new topic-suggestions issue"
+            gh label create "topic-suggestions" --color "0e8a16" --description "Recurring queue of research topics worth writing about" --force >/dev/null 2>&1 || true
+            gh issue create \
+              --title "Topic suggestions — PubMed + ClinicalTrials.gov" \
+              --label "topic-suggestions" \
+              --body-file topic-suggestions.md
+          fi

@@ -1,29 +1,17 @@
-# Admin Setup Guide
+# Editorial workflow
 
-## Creating Your First Admin Account
+There is no admin panel anymore. Editorial happens in **GitHub pull requests**.
 
-1. Navigate to `/auth` in your application
-2. Sign up with your email and password
-3. After signing up, you need to grant yourself admin privileges
+- Add or edit a markdown file in [`/content/`](./content/).
+- Open a pull request.
+- The PR is your review queue (drafts, comments, approvals, merge = publish).
+- CI runs `npm run content:check` and `npm run build` on every PR &mdash;
+  invalid frontmatter or broken builds fail the check before merging.
 
-## Granting Admin Access
+See [`/content/README.md`](./content/README.md) for:
 
-You need to add a record to the `user_roles` table. You can do this through the Lovable Cloud backend:
+- Where each content type lives (`articles/`, `recalls/`, `allergens/`, etc.)
+- The full frontmatter schema for each
+- Editorial standards (plain language, sources required, no AI auto-publish)
 
-1. Click "View Backend" in the Lovable interface
-2. Go to the Table Editor
-3. Find the `user_roles` table
-4. Click "Insert" and add a new row:
-   - `user_id`: Your user ID (found in the `profiles` table)
-   - `role`: Select "admin" from the dropdown
-
-## Security Features
-
-- **Contact Information**: Email and phone numbers are only visible to admins
-- **Questionnaires**: Only admins can view restaurant questionnaire responses
-- **Ratings**: Public can view, authenticated users can add, only admins can modify/delete
-- **Restaurant Management**: Only admins can update, delete, or publish restaurants
-
-## Testing Authentication
-
-The auth system is configured with auto-confirm email, so you can sign up and immediately sign in without email verification (perfect for development/testing).
+That's it. No accounts, no role tables, no logging in to anything.

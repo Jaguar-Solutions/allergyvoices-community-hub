@@ -1,0 +1,50 @@
+name: Ingest — USDA FSIS recalls
+
+on:
+  schedule:
+    - cron: "30 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx tsx scripts/ingest/fsis-recalls.ts
+      - run: npm run content:check
+      - name: Open pull request with new recalls
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(recalls): ingest USDA FSIS recalls"
+          branch: bot/fsis-recalls
+          delete-branch: true
+          title: "Ingest: USDA FSIS recall drafts"
+          body: |
+            Automated draft from the USDA FSIS recalls RSS feed.
+
+            **Auto-merge is enabled** &mdash; once CI passes, this PR will merge to `main`.
+
+            Close the PR if anything looks off; the next daily run opens a fresh one.
+          labels: |
+            content
+            recall
+            bot
+          add-paths: |
+            content/recalls/**
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash

@@ -1,14 +1,8 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
+# AllergyVoices is a public, indexable site. Crawl freely.
 
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /auth
+
+Sitemap: https://allergyvoices.com/sitemap.xml

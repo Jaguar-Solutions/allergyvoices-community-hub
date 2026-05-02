@@ -67,6 +67,24 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        brand: {
+          cyan: "hsl(var(--brand-cyan))",
+          coral: "hsl(var(--brand-coral))",
+          sun: "hsl(var(--brand-sun))",
+          spring: "hsl(var(--brand-spring))",
+          berry: "hsl(var(--brand-berry))",
+        },
+        allergen: {
+          peanut: "hsl(var(--allergen-peanut))",
+          "tree-nuts": "hsl(var(--allergen-tree-nuts))",
+          milk: "hsl(var(--allergen-milk))",
+          egg: "hsl(var(--allergen-egg))",
+          sesame: "hsl(var(--allergen-sesame))",
+          wheat: "hsl(var(--allergen-wheat))",
+          soy: "hsl(var(--allergen-soy))",
+          fish: "hsl(var(--allergen-fish))",
+          shellfish: "hsl(var(--allergen-shellfish))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -97,5 +115,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;

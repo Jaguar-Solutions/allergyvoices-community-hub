@@ -1,166 +1,232 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 import logoImage from "@/assets/allergy-voices-logo.png";
+
+interface NavItem {
+  name: string;
+  href: string;
+  description?: string;
+}
+
+interface NavGroup {
+  name: string;
+  href?: string;
+  children?: NavItem[];
+}
+
+const NAV: NavGroup[] = [
+  { name: "Findings", href: "/findings" },
+  { name: "Recalls", href: "/recalls" },
+  {
+    name: "Resources",
+    children: [
+      { name: "Family Resource Center", href: "/resources", description: "Practical guides for everyday allergy life" },
+      { name: "Allergen Hubs", href: "/allergens", description: "Quick references for each major allergen" },
+      { name: "Dining Out", href: "/dining", description: "Scripts, checklists, and red flags" },
+      { name: "Schools & Teens", href: "/schools-teens", description: "Plans, forms, and independence tools" },
+      { name: "Local Directory", href: "/directory", description: "Allergists, dietitians, support groups" },
+    ],
+  },
+  { name: "About", href: "/about" },
+];
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Check if we're in dev mode - only show dev items when explicitly enabled
-  // const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
-  const isDevMode = false;
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const groupRef = useRef<HTMLDivElement | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Base navigation items
-  const baseNavItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Restaurants', href: '/restaurants' },
-    { name: 'Resources', href: '/#resources' },
-    { name: 'News', href: '/#news' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'About', href: '/about' },
-  ];
+  // Close menus on route change
+  useEffect(() => {
+    setIsMobileOpen(false);
+    setOpenGroup(null);
+  }, [location.pathname]);
 
-  // Add dev-only items
-  const devNavItems = [
-    { name: 'Directory (Dev)', href: '/restaurant-directory' },
-  ];
-
-  // Combine nav items based on dev mode
-  const navItems = isDevMode 
-    ? [...baseNavItems, ...devNavItems]
-    : baseNavItems;
-
-  const handleHashNavigation = (href: string) => {
-    if (href.startsWith('/#')) {
-      const hash = href.substring(2); // Remove '/#'
-      if (window.location.pathname === '/') {
-        // Already on home page, scroll to section
-        document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        // Navigate to home page with hash
-        window.location.href = href;
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!openGroup) return;
+    const handleClick = (e: MouseEvent) => {
+      if (groupRef.current && !groupRef.current.contains(e.target as Node)) {
+        setOpenGroup(null);
       }
-    }
-  };
+    };
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenGroup(null);
+    };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [openGroup]);
+
+  const linkClass =
+    "font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 px-1 py-1";
+  const activeLinkClass = "text-foreground";
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'bg-background/90 backdrop-blur-md shadow-lg border-b border-border/20' 
-        : 'bg-transparent'
-    }`}>
-      <div className="container mx-auto max-w-6xl px-4">
+    <nav
+      className={cn(
+        "fixed top-0 inset-x-0 z-50 transition-all duration-200",
+        isScrolled
+          ? "bg-background/90 backdrop-blur-md shadow-sm border-b border-border/60"
+          : "bg-background/70 backdrop-blur-sm",
+      )}
+      aria-label="Primary"
+    >
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <img 
-              src={logoImage} 
-              alt="Allergy Voices Logo" 
-              className="w-12 h-12"
+          <Link to="/" className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md">
+            <img
+              src={logoImage}
+              alt="AllergyVoices"
+              className="h-9 md:h-10 w-auto"
+              width="180"
+              height="67"
             />
-            <span className="font-poppins font-bold text-xl text-foreground">
-              Allergy Voices
-            </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-          {navItems.map((item) => {
-            const isHashLink = item.href.startsWith('/#');
-            return isHashLink ? (
-              <button
-                key={item.name}
-                onClick={() => handleHashNavigation(item.href)}
-                className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
-              >
-                {item.name}
-              </button>
-            ) : (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
-              >
-                {item.name}
-              </Link>
-            );
-          })}
-            <Button 
-              variant="hero" 
-              size="sm" 
-              className="font-poppins"
-              onClick={() => handleHashNavigation('/#contact')}
-            >
-              Join Community
+          {/* Desktop nav */}
+          <div className="hidden lg:flex items-center gap-7" ref={groupRef}>
+            {NAV.map((group) => {
+              if (group.children) {
+                const isOpen = openGroup === group.name;
+                return (
+                  <div key={group.name} className="relative">
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-haspopup="true"
+                      onClick={() => setOpenGroup(isOpen ? null : group.name)}
+                      className={cn(linkClass, "inline-flex items-center gap-1")}
+                    >
+                      {group.name}
+                      <ChevronDown
+                        className={cn("h-3.5 w-3.5 transition-transform", isOpen && "rotate-180")}
+                        aria-hidden="true"
+                      />
+                    </button>
+                    {isOpen && (
+                      <div className="absolute left-1/2 -translate-x-1/2 mt-3 w-80 rounded-xl border border-border bg-popover shadow-lg p-2">
+                        <ul className="space-y-1">
+                          {group.children.map((child) => (
+                            <li key={child.href}>
+                              <NavLink
+                                to={child.href}
+                                className={({ isActive }) =>
+                                  cn(
+                                    "block rounded-lg px-3 py-2.5 hover:bg-muted transition-colors",
+                                    isActive && "bg-muted",
+                                  )
+                                }
+                              >
+                                <div className="font-poppins text-sm font-medium text-foreground">
+                                  {child.name}
+                                </div>
+                                {child.description && (
+                                  <div className="font-inter text-xs text-muted-foreground mt-0.5 leading-snug">
+                                    {child.description}
+                                  </div>
+                                )}
+                              </NavLink>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+              return (
+                <NavLink
+                  key={group.name}
+                  to={group.href!}
+                  className={({ isActive }) => cn(linkClass, isActive && activeLinkClass)}
+                >
+                  {group.name}
+                </NavLink>
+              );
+            })}
+            <Button asChild size="sm" className="font-poppins ml-2">
+              <Link to="/#join">Join the Voices</Link>
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-accent/10 transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            type="button"
+            aria-label={isMobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileOpen}
+            className="lg:hidden p-2 rounded-md hover:bg-muted transition-colors"
+            onClick={() => setIsMobileOpen((v) => !v)}
           >
-            {isMobileMenuOpen ? (
-              <X className="w-6 h-6 text-foreground" />
-            ) : (
-              <Menu className="w-6 h-6 text-foreground" />
-            )}
+            {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border/20 bg-background/95 backdrop-blur-md">
-            <div className="flex flex-col space-y-4">
-              {navItems.map((item) => {
-                const isHashLink = item.href.startsWith('/#');
-                return isHashLink ? (
-                  <button
-                    key={item.name}
-                    onClick={() => {
-                      handleHashNavigation(item.href);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-4 py-2 text-left"
-                  >
-                    {item.name}
-                  </button>
-                ) : (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className="font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-4 py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                );
+        {/* Mobile menu */}
+        {isMobileOpen && (
+          <div className="lg:hidden py-4 border-t border-border/60 bg-background/95 backdrop-blur-md">
+            <ul className="flex flex-col gap-1">
+              {NAV.flatMap((group) => {
+                if (group.children) {
+                  return [
+                    <li
+                      key={group.name}
+                      className="px-3 pt-3 pb-1 font-poppins text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+                    >
+                      {group.name}
+                    </li>,
+                    ...group.children.map((child) => (
+                      <li key={child.href}>
+                        <NavLink
+                          to={child.href}
+                          className={({ isActive }) =>
+                            cn(
+                              "block rounded-md px-3 py-2 font-inter text-sm font-medium",
+                              isActive ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted",
+                            )
+                          }
+                        >
+                          {child.name}
+                        </NavLink>
+                      </li>
+                    )),
+                  ];
+                }
+                return [
+                  <li key={group.name}>
+                    <NavLink
+                      to={group.href!}
+                      className={({ isActive }) =>
+                        cn(
+                          "block rounded-md px-3 py-2 font-inter text-sm font-medium",
+                          isActive ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted",
+                        )
+                      }
+                    >
+                      {group.name}
+                    </NavLink>
+                  </li>,
+                ];
               })}
-              <div className="px-4 pt-2">
-                <Button 
-                  variant="hero" 
-                  size="sm" 
-                  className="font-poppins w-full"
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    handleHashNavigation('/#contact');
-                  }}
-                >
-                  Join Community
+              <li className="px-3 pt-3">
+                <Button asChild size="sm" className="w-full font-poppins">
+                  <Link to="/#join">Join the Voices</Link>
                 </Button>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
         )}
       </div>

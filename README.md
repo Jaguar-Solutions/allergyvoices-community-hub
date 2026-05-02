@@ -1,73 +1,261 @@
-# Welcome to your Lovable project
+# AllergyVoices
 
-## Project info
+> Every ingredient matters. Every voice counts.
 
-**URL**: https://lovable.dev/projects/70a83477-281e-442c-87e3-376c9b4aac2a
+A calm, practical hub for food allergy families &mdash; plain-language medical
+findings, recalls from official sources, and real-world resources for home,
+school, dining, and travel.
 
-## How can I edit this code?
+- 🌐 **Live site**: https://allergyvoices.com (after Vercel deploy)
+- 📝 **Editorial workflow**: GitHub PRs &mdash; no CMS, no logins
+- 🤖 **Daily auto-ingestion**: openFDA recalls open as draft PRs for review
+- 💸 **Hosting cost**: $0/month at this scale (Vercel Hobby + Supabase free + GitHub Actions free)
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/70a83477-281e-442c-87e3-376c9b4aac2a) and start prompting.
+| Layer | What we use | Why |
+| --- | --- | --- |
+| Frontend | Vite + React 18 + TypeScript + React Router v6 | SPA, fast dev loop, no Next.js complexity |
+| Styling | Tailwind + shadcn/ui (Radix primitives) | Accessible defaults, consistent design tokens |
+| Content | Markdown files in `/content/` validated by zod | Editorial workflow = git PRs (review queue, version control, free) |
+| Light DB | Supabase (free tier) | Newsletter subscribers only; eventually filterable directory |
+| Ingestion | GitHub Actions + tsx scripts | Daily cron pulls openFDA, opens PRs |
+| Hosting | Vercel (Hobby/free) | Static deploy + preview deploys per PR |
 
-Changes made via Lovable will be committed automatically to this repo.
+See [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the decision log on why
+**not** Next.js, why **not** Payload/Sanity, and the hybrid markdown +
+Supabase choice.
 
-**Use your preferred IDE**
+## Information architecture
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+| Section | Route | Source |
+| --- | --- | --- |
+| Home | `/` | `src/pages/Index.tsx` |
+| Latest Medical Findings (list) | `/findings` | `content/articles/*.md` |
+| Article (detail) | `/findings/:slug` | "" |
+| Recalls & Alerts | `/recalls` | `content/recalls/*.md` |
+| Family Resource Center (list) | `/resources` | `content/resources/*.md` |
+| Resource (detail) | `/resources/:slug` | "" |
+| Allergen Hubs (index) | `/allergens` | `content/allergens/*.md` |
+| Allergen Hub (detail) | `/allergens/:slug` | "" |
+| Dining Out | `/dining` | hardcoded page |
+| Schools & Teens | `/schools-teens` | hardcoded page |
+| Local Directory | `/directory` | placeholder (Supabase later) |
+| About / Editorial Policy | `/about` | hardcoded page |
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Getting started
 
-Follow these steps:
+Requires Node.js 20+.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+git clone <repo>
+cd allergyvoices-community-hub
+npm install
+npm run dev          # http://localhost:8080
 ```
 
-**Edit a file directly in GitHub**
+Create a `.env` (copy `.env.example` if it exists, or use your password manager):
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+VITE_SUPABASE_URL=https://<project>.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=<anon-key>
+```
 
-**Use GitHub Codespaces**
+## npm scripts
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Vite dev server with HMR (port 8080) |
+| `npm run build` | Production bundle + generates `dist/sitemap.xml` |
+| `npm run preview` | Serve the production build locally (port 4173) |
+| `npm run lint` | ESLint over the project |
+| `npm run content:check` | Validate every markdown file in `/content/` against its zod schema |
+| `npm run sitemap` | Regenerate `public/sitemap.xml` (also runs as part of `build`) |
 
-## What technologies are used for this project?
+## Content workflow
 
-This project is built with:
+All editorial content (articles, recalls, allergen hubs, resources) lives
+in [`/content/`](./content/) as markdown with YAML frontmatter.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```sh
+# 1. Create a branch, add or edit a markdown file
+git checkout -b article/2026-05-fda-something
 
-## How can I deploy this project?
+# 2. Frontmatter starts in `draft`; switch to `needs-review` when ready
+#    See content/README.md for the schema for each content type.
 
-Simply open [Lovable](https://lovable.dev/projects/70a83477-281e-442c-87e3-376c9b4aac2a) and click on Share -> Publish.
+# 3. Validate locally
+npm run content:check
 
-## Can I connect a custom domain to my Lovable project?
+# 4. Commit, push, open a PR
+git add content/articles/2026-05-fda-something.md
+git commit -m "Draft: FDA update on ..."
+git push -u origin HEAD
+gh pr create
+```
 
-Yes, you can!
+CI runs `npm run lint`, `npm run content:check`, and `npm run build` on every
+PR. When the PR merges to `main`, Vercel rebuilds and the new content goes
+live.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+> **Safety rule:** AI-drafted medical interpretation never auto-publishes.
+> AI drafts open as `needs-review`; a human reviewer changes the status to
+> `published` only after review.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Full schema and editorial standards: [`content/README.md`](./content/README.md).
+
+## Automation
+
+The site is designed to keep itself current with the **least amount of manual
+work** that's compatible with the editorial safety rule (no AI auto-publishes
+medical interpretation). Three kinds of automation, all free:
+
+### 1. Recall ingestion → auto-merging PRs
+
+Daily GitHub Actions pull from official agency feeds, write new draft files
+to `content/recalls/`, open a pull request, and **auto-merge after CI
+passes**. You don't write or merge anything yourself; the recalls page just
+stays current.
+
+| Source | Workflow | Schedule |
+| --- | --- | --- |
+| openFDA Food Enforcement (US) | `ingest-openfda.yml` | Daily 12:30 UTC |
+| USDA FSIS (US) | `ingest-fsis.yml` | Daily 12:30 UTC |
+| CFIA (Canada) | `ingest-cfia.yml` | Daily 13:30 UTC |
+| FSA (UK) | `ingest-fsa-uk.yml` | Daily 11:30 UTC |
+
+Each source's RSS/API URL is a one-line `const RSS_URL` (or equivalent) at
+the top of the corresponding `scripts/ingest/<source>-recalls.ts`. If a feed
+URL changes, the workflow fails gracefully with a clear log message and
+opens no PR; update the URL constant and the next run picks up.
+
+### 2. Topic suggestions → recurring GitHub issue (no PR, no auto-publish)
+
+A weekly workflow polls **PubMed E-utilities** and **ClinicalTrials.gov v2**
+for new food-allergy publications and recruiting trials, then updates a
+single recurring GitHub issue titled "Topic suggestions — PubMed +
+ClinicalTrials.gov." You skim it Monday morning. When something there
+genuinely deserves a plain-language article, you open a PR adding a
+markdown file under `content/articles/`.
+
+This is **not** an article auto-publisher. It's an editorial queue.
+
+| What | Workflow | Schedule |
+| --- | --- | --- |
+| PubMed + CT.gov topic queue | `ingest-pubmed.yml` | Mondays 14:00 UTC |
+
+### 3. Editorial freshness → recurring GitHub issue
+
+A weekly workflow walks `/content/`, finds anything where `last_reviewed` is
+older than 90 days (configurable via the `FRESHNESS_DAYS` env var), and
+updates a single recurring GitHub issue titled "Editorial freshness report"
+with a checklist of files to refresh. When everything's fresh, the issue
+shows ✅ "all clear."
+
+| What | Workflow | Schedule |
+| --- | --- | --- |
+| Editorial freshness | `editorial-freshness.yml` | Mondays 14:00 UTC |
+| Supabase keepalive | `keepalive-supabase.yml` | Mondays 13:00 UTC |
+
+### Required GitHub repo settings (one-time)
+
+For the auto-merge and bot-PR/issue workflows to work:
+
+- **Settings → Actions → General → Workflow permissions:** set to "Read and
+  write permissions" + check **"Allow GitHub Actions to create and approve
+  pull requests"**
+- **Settings → General → Pull Requests:** check **"Allow auto-merge"**
+- **Settings → Secrets and variables → Actions:** add `SUPABASE_URL` and
+  `SUPABASE_ANON_KEY` (used only by the keepalive ping)
+
+### Run any ingestor manually
+
+```sh
+npx tsx scripts/ingest/openfda-recalls.ts
+npx tsx scripts/ingest/fsis-recalls.ts
+npx tsx scripts/ingest/cfia-recalls.ts
+npx tsx scripts/ingest/fsa-recalls.ts
+npx tsx scripts/ingest/pubmed-articles.ts          # writes topic-suggestions.md
+npx tsx scripts/ingest/keepalive-supabase.ts       # needs SUPABASE_URL + SUPABASE_ANON_KEY
+npx tsx scripts/editorial-freshness.ts             # writes stale-report.md
+```
+
+### Realistic weekly involvement
+
+- **Daily:** zero — recall PRs auto-merge.
+- **Mondays (5–10 min):** glance at the topic-suggestions and freshness
+  issues. Most weeks both are quiet.
+- **As needed:** when something major lands (FDA approval, new guideline),
+  open a PR adding an article in `content/articles/`. The site rebuilds on
+  merge.
+
+## Deploying to Vercel
+
+One-time setup:
+
+1. **Create a Vercel project** &mdash; "Import Git Repository," point at this
+   repo. Vercel auto-detects Vite.
+2. **Set environment variables** in Vercel project settings:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY`
+   - `SITE_URL` &mdash; e.g. `https://allergyvoices.com` (used by sitemap generator)
+3. **Custom domain**: Project → Domains → add `allergyvoices.com`. Follow the DNS instructions Vercel gives you and update the records at your Hostinger DNS panel. Cancel Hostinger web hosting after DNS propagates and the site loads from Vercel.
+4. **GitHub repo settings** &mdash; required for the ingestion bots:
+   - **Settings → Secrets and variables → Actions**: add `SUPABASE_URL` and `SUPABASE_ANON_KEY` (used by keepalive only).
+   - **Settings → Actions → General → Workflow permissions**: set to "Read and write permissions" and check "Allow GitHub Actions to create and approve pull requests."
+
+After that, every push to `main` deploys to production; every PR gets a
+preview URL.
+
+## Project layout
+
+```
+.github/
+  workflows/                CI + ingestion + keepalive crons
+  ISSUE_TEMPLATE/           Suggest article/recall/resource
+  PULL_REQUEST_TEMPLATE.md  Editorial + code checklists
+content/                    Markdown content (see content/README.md)
+  articles/
+  recalls/
+  allergens/
+  resources/
+public/                     Static assets (favicon, robots.txt, sitemap.xml)
+scripts/
+  check-content.ts          Schema validator (CI-runnable)
+  generate-sitemap.ts       Sitemap.xml generator
+  ingest/                   External-source connectors
+src/
+  components/
+    layout/                 Container, Section, PageHeader, PageLayout, Footer,
+                            Breadcrumbs, Disclaimer, Prose, ReviewStatusBadge
+    content/                ContentMeta, AllergenChips, RecallCard, SourceList
+    ui/                     shadcn/ui primitives
+    *.tsx                   Navigation, NewsFeed, etc.
+  content/
+    schemas.ts              zod schemas for all content types
+    loader.ts               Vite-glob-based markdown loader
+  pages/                    One file per route
+  integrations/supabase/    Typed Supabase client
+  hooks/                    React hooks
+  lib/                      Small utilities (cn)
+supabase/
+  migrations/               SQL migrations
+  functions/                (legacy) Edge Functions
+```
+
+## Editorial standards (the short version)
+
+- **Plain language.** Write at a 9th-grade level.
+- **No medical promises.** Always encourage families to talk to their allergist.
+- **Source everything.** Research and regulatory items must include a `sources` list.
+- **Calm, not alarming.** No fear-based framing.
+- **Mark AI drafts.** Always start as `needs-review`; never `published` without a human review.
+
+Full editorial policy: [`content/README.md`](./content/README.md). The medical
+disclaimer renders on every content page automatically (`Disclaimer` component).
+
+## License
+
+All rights reserved. (Update if you decide to open-source.)
