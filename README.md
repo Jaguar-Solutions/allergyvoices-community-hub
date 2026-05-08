@@ -6,10 +6,10 @@ A calm, practical hub for food allergy families &mdash; plain-language medical
 findings, recalls from official sources, and real-world resources for home,
 school, dining, and travel.
 
-- 🌐 **Live site**: https://allergyvoices.com (after Vercel deploy)
+- 🌐 **Live site**: https://allergyvoices.com
 - 📝 **Editorial workflow**: GitHub PRs &mdash; no CMS, no logins
 - 🤖 **Daily auto-ingestion**: openFDA recalls open as draft PRs for review
-- 💸 **Hosting cost**: $0/month at this scale (Vercel Hobby + Supabase free + GitHub Actions free)
+- 💸 **Hosting cost**: same Hostinger plan we already had + Supabase free + GitHub Actions free
 
 ---
 
@@ -22,7 +22,7 @@ school, dining, and travel.
 | Content | Markdown files in `/content/` validated by zod | Editorial workflow = git PRs (review queue, version control, free) |
 | Light DB | Supabase (free tier) | Newsletter subscribers only; eventually filterable directory |
 | Ingestion | GitHub Actions + tsx scripts | Daily cron pulls openFDA, opens PRs |
-| Hosting | Vercel (Hobby/free) | Static deploy + preview deploys per PR |
+| Hosting | Hostinger shared hosting (existing plan) | Static deploy via SFTP/File Manager; domain already lives here |
 
 See [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the decision log on why
 **not** Next.js, why **not** Payload/Sanity, and the hybrid markdown +
@@ -73,6 +73,8 @@ VITE_SUPABASE_PUBLISHABLE_KEY=<anon-key>
 | `npm run lint` | ESLint over the project |
 | `npm run content:check` | Validate every markdown file in `/content/` against its zod schema |
 | `npm run sitemap` | Regenerate `public/sitemap.xml` (also runs as part of `build`) |
+| `npm run deploy` | Build + verify the deploy bundle in `dist/`. Upload manually. |
+| `npm run deploy:upload` | Same, then SFTP-mirror to Hostinger via `lftp` (needs env vars). |
 
 ## Content workflow
 
@@ -191,23 +193,66 @@ npx tsx scripts/editorial-freshness.ts             # writes stale-report.md
   open a PR adding an article in `content/articles/`. The site rebuilds on
   merge.
 
-## Deploying to Vercel
+## Deploying to Hostinger
 
-One-time setup:
+We host on the same Hostinger shared plan that owns the domain. Build
+locally, upload `dist/` to `public_html/`. No DNS changes, no vendor
+swap. See [`ARCHITECTURE.md` Decision 7](./ARCHITECTURE.md) for why we
+landed here instead of Vercel.
 
-1. **Create a Vercel project** &mdash; "Import Git Repository," point at this
-   repo. Vercel auto-detects Vite.
-2. **Set environment variables** in Vercel project settings:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_PUBLISHABLE_KEY`
-   - `SITE_URL` &mdash; e.g. `https://allergyvoices.com` (used by sitemap generator)
-3. **Custom domain**: Project → Domains → add `allergyvoices.com`. Follow the DNS instructions Vercel gives you and update the records at your Hostinger DNS panel. Cancel Hostinger web hosting after DNS propagates and the site loads from Vercel.
+### One-time setup
+
+1. **Make sure Hostinger SSL is enabled** for `allergyvoices.com` in the
+   Hostinger panel (hPanel → SSL → enable free Let's Encrypt cert).
+2. **Back up the existing `public_html/` contents** in the Hostinger File
+   Manager &mdash; the static site replaces whatever's there now.
+3. **Confirm `public/.htaccess` is in the repo.** It ships to
+   `dist/.htaccess` on every build and handles SPA routing, cache
+   headers, gzip, and (optional) HTTPS redirect.
 4. **GitHub repo settings** &mdash; required for the ingestion bots:
-   - **Settings → Secrets and variables → Actions**: add `SUPABASE_URL` and `SUPABASE_ANON_KEY` (used by keepalive only).
-   - **Settings → Actions → General → Workflow permissions**: set to "Read and write permissions" and check "Allow GitHub Actions to create and approve pull requests."
+   - **Settings → Secrets and variables → Actions**: add `SUPABASE_URL`
+     and `SUPABASE_ANON_KEY` (used by keepalive only).
+   - **Settings → Actions → General → Workflow permissions**: set to
+     "Read and write permissions" and check "Allow GitHub Actions to
+     create and approve pull requests."
+   - **Settings → General → Pull Requests**: check "Allow auto-merge."
 
-After that, every push to `main` deploys to production; every PR gets a
-preview URL.
+### Day-to-day deploy (manual)
+
+```sh
+git checkout main && git pull   # picks up any auto-merged recall PRs
+npm run deploy                  # builds dist/, verifies the bundle
+```
+
+Then upload **the contents of `dist/`** (not the folder itself) to
+`public_html/` via the Hostinger File Manager or FileZilla. Make sure
+`.htaccess` comes along &mdash; you may need to toggle "Show hidden files."
+
+After SSL is provisioned, edit `public/.htaccess` and uncomment the
+`HTTPS redirect` block so visitors are forced onto `https://`.
+
+### Optional auto-upload via SFTP
+
+If you'd rather not click through File Manager, install `lftp` once
+(`brew install lftp`), then export four env vars in your shell:
+
+```sh
+export HOSTINGER_HOST=ftp.allergyvoices.com   # or the SFTP host from hPanel
+export HOSTINGER_USER=u123456789
+export HOSTINGER_PASS='...'
+export HOSTINGER_REMOTE=/public_html
+```
+
+`npm run deploy:upload` will then build and mirror the bundle in one
+step.
+
+### Future upgrade: GitHub Actions auto-deploy
+
+When manual uploads get tedious (probably a few weeks in), the smallest
+upgrade is a workflow that runs `npm run build` and SFTPs `dist/` to
+Hostinger on every push to `main`. ~25 lines of YAML using
+`SamKirkland/FTP-Deploy-Action@v4` plus the same four secrets above as
+GitHub Actions secrets. Still $0, still on Hostinger.
 
 ## Project layout
 

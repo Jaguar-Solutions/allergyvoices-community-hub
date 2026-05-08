@@ -108,18 +108,32 @@ script, and uses `peter-evans/create-pull-request` to open a draft PR.
 few minutes from schedule to start). Fine for daily ingestion; not fine
 for real-time triggers.
 
-## Decision 5 &mdash; openFDA real, others stubbed
+## Decision 5 &mdash; All ingestors real, scaffolded incrementally
 
-**Choice.** Built openFDA as a real, working ingestor. FSIS, CFIA, FSA UK,
-PubMed, and ClinicalTrials.gov are stub scripts that print "not yet
-implemented" but have working workflow files on the right schedule.
+**Original choice (Phase 1).** Built openFDA as a real, working ingestor.
+FSIS, CFIA, FSA UK, PubMed, and ClinicalTrials.gov were stub scripts that
+printed "not yet implemented" but had working workflow files on the right
+schedule.
 
-**Why.** Each external source has its own quirks (RSS parsing, rate
-limits, authentication, payload normalization). Wiring them all at once
-would have been days of work for incremental coverage. Shipping openFDA
-proves the architecture end-to-end; the stubs reserve the schedule slots
-and keep the pattern visible so adding the next source is "fill in this
-script."
+**Where we are now.** All five ingestors are fully implemented:
+
+| Source | Script | Notes |
+| --- | --- | --- |
+| openFDA Food Enforcement | `scripts/ingest/openfda-recalls.ts` | JSON API, allergen filter, classification mapping |
+| USDA FSIS | `scripts/ingest/fsis-recalls.ts` | RSS via `rss-parser`, allergen filter, recall # extraction |
+| CFIA Canada | `scripts/ingest/cfia-recalls.ts` | RSS, English feed, alert-recall ID extraction |
+| FSA UK | `scripts/ingest/fsa-recalls.ts` | RSS, AA/FA alert ID extraction |
+| PubMed + CT.gov | `scripts/ingest/pubmed-articles.ts` | E-utilities + CT.gov v2; writes a topic-queue issue, never a PR |
+
+All four recall ingestors share `scripts/ingest/shared.ts` for allergen
+detection, slug generation, frontmatter writing, and dedupe. Each fails
+soft on transient feed/API errors so a one-off outage doesn't fail the
+workflow or open a noisy PR.
+
+**Why this took two passes.** Each external source has its own quirks
+(RSS parsing, rate limits, authentication, payload normalization).
+Shipping openFDA first proved the architecture end-to-end; once the
+shared helpers existed, the other sources were straightforward fills.
 
 ## Decision 6 &mdash; No full static prerendering (yet)
 
@@ -137,18 +151,58 @@ new content type benefits from being instant-loadable on first paint
 (e.g., a long-tail allergen-recall page). At that point the routing
 refactor is justified.
 
-## Decision 7 &mdash; Vercel for hosting, Hostinger for domain only
+## Decision 7 &mdash; Stay on Hostinger shared hosting; deploy `dist/` manually
 
-**Choice.** Deploy to Vercel (free Hobby tier). Keep the
-`allergyvoices.com` domain registered at Hostinger and point its DNS at
-Vercel. Cancel Hostinger web hosting after the cutover.
+**Original plan.** Deploy to Vercel (free Hobby tier), keep
+`allergyvoices.com` registered at Hostinger but point DNS at Vercel,
+cancel Hostinger web hosting after the cutover.
 
-**Why.** Vercel has best-in-class DX for Vite + React (zero config,
-preview deploys per PR, image optimization, free at this scale). Keeping
-the domain at the existing registrar avoids the friction of a transfer.
+**What we actually chose.** Stay on the existing Hostinger shared
+hosting plan that already owns the domain. Build locally with `npm run
+deploy`, upload the contents of `dist/` to `public_html/` via Hostinger
+File Manager (or `npm run deploy:upload` with `lftp` once it gets
+tedious).
 
-**Runner-up.** Cloudflare Pages &mdash; cheaper-still and unlimited bandwidth
-free, but Vercel's DX is meaningfully better for this stack.
+**Why we pivoted.**
+
+- The domain is already on Hostinger. Cutting over to Vercel would have
+  meant a DNS change, a TTL wait, and cancelling a hosting plan we're
+  already paying for. Net cost saved: zero. Net friction added:
+  non-trivial.
+- The site is a static SPA. Hostinger Apache + a 30-line `.htaccess`
+  (SPA fallback, cache headers, gzip, security headers) is sufficient.
+- All the smart parts of the system &mdash; ingestion, auto-merge, freshness
+  reports &mdash; live in GitHub Actions, which is host-agnostic.
+- Build-time image optimization (`vite-plugin-image-optimizer`) already
+  delivers ~70% asset reduction without runtime help from a host.
+
+**What we give up.**
+
+- **Preview deploys per PR.** No instant-staging URL when a recall PR
+  auto-merges. Mitigation: `npm run preview` locally before each deploy.
+- **CDN edge caching.** Hostinger serves from a single origin region.
+  For a low-traffic content site, fine; we'll revisit if real-user
+  metrics show TTFB problems internationally.
+- **Auto-deploy on merge.** Recall PRs land in `main` automatically but
+  go live on the next manual deploy. Acceptable until daily uploads feel
+  like a chore; when they do, we'll add a `SamKirkland/FTP-Deploy-Action`
+  workflow that mirrors `dist/` to Hostinger on push.
+
+**Runners-up considered.**
+
+- **Vercel Hobby.** Best DX, but the DNS-cutover friction outweighed it
+  for a project where the host is already paid for and the deploy
+  cadence is "whenever a real recall lands."
+- **Cloudflare Pages.** Cheapest at scale (free, unlimited bandwidth),
+  but same DNS-cutover friction.
+- **GitHub Pages.** Free, no friction, but `allergyvoices.com` would
+  still need DNS changes and we'd lose the `.htaccess` controls
+  (SPA fallback, cache, security headers).
+
+**When to revisit.** If/when daily manual uploads become annoying, add
+the FTP-deploy GitHub Action. If/when international TTFB matters, put
+Cloudflare in front (DNS-only mode &mdash; keeps Hostinger as origin, adds
+the CDN for free).
 
 ## Things we explicitly didn't build
 

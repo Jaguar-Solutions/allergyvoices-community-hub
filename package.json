@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "content:check": "tsx scripts/check-content.ts",
     "sitemap": "tsx scripts/generate-sitemap.ts",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "bash scripts/deploy-hostinger.sh",
+    "deploy:upload": "bash scripts/deploy-hostinger.sh --upload"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

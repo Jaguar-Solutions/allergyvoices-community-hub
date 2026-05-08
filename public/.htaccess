@@ -1,0 +1,90 @@
+# AllergyVoices — Apache config for Hostinger shared hosting.
+#
+# This file is served from /public_html/.htaccess after deploy. Vite copies
+# everything in /public/ to /dist/ at build time, so editing this file in
+# /public/.htaccess updates the shipped config automatically.
+
+# ---- SPA routing ------------------------------------------------------------
+# React Router owns paths like /findings/:slug, /allergens/peanut, etc. Apache
+# would 404 on a direct hit; rewrite anything that isn't a real file or
+# directory to /index.html so the SPA can render the route.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Don't rewrite real files (assets, sitemap.xml, robots.txt, .htaccess).
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# ---- HTTPS redirect ---------------------------------------------------------
+# Uncomment AFTER Hostinger has provisioned the free SSL cert for the domain.
+# Until SSL is live, leaving this on will hard-loop visitors at the http -> https
+# step.
+#
+# <IfModule mod_rewrite.c>
+#   RewriteCond %{HTTPS} off
+#   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# ---- Caching ----------------------------------------------------------------
+# Vite emits content-hashed filenames for everything under /assets/* (e.g.
+# index-DwIFJ1rC.js), so those can be cached aggressively. index.html and the
+# sitemap stay short so a redeploy is visible quickly.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+
+  # HTML — short, so new deploys propagate fast.
+  ExpiresByType text/html "access plus 5 minutes"
+
+  # Sitemap + robots — short, the daily ingestor changes the sitemap.
+  ExpiresByType application/xml "access plus 1 hour"
+  ExpiresByType text/xml "access plus 1 hour"
+
+  # Hashed assets — long, the filename changes when content changes.
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+
+  # Fonts + images — long.
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Belt-and-suspenders Cache-Control for hashed assets.
+  <FilesMatch "\.(?:css|js|woff2?|png|jpe?g|webp|svg|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(?:html)$">
+    Header set Cache-Control "public, max-age=300, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ---- Compression ------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css
+  AddOutputFilterByType DEFLATE application/javascript text/javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE application/xml text/xml image/svg+xml
+</IfModule>
+
+# ---- Security headers (lightweight) -----------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ---- Pretty errors ----------------------------------------------------------
+# SPA fallback handles route-level 404s, but if Apache itself can't find /index.html
+# (broken upload), at least show something readable.
+ErrorDocument 404 /index.html
