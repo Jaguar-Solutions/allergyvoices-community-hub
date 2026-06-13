@@ -11,7 +11,7 @@ agency_recall_id: H-0854-2026
 recall_class: class-ii
 source_url: https://api.fda.gov/food/enforcement.json?search=recall_number:%22H-0854-2026%22
 upcs: []
-status: needs-review
+status: published
 last_reviewed: '2026-06-13'
 reviewed_by: openFDA ingestor
 ---

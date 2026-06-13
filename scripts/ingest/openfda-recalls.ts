@@ -2,7 +2,7 @@
 /**
  * Pulls the most recent food enforcement reports from openFDA, filters to
  * allergen-related recalls, and writes new ones to content/recalls/ as
- * markdown drafts (status: needs-review).
+ * markdown files (status: published).
  *
  * No API key required. openFDA's free tier allows up to 1,000 requests/day
  * per IP &mdash; we make at most a handful per run.

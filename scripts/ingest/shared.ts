@@ -146,7 +146,8 @@ export function writeRecall(
     recall_class: draft.recall_class,
     source_url: draft.source_url,
     upcs: draft.upcs ?? [],
-    status: "needs-review",
+    // Auto-publish ingested recalls so they go live without manual review.
+    status: "published",
     last_reviewed: today,
     reviewed_by: ingestor,
   };

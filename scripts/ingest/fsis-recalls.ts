@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 /**
  * Pulls USDA FSIS recall + public health alerts RSS, filters to allergen-related
- * items, and writes new ones to content/recalls/ as needs-review drafts.
+ * items, and writes new ones to content/recalls/ as published recalls.
  *
  * If the RSS URL changes, edit RSS_URL below.
  */
