@@ -228,9 +228,14 @@ async function main() {
   // Surface to GitHub Actions so a follow-up step can decide whether to open a PR.
   if (process.env.GITHUB_OUTPUT) {
     const { appendFileSync } = await import("node:fs");
+    // Multi-line values must use the heredoc delimiter form, otherwise Actions
+    // parses each extra line as its own `key=value` and fails with
+    // "Unable to process file command 'output'".
+    const delimiter = "EOF_NEW_PATHS";
     appendFileSync(
       process.env.GITHUB_OUTPUT,
-      `wrote=${written}\nnew_paths=${newPaths.join("\n")}\n`,
+      `wrote=${written}\n` +
+        `new_paths<<${delimiter}\n${newPaths.join("\n")}\n${delimiter}\n`,
     );
   }
 }
