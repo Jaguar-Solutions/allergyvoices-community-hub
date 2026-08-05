@@ -18,10 +18,21 @@
   RewriteRule . /index.html [L]
 </IfModule>
 
+# ---- Web app manifest MIME type ---------------------------------------------
+# Apache doesn't know this extension; without it the manifest is served as
+# text/plain and iPadOS ignores "Add to Home Screen" metadata.
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
 # ---- HTTPS redirect ---------------------------------------------------------
 # Uncomment AFTER Hostinger has provisioned the free SSL cert for the domain.
 # Until SSL is live, leaving this on will hard-loop visitors at the http -> https
 # step.
+#
+# IMPORTANT: browsers refuse to register a service worker over plain http.
+# Until HTTPS is live, offline field mode for the restaurant survey will not
+# work on any device. Turning on SSL is a prerequisite for that feature.
 #
 # <IfModule mod_rewrite.c>
 #   RewriteCond %{HTTPS} off
@@ -65,6 +76,15 @@
   </FilesMatch>
   <FilesMatch "\.(?:html)$">
     Header set Cache-Control "public, max-age=300, must-revalidate"
+  </FilesMatch>
+
+  # The service worker and web manifest have STABLE filenames, so the
+  # immutable rule above would pin visitors to whichever version they first
+  # downloaded — freezing the entire site for them, since the worker serves
+  # the app shell. These must always be revalidated. This block comes last
+  # so it wins.
+  <FilesMatch "^(sw\.js|registerSW\.js|manifest\.webmanifest)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
 </IfModule>
 

@@ -36,6 +36,10 @@ required=(
   "dist/.htaccess"
   "dist/sitemap.xml"
   "dist/robots.txt"
+  # Offline field mode for the restaurant survey depends on these. If they
+  # don't ship, the survey silently stops working without a connection.
+  "dist/sw.js"
+  "dist/manifest.webmanifest"
 )
 missing=0
 for f in "${required[@]}"; do

@@ -6,8 +6,9 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   // Deno-targeted Edge Functions don't share our React lint rules.
-  // The `dist/` build output should never be linted.
-  { ignores: ["dist", "supabase/functions/**"] },
+  // The `dist/` build output should never be linted. `dev-dist/` is the
+  // service worker vite-plugin-pwa generates for local dev.
+  { ignores: ["dist", "dev-dist", "supabase/functions/**"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
