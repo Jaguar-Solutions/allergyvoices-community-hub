@@ -29,16 +29,25 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          // Darker blue for small text sitting on a tinted (non-white)
+          // surface, where the default primary lands just under 4.5:1.
+          strong: "hsl(var(--primary-strong))",
           hover: "hsl(var(--primary-hover))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          // Green dark enough to read as small text on a green tint, where
+          // the default secondary lands at 4.37:1 — just under AA.
+          strong: "hsl(var(--secondary-strong))",
           hover: "hsl(var(--secondary-hover))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          // Coral dark enough to be readable as text on light backgrounds.
+          // Use `text-accent-strong`, never `text-accent`, for small text.
+          strong: "hsl(var(--accent-strong))",
           hover: "hsl(var(--accent-hover))",
         },
         destructive: {

@@ -40,17 +40,30 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 32% 12%;
 
-    /* Brand semantic */
-    --primary: 213 78% 53%;
+    /* Brand semantic
+       Lightness values here are set by WCAG AA contrast, not by eye. Any
+       colour carrying small text needs 4.5:1 against what sits behind it,
+       and these are all used both as button fills (white text on them) and
+       as text on white — which happen to require the same threshold.
+       Verified with axe; see docs/RESTAURANT_PROGRAM.md notes before
+       lightening any of them. */
+    --primary: 213 78% 46%;                /* 5.1:1 with white */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 213 78% 47%;
+    --primary-hover: 213 78% 41%;
+    --primary-strong: 213 78% 38%;         /* for text on tinted surfaces */
 
-    --secondary: 152 48% 42%;
+    --secondary: 152 48% 32%;              /* 5.3:1 with white */
     --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 152 48% 36%;
+    --secondary-hover: 152 48% 27%;
+    --secondary-strong: 152 48% 26%;       /* green as text on a green tint */
 
-    --accent: 13 88% 62%;                  /* Now matches logo coral */
-    --accent-foreground: 0 0% 100%;
+    /* The logo coral is deliberately left at its brand value — it's a fill,
+       not a text colour. White on it is only 2.9:1, so text sitting on it
+       uses --accent-foreground (dark), and coral *as* text uses
+       --accent-strong. */
+    --accent: 13 88% 62%;
+    --accent-foreground: 13 65% 15%;       /* 6.8:1 on coral */
+    --accent-strong: 13 75% 38%;           /* 6.4:1 on white — coral as text */
     --accent-hover: 13 88% 56%;
 
     --positive: 152 48% 42%;
@@ -66,7 +79,7 @@
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 213 78% 53%;
+    --ring: 213 78% 46%;
 
     --radius: 0.75rem;
 
@@ -97,13 +110,16 @@
     --primary: 213 78% 60%;
     --primary-foreground: 222 32% 8%;
     --primary-hover: 213 78% 65%;
+    --primary-strong: 213 78% 70%;
 
     --secondary: 152 48% 50%;
     --secondary-foreground: 222 32% 8%;
     --secondary-hover: 152 48% 55%;
+    --secondary-strong: 152 55% 62%;
 
     --accent: 13 88% 65%;
     --accent-foreground: 222 32% 8%;
+    --accent-strong: 13 85% 72%;           /* coral as text, on dark surfaces */
     --accent-hover: 13 88% 70%;
 
     --positive: 152 48% 50%;

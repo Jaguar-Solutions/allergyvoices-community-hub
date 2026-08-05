@@ -12,8 +12,8 @@ const labels: Record<ReviewStatus, string> = {
 
 const styles: Record<ReviewStatus, string> = {
   draft: "bg-muted text-muted-foreground border-border",
-  needs_review: "bg-accent/10 text-accent border-accent/30",
-  published: "bg-secondary/10 text-secondary border-secondary/30",
+  needs_review: "bg-accent/10 text-accent-strong border-accent/30",
+  published: "bg-secondary/10 text-secondary-strong border-secondary/30",
   archived: "bg-background-subtle text-muted-foreground border-border",
 };
 

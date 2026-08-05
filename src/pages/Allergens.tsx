@@ -66,7 +66,9 @@ const Allergens = () => {
                             <p className="font-inter text-sm text-foreground/75 leading-relaxed line-clamp-3">
                               {hub.summary}
                             </p>
-                            <div className="text-primary text-sm font-medium inline-flex items-center gap-1 pt-1">
+                            {/* These cards sit on warm allergen tints, where
+                                the default primary blue falls just under AA. */}
+                            <div className="text-primary-strong text-sm font-medium inline-flex items-center gap-1 pt-1">
                               Open hub
                               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                             </div>

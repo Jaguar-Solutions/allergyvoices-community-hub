@@ -116,7 +116,7 @@ const NewsFeed = () => {
           >
             <CardContent className="p-6 space-y-4">
               <div className="flex items-center justify-between">
-                <Badge className="text-xs font-medium bg-accent/10 text-accent">
+                <Badge className="text-xs font-medium bg-accent/10 text-accent-strong">
                   Allergic Living
                 </Badge>
                 <div className="flex items-center text-xs text-muted-foreground">

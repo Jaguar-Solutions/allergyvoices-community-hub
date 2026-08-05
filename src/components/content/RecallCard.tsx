@@ -37,7 +37,7 @@ export function RecallCard({ recall }: RecallCardProps) {
     <Card className="border-l-4 border-l-accent">
       <CardContent className="p-6 md:p-7 space-y-4">
         <div className="flex flex-wrap items-center gap-2 text-xs font-medium">
-          <Badge variant="outline" className="bg-accent/10 text-accent border-accent/30">
+          <Badge variant="outline" className="bg-accent/10 text-accent-strong border-accent/30">
             {AGENCY_LABELS[recall.agency]}
           </Badge>
           <Badge variant="outline" className="font-normal">
