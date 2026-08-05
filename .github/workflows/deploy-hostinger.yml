@@ -1,0 +1,72 @@
+name: Deploy — Hostinger
+
+# Builds the production bundle and uploads it to Hostinger via FTP.
+#
+# Triggers:
+#   - push to main      → deploy immediately on your own commits
+#   - schedule (15:00 UTC) → catches bot-published recalls. The recall ingestors
+#     auto-merge their PRs with GITHUB_TOKEN, and GitHub does NOT trigger other
+#     workflows from a GITHUB_TOKEN push, so the daily schedule is what reliably
+#     ships those. 15:00 UTC is after the latest ingest cron (cfia, 13:30 UTC).
+#   - workflow_dispatch → run manually to verify / force a deploy
+#
+# Required repository secrets:
+#   FTP_HOST                      e.g. ftp.allergyvoices.com (or the IP Hostinger gives)
+#   FTP_USERNAME                  Hostinger FTP account username
+#   FTP_PASSWORD                  Hostinger FTP account password
+#   VITE_SUPABASE_URL             real Supabase project URL (live site needs it)
+#   VITE_SUPABASE_PUBLISHABLE_KEY real Supabase anon/publishable key
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 15 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never run two deploys at once; let an in-progress upload finish.
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          SITE_URL: https://allergyvoices.com
+
+      - name: Verify build output
+        run: |
+          test -f dist/index.html
+          test -f dist/.htaccess
+          echo "dist/ looks good:"
+          ls -la dist
+
+      - name: Upload to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./dist/
+          server-dir: public_html/

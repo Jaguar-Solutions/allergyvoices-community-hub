@@ -204,13 +204,106 @@ the FTP-deploy GitHub Action. If/when international TTFB matters, put
 Cloudflare in front (DNS-only mode &mdash; keeps Hostinger as origin, adds
 the CDN for free).
 
+## Decision 8 &mdash; The restaurant program is database-backed, reversing
+## Decisions 2 and 3 for this surface only
+
+**Choice.** The Restaurant Allergy Transparency &amp; Recognition Program stores
+submissions, contacts, and published listings in Supabase, with a real admin
+dashboard behind Supabase Auth. Editorial content stays exactly where it is:
+markdown in `/content/`, reviewed in PRs.
+
+**Why this doesn't contradict Decision 2.** The git-as-CMS argument rests on
+editorial medical content being low-volume, written by us, and needing a human
+review trail. Restaurant submissions are none of those things. They arrive
+unpredictably from third parties, contain PII we must not put in a public git
+repo, and &mdash; once claim ships &mdash; get edited by the restaurants
+themselves. A PR per restaurant hours-change would be absurd, and a manual
+`npm run deploy` between an owner's edit and it going live defeats the point
+of self-service entirely.
+
+**Why the admin panel came back.** Decision 3 dropped it because there was
+nothing left to administer. There is now: a review queue with approve, edit,
+request-changes, hide, and CSV export. It is gated by Supabase Auth plus the
+`user_roles` / `has_role()` infrastructure that survived from the original
+build, and enforced by RLS rather than by hiding a route.
+
+**Data safety.** `restaurants` holds no PII; manager names, emails, and phone
+numbers live in `restaurant_contacts`, which has no public policy at all. The
+public directory reads only published `restaurants` rows. The survey has no
+public INSERT policy &mdash; everything goes through the `restaurant-submit`
+edge function.
+
+**What we dropped.** The four Lovable-era restaurant tables, whose RLS was
+`FOR ALL TO public USING (true)` &mdash; readable and deletable by anyone with
+the anon key. `restaurant_ratings` also contradicted the program's premise;
+this is not a grading system, so the word does not appear in the schema.
+
+**Trade-off.** Profile pages are client-rendered, so JS-less crawlers see the
+shell. Mitigated with build-time sitemap generation from Supabase plus
+`Restaurant` JSON-LD. Revisit alongside Decision 6 if search performance
+disappoints.
+
+See [`docs/RESTAURANT_PROGRAM.md`](./docs/RESTAURANT_PROGRAM.md) for setup.
+
+## Decision 9 &mdash; The site is a PWA, so restaurant surveys can be taken offline
+
+**Choice.** Added `vite-plugin-pwa`. The site installs to an iPad home
+screen, loads with no connection, and the restaurant survey queues completed
+submissions in IndexedDB until it can deliver them to the edge function.
+
+**Why.** The survey's real setting is a surveyor standing in a restaurant,
+often somewhere with no usable signal. A form that loses ten minutes of
+someone's answers because the wifi dropped doesn't get filled in twice.
+
+**Design notes.**
+
+- **IndexedDB, not localStorage.** The in-progress draft already uses
+  localStorage; a queue of completed submissions shouldn't share a 5 MB
+  synchronous quota with it.
+- **Delivery is confirmed, not assumed.** `navigator.onLine` reports true on
+  a captive wifi portal and on a signal too weak to complete a request. Only
+  a real HTTP response counts as delivered; everything else re-queues. This
+  was a genuine bug caught in testing &mdash; the first implementation treated
+  a transport failure as a server rejection and discarded the submission.
+- **Idempotent replay.** Each queued submission carries a client-generated
+  UUID, unique-indexed on `restaurant_submissions`, so a retry after a lost
+  response can't file the survey twice.
+- **Routes are preloaded.** The app is code-split, so the survey page pulls
+  in the pages it leads to while a connection is still likely. Without that,
+  losing signal mid-survey meant an unloadable chunk on submit.
+
+**Trade-off.** The whole site now ships a service worker, not just the survey.
+Editorial pages become readable offline (a bonus), but stale content is a new
+failure mode &mdash; mitigated with `registerType: "autoUpdate"`, a
+NetworkFirst strategy for data, and a `.htaccess` rule that stops `sw.js`
+from being cached under the year-long immutable rule that covers hashed
+assets. Getting that wrong would freeze the site for returning visitors.
+
+**Requires HTTPS**, which is still commented out in `public/.htaccess`.
+
+## Decision 10 &mdash; Brand colours are set by contrast ratios, not by eye
+
+**Choice.** Darkened `--primary` (53% → 46%) and `--secondary` (42% → 32%),
+and added `--primary-strong` / `--accent-strong` for text on tinted
+surfaces. The logo coral `--accent` keeps its brand value but is now treated
+as a fill only, with dark `--accent-foreground` for text on it.
+
+**Why.** An axe audit found WCAG AA contrast failures on every page of the
+site &mdash; 199 failing nodes on `/recalls` alone. White text on the old
+primary blue was 4.02:1 against a 4.5:1 requirement, and white on the coral
+was 2.94:1. For an organisation whose audience reads safety-critical
+information on phones, that's not a cosmetic issue.
+
+**How to keep it.** Never use `text-accent` for small text; use
+`text-accent-strong`. Re-run an axe pass before lightening any of these
+tokens.
+
 ## Things we explicitly didn't build
 
 - **A CMS.** Editorial happens in git.
 - **User accounts on the site.** No login. Newsletter signup is anonymous.
-- **A restaurant directory** &mdash; existed in the original codebase, removed
-  in Phase 1 for now. Will revisit later, possibly as a Supabase-backed
-  filterable directory.
+- ~~**A restaurant directory**~~ &mdash; built as a Supabase-backed filterable
+  directory. See Decision 8.
 - **Real-time anything.** No live recalls feed, no chat, no comments. The
   site is a calm reference, not a forum.
 - **Auto-publishing AI medical content.** Hard editorial rule. Drafts go

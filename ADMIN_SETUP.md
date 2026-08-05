@@ -1,6 +1,12 @@
 # Editorial workflow
 
-There is no admin panel anymore. Editorial happens in **GitHub pull requests**.
+> **Note:** the restaurant transparency program *does* have an admin dashboard
+> at `/admin`, because restaurant submissions are third-party operational data,
+> not editorial content. See
+> [`docs/RESTAURANT_PROGRAM.md`](./docs/RESTAURANT_PROGRAM.md). Everything
+> below still applies to articles, recalls, allergen hubs, and resources.
+
+Editorial content has no admin panel. It happens in **GitHub pull requests**.
 
 - Add or edit a markdown file in [`/content/`](./content/).
 - Open a pull request.
