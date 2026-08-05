@@ -20,6 +20,7 @@ import {
 } from "@/components/layout";
 import FoodAllergyInfographics from "@/components/FoodAllergyInfographics";
 import NewsFeed from "@/components/NewsFeed";
+import { SurveyInvitation } from "@/components/restaurants/SurveyInvitation";
 import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -44,7 +45,7 @@ const QUICK_LINKS = [
     title: "Recalls & Alerts",
     description: "Allergen recalls pulled from FDA, USDA, Canada, and UK food safety feeds.",
     Icon: AlertTriangle,
-    tint: "bg-accent/10 text-accent",
+    tint: "bg-accent/10 text-accent-strong",
   },
   {
     href: "/dining",
@@ -173,6 +174,23 @@ const Index = () => {
                   <Link to="/findings">See Latest Findings</Link>
                 </Button>
               </div>
+
+              {/* A quiet entry point for the other audience that reaches this
+                  page — restaurant owners — without competing with the
+                  family-facing message above it. */}
+              <p className="font-inter text-sm text-muted-foreground">
+                Run a restaurant?{" "}
+                <Link
+                  to="/restaurants/participate"
+                  className="group inline-flex items-center gap-1 font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+                >
+                  Share how you handle food allergies
+                  <ArrowRight
+                    className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </p>
             </div>
             <div className="relative">
               <FoodAllergyInfographics />
@@ -180,6 +198,10 @@ const Index = () => {
           </div>
         </Container>
       </Section>
+
+      {/* Pulled up over the hero's lower edge so it reads as part of the
+          opening moment rather than a separate band further down the page. */}
+      <SurveyInvitation className="-mt-8 md:-mt-12 pb-14 md:pb-20" />
 
       {/* Quick Links */}
       <Section>
