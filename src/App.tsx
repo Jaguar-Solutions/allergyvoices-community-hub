@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Home is part of the initial bundle (it's the landing page).
 import Index from "./pages/Index";
@@ -23,6 +24,18 @@ const DiningOut = lazy(() => import("./pages/DiningOut"));
 const SchoolTeens = lazy(() => import("./pages/SchoolTeens"));
 const About = lazy(() => import("./pages/About"));
 
+// Restaurant Allergy Transparency & Recognition Program
+const ProgramLanding = lazy(() => import("./pages/restaurants/ProgramLanding"));
+const RestaurantSurvey = lazy(() => import("./pages/restaurants/Survey"));
+const RestaurantSubmitted = lazy(() => import("./pages/restaurants/Submitted"));
+const RestaurantDirectory = lazy(() => import("./pages/restaurants/Directory"));
+const RestaurantFieldMode = lazy(() => import("./pages/restaurants/FieldMode"));
+const RestaurantProfile = lazy(() => import("./pages/restaurants/Profile"));
+
+// Admin (auth-gated inside the components themselves)
+const AdminSubmissions = lazy(() => import("./pages/admin/Submissions"));
+const AdminRestaurantDetail = lazy(() => import("./pages/admin/RestaurantDetail"));
+
 const queryClient = new QueryClient();
 
 const RouteFallback = () => (
@@ -37,6 +50,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        {/* Catches render errors and, importantly for offline use, failures to
+            load a lazy route chunk — otherwise those hang on a spinner. */}
+        <ErrorBoundary>
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -67,6 +83,20 @@ const App = () => (
             {/* Local Directory */}
             <Route path="/directory" element={<Directory />} />
 
+            {/* Restaurant transparency program.
+                The static child routes are declared before the :slug profile
+                route so a reserved word can never resolve to a listing. */}
+            <Route path="/restaurants" element={<ProgramLanding />} />
+            <Route path="/restaurants/participate" element={<RestaurantSurvey />} />
+            <Route path="/restaurants/submitted" element={<RestaurantSubmitted />} />
+            <Route path="/restaurants/directory" element={<RestaurantDirectory />} />
+            <Route path="/restaurants/field" element={<RestaurantFieldMode />} />
+            <Route path="/restaurants/:slug" element={<RestaurantProfile />} />
+
+            {/* Admin */}
+            <Route path="/admin" element={<AdminSubmissions />} />
+            <Route path="/admin/restaurants/:id" element={<AdminRestaurantDetail />} />
+
             {/* About / Editorial Policy */}
             <Route path="/about" element={<About />} />
 
@@ -81,14 +111,20 @@ const App = () => (
             {/* Legacy redirect */}
             <Route path="/safe-shopping" element={<Navigate to="/resources" replace />} />
 
-            {/* Removed for now — restaurants section will return later */}
-            <Route path="/restaurants" element={<Navigate to="/dining" replace />} />
-            <Route path="/restaurant-submission" element={<Navigate to="/dining" replace />} />
-            <Route path="/restaurant-directory" element={<Navigate to="/dining" replace />} />
+            {/* Legacy restaurant URLs from the original build */}
+            <Route
+              path="/restaurant-submission"
+              element={<Navigate to="/restaurants/participate" replace />}
+            />
+            <Route
+              path="/restaurant-directory"
+              element={<Navigate to="/restaurants/directory" replace />}
+            />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        </ErrorBoundary>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

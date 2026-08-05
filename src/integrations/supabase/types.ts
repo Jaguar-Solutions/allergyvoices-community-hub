@@ -65,28 +65,37 @@ export type Database = {
         }
         Relationships: []
       }
-      restaurant_publications: {
+      restaurant_badges: {
         Row: {
+          awarded_at: string
+          awarded_by: string | null
+          badge_key: string
+          expires_at: string | null
           id: string
-          published_at: string
-          published_data: Json
+          metadata: Json
           restaurant_id: string
         }
         Insert: {
+          awarded_at?: string
+          awarded_by?: string | null
+          badge_key: string
+          expires_at?: string | null
           id?: string
-          published_at?: string
-          published_data: Json
+          metadata?: Json
           restaurant_id: string
         }
         Update: {
+          awarded_at?: string
+          awarded_by?: string | null
+          badge_key?: string
+          expires_at?: string | null
           id?: string
-          published_at?: string
-          published_data?: Json
+          metadata?: Json
           restaurant_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "restaurant_publications_restaurant_id_fkey"
+            foreignKeyName: "restaurant_badges_restaurant_id_fkey"
             columns: ["restaurant_id"]
             isOneToOne: false
             referencedRelation: "restaurants"
@@ -94,66 +103,172 @@ export type Database = {
           },
         ]
       }
-      restaurant_questionnaires: {
+      restaurant_claims: {
+        Row: {
+          claimant_email: string
+          claimant_id: string | null
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          id: string
+          note: string | null
+          restaurant_id: string
+          status: string
+        }
+        Insert: {
+          claimant_email: string
+          claimant_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          id?: string
+          note?: string | null
+          restaurant_id: string
+          status?: string
+        }
+        Update: {
+          claimant_email?: string
+          claimant_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          id?: string
+          note?: string | null
+          restaurant_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_claims_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurant_contacts: {
         Row: {
           created_at: string
           id: string
-          responses: Json
+          is_primary: boolean
+          manager_email: string
+          manager_name: string | null
+          phone: string | null
+          position: string | null
           restaurant_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          manager_email: string
+          manager_name?: string | null
+          phone?: string | null
+          position?: string | null
+          restaurant_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          manager_email?: string
+          manager_name?: string | null
+          phone?: string | null
+          position?: string | null
+          restaurant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_contacts_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurant_events: {
+        Row: {
+          actor_id: string | null
+          actor_type: string
+          created_at: string
+          event_type: string
+          id: string
+          note: string | null
+          payload: Json
+          restaurant_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          actor_type?: string
+          created_at?: string
+          event_type: string
+          id?: string
+          note?: string | null
+          payload?: Json
+          restaurant_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          actor_type?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          note?: string | null
+          payload?: Json
+          restaurant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_events_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurant_submissions: {
+        Row: {
+          answers: Json
+          client_submission_id: string | null
+          id: string
+          restaurant_id: string
+          schema_version: number
+          source: Database["public"]["Enums"]["restaurant_submission_source"]
           submitted_at: string
+          submitted_by: string | null
+          version: number
         }
         Insert: {
-          created_at?: string
+          answers: Json
+          client_submission_id?: string | null
           id?: string
-          responses: Json
           restaurant_id: string
+          schema_version?: number
+          source?: Database["public"]["Enums"]["restaurant_submission_source"]
           submitted_at?: string
+          submitted_by?: string | null
+          version: number
         }
         Update: {
-          created_at?: string
+          answers?: Json
+          client_submission_id?: string | null
           id?: string
-          responses?: Json
           restaurant_id?: string
+          schema_version?: number
+          source?: Database["public"]["Enums"]["restaurant_submission_source"]
           submitted_at?: string
+          submitted_by?: string | null
+          version?: number
         }
         Relationships: [
           {
-            foreignKeyName: "restaurant_questionnaires_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      restaurant_ratings: {
-        Row: {
-          comments: string | null
-          created_at: string
-          id: string
-          rating: number
-          restaurant_id: string
-          reviewed_by: string | null
-        }
-        Insert: {
-          comments?: string | null
-          created_at?: string
-          id?: string
-          rating: number
-          restaurant_id: string
-          reviewed_by?: string | null
-        }
-        Update: {
-          comments?: string | null
-          created_at?: string
-          id?: string
-          rating?: number
-          restaurant_id?: string
-          reviewed_by?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "restaurant_ratings_restaurant_id_fkey"
+            foreignKeyName: "restaurant_submissions_restaurant_id_fkey"
             columns: ["restaurant_id"]
             isOneToOne: false
             referencedRelation: "restaurants"
@@ -163,42 +278,104 @@ export type Database = {
       }
       restaurants: {
         Row: {
+          address_line1: string | null
+          address_line2: string | null
           city: string
+          claim_status: Database["public"]["Enums"]["restaurant_claim_status"]
+          claimed_at: string | null
+          claimed_by: string | null
+          country: string
           created_at: string
-          email: string
+          cuisine: string[]
+          facets: Json
           id: string
+          information_current_as_of: string | null
+          latitude: number | null
+          listing_source: Database["public"]["Enums"]["restaurant_listing_source"]
+          longitude: number | null
           name: string
           phone: string | null
+          postal_code: string | null
+          publish_consent: Database["public"]["Enums"]["restaurant_publish_consent"]
+          published_at: string | null
+          published_submission_id: string | null
+          slug: string | null
           state: string
-          status: string
+          status: Database["public"]["Enums"]["restaurant_status"]
           submitted_at: string
           updated_at: string
+          wants_website_badge: boolean
+          website: string | null
         }
         Insert: {
+          address_line1?: string | null
+          address_line2?: string | null
           city: string
+          claim_status?: Database["public"]["Enums"]["restaurant_claim_status"]
+          claimed_at?: string | null
+          claimed_by?: string | null
+          country?: string
           created_at?: string
-          email: string
+          cuisine?: string[]
+          facets?: Json
           id?: string
+          information_current_as_of?: string | null
+          latitude?: number | null
+          listing_source?: Database["public"]["Enums"]["restaurant_listing_source"]
+          longitude?: number | null
           name: string
           phone?: string | null
+          postal_code?: string | null
+          publish_consent?: Database["public"]["Enums"]["restaurant_publish_consent"]
+          published_at?: string | null
+          published_submission_id?: string | null
+          slug?: string | null
           state: string
-          status?: string
+          status?: Database["public"]["Enums"]["restaurant_status"]
           submitted_at?: string
           updated_at?: string
+          wants_website_badge?: boolean
+          website?: string | null
         }
         Update: {
+          address_line1?: string | null
+          address_line2?: string | null
           city?: string
+          claim_status?: Database["public"]["Enums"]["restaurant_claim_status"]
+          claimed_at?: string | null
+          claimed_by?: string | null
+          country?: string
           created_at?: string
-          email?: string
+          cuisine?: string[]
+          facets?: Json
           id?: string
+          information_current_as_of?: string | null
+          latitude?: number | null
+          listing_source?: Database["public"]["Enums"]["restaurant_listing_source"]
+          longitude?: number | null
           name?: string
           phone?: string | null
+          postal_code?: string | null
+          publish_consent?: Database["public"]["Enums"]["restaurant_publish_consent"]
+          published_at?: string | null
+          published_submission_id?: string | null
+          slug?: string | null
           state?: string
-          status?: string
+          status?: Database["public"]["Enums"]["restaurant_status"]
           submitted_at?: string
           updated_at?: string
+          wants_website_badge?: boolean
+          website?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "restaurants_published_submission_fk"
+            columns: ["published_submission_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       site_metrics: {
         Row: {
@@ -278,6 +455,17 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      restaurant_claim_status: "unclaimed" | "pending" | "claimed"
+      restaurant_listing_source: "self_submitted" | "admin_entered"
+      restaurant_publish_consent: "yes" | "yes_contact_first" | "no"
+      restaurant_status:
+        | "submitted"
+        | "in_review"
+        | "changes_requested"
+        | "published"
+        | "hidden"
+        | "declined"
+      restaurant_submission_source: "web_form" | "owner_update" | "admin_edit"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -169,14 +169,14 @@ const Directory = () => (
 
               <div className="mt-5 flex flex-col sm:flex-row gap-3">
                 <a
-                  href="mailto:directory@allergyvoices.com"
+                  href="mailto:info@allergyvoices.com"
                   className="inline-flex items-center gap-1.5 font-inter text-sm font-medium text-primary hover:underline"
                 >
                   <Mail className="w-4 h-4" aria-hidden="true" />
                   Suggest a local listing
                 </a>
                 <a
-                  href="mailto:directory@allergyvoices.com?subject=Report a listing change"
+                  href="mailto:info@allergyvoices.com?subject=Report a listing change"
                   className="inline-flex items-center gap-1.5 font-inter text-sm font-medium text-primary hover:underline"
                 >
                   <Mail className="w-4 h-4" aria-hidden="true" />

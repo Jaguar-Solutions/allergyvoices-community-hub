@@ -131,7 +131,7 @@ const DiningOut = () => {
 
             <div className="mt-6">
               <a
-                href="mailto:restaurants@allergyvoices.com"
+                href="mailto:info@allergyvoices.com"
                 className="inline-flex items-center gap-1.5 font-poppins text-primary hover:underline"
               >
                 Talk to us about partnering
@@ -166,10 +166,10 @@ const DiningOut = () => {
                   We're shaping the criteria with families and restaurant
                   partners. Interested in being one of the first?{" "}
                   <a
-                    href="mailto:restaurants@allergyvoices.com"
+                    href="mailto:info@allergyvoices.com"
                     className="text-primary hover:underline font-medium"
                   >
-                    restaurants@allergyvoices.com
+                    info@allergyvoices.com
                   </a>
                 </p>
               </div>

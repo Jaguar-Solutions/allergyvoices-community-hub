@@ -1,7 +1,15 @@
-project_id = "nqbmglzfcuxkjckrgvkn"
+project_id = "xlxouevfbkicvepxuiyk"
 
 [functions.mailerlite-subscribe]
 verify_jwt = false
 
 [functions.send-thank-you-email]
 verify_jwt = false
+
+# Public survey submission. Validates and spam-checks before writing.
+[functions.restaurant-submit]
+verify_jwt = false
+
+# Admin-only: called while publishing a listing, so it keeps JWT verification.
+[functions.geocode-address]
+verify_jwt = true

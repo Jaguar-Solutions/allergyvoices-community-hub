@@ -30,6 +30,13 @@ const NAV: NavGroup[] = [
       { name: "Local Directory", href: "/directory", description: "Allergists, dietitians, support groups" },
     ],
   },
+  {
+    name: "Restaurants",
+    children: [
+      { name: "Restaurant Directory", href: "/restaurants/directory", description: "Restaurants that shared how they handle allergies" },
+      { name: "For Restaurants", href: "/restaurants", description: "Join the transparency program — free" },
+    ],
+  },
   { name: "About", href: "/about" },
 ];
 

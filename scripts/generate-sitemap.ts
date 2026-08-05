@@ -29,6 +29,9 @@ const STATIC_ROUTES: { path: string; changefreq: string; priority: number }[] = 
   { path: "/dining", changefreq: "monthly", priority: 0.7 },
   { path: "/schools-teens", changefreq: "monthly", priority: 0.7 },
   { path: "/directory", changefreq: "weekly", priority: 0.7 },
+  { path: "/restaurants", changefreq: "monthly", priority: 0.7 },
+  { path: "/restaurants/directory", changefreq: "daily", priority: 0.8 },
+  { path: "/restaurants/participate", changefreq: "monthly", priority: 0.6 },
   { path: "/about", changefreq: "monthly", priority: 0.5 },
 ];
 
@@ -72,6 +75,71 @@ function listPublishedSlugs(
   return routes;
 }
 
+/**
+ * Reads `.env` by hand — this script runs under tsx, not Vite, so it doesn't
+ * get `import.meta.env`. Missing values are not an error; the restaurant
+ * routes are simply skipped.
+ */
+function readEnvFile(): Record<string, string> {
+  const envPath = join(ROOT, ".env");
+  if (!existsSync(envPath)) return {};
+  const out: Record<string, string> = {};
+  for (const line of readFileSync(envPath, "utf8").split("\n")) {
+    const match = /^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/.exec(line);
+    if (match) out[match[1]] = match[2].replace(/^["']|["']$/g, "");
+  }
+  return out;
+}
+
+/**
+ * Published restaurant profiles live in Supabase rather than in `content/`,
+ * so they're fetched at build time to get them into the sitemap. A failure
+ * here logs and continues — a sitemap missing a few listings is a much
+ * smaller problem than a broken build.
+ */
+async function listRestaurantRoutes(): Promise<ContentRoute[]> {
+  const env = { ...readEnvFile(), ...process.env };
+  const url = env.VITE_SUPABASE_URL;
+  const key = env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+  if (!url || !key) {
+    console.warn("! Skipping restaurant routes: Supabase credentials not found");
+    return [];
+  }
+
+  try {
+    const endpoint = `${url.replace(/\/$/, "")}/rest/v1/restaurants` +
+      "?select=slug,published_at,information_current_as_of,updated_at" +
+      "&status=eq.published&slug=not.is.null";
+
+    const response = await fetch(endpoint, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+    });
+
+    if (!response.ok) {
+      console.warn(`! Skipping restaurant routes: Supabase returned ${response.status}`);
+      return [];
+    }
+
+    const rows = (await response.json()) as Array<{
+      slug: string;
+      published_at: string | null;
+      information_current_as_of: string | null;
+      updated_at: string | null;
+    }>;
+
+    return rows.map((row) => ({
+      path: `/restaurants/${row.slug}`,
+      lastmod: (row.information_current_as_of ?? row.updated_at ?? row.published_at ?? "").slice(0, 10) || undefined,
+      changefreq: "monthly",
+      priority: 0.6,
+    }));
+  } catch (error) {
+    console.warn("! Skipping restaurant routes:", (error as Error).message);
+    return [];
+  }
+}
+
 function escapeXml(s: string): string {
   return s.replace(/[<>&"']/g, (c) =>
     ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&apos;" })[c]!,
@@ -98,12 +166,13 @@ ${urls}
 `;
 }
 
-function main() {
+async function main() {
   const dynamic: ContentRoute[] = [
     ...listPublishedSlugs("articles", "/findings", "weekly", 0.7),
     ...listPublishedSlugs("recalls", "/recalls", "monthly", 0.6),
     ...listPublishedSlugs("allergens", "/allergens", "weekly", 0.8),
     ...listPublishedSlugs("resources", "/resources", "monthly", 0.7),
+    ...(await listRestaurantRoutes()),
   ];
 
   const all = [...STATIC_ROUTES, ...dynamic];
@@ -124,4 +193,7 @@ function main() {
   console.log(`${STATIC_ROUTES.length} static + ${dynamic.length} content routes`);
 }
 
-main();
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
