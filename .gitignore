@@ -31,3 +31,7 @@ topic-suggestions.md
 
 # Exported legacy Supabase rows — contains contact emails, never commit
 legacy-supabase-export
+
+# Local environment. The anon key is public-by-design, but this file is
+# where a real secret would eventually land — keep it out of git.
+.env
