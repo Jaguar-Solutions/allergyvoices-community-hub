@@ -94,7 +94,7 @@ const Navigation = () => {
     >
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md">
+          <Link to="/" className="-ml-1 flex min-h-[44px] items-center rounded-md px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <img
               src={logoImage}
               alt="AllergyVoices"
@@ -175,7 +175,7 @@ const Navigation = () => {
             type="button"
             aria-label={isMobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMobileOpen}
-            className="lg:hidden p-2 rounded-md hover:bg-muted transition-colors"
+            className="lg:hidden -mr-2 inline-flex h-11 w-11 items-center justify-center rounded-md transition-colors hover:bg-muted"
             onClick={() => setIsMobileOpen((v) => !v)}
           >
             {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

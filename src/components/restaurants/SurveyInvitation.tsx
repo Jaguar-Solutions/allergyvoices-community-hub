@@ -293,7 +293,7 @@ export function SurveyInvitation({ className }: { className?: string }) {
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3 py-1 font-inter text-sm font-medium text-white transition-colors hover:border-white/50 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(222_32%_11%)]"
+              className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-white/20 px-4 py-2 font-inter text-sm font-medium text-white transition-colors hover:border-white/50 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(222_32%_11%)]"
             >
               {copied ? (
                 <Check className="h-3.5 w-3.5" aria-hidden="true" />

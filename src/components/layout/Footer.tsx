@@ -50,13 +50,13 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-poppins font-semibold text-sm uppercase tracking-wide mb-4">
+            <h2 className="font-poppins font-semibold text-sm uppercase tracking-wide mb-4">
               Explore
-            </h4>
+            </h2>
             <ul className="space-y-2 font-inter text-sm">
               {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-background/80 hover:text-background transition-colors">
+                  <Link to={link.href} className="-mx-2 inline-block rounded px-2 py-1.5 text-background/80 transition-colors hover:text-background">
                     {link.label}
                   </Link>
                 </li>
@@ -65,33 +65,33 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-poppins font-semibold text-sm uppercase tracking-wide mb-4">
+            <h2 className="font-poppins font-semibold text-sm uppercase tracking-wide mb-4">
               About
-            </h4>
+            </h2>
             <ul className="space-y-2 font-inter text-sm">
               {ABOUT_LINKS.map((link) =>
                 link.href.startsWith("mailto:") ? (
                   <li key={link.href}>
-                    <a href={link.href} className="text-background/80 hover:text-background transition-colors">
+                    <a href={link.href} className="-mx-2 inline-block rounded px-2 py-1.5 text-background/80 transition-colors hover:text-background">
                       {link.label}
                     </a>
                   </li>
                 ) : (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-background/80 hover:text-background transition-colors">
+                    <Link to={link.href} className="-mx-2 inline-block rounded px-2 py-1.5 text-background/80 transition-colors hover:text-background">
                       {link.label}
                     </Link>
                   </li>
                 ),
               )}
             </ul>
-            <div className="flex gap-3 mt-5">
+            <div className="-ml-2.5 mt-3 flex gap-1">
               {SOCIAL_LINKS.map(({ label, href, Icon }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="text-background/70 hover:text-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/40 rounded p-1"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded text-background/70 transition-colors hover:bg-background/10 hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/40"
                 >
                   <Icon className="h-5 w-5" />
                 </a>
@@ -105,7 +105,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} AllergyVoices. All rights reserved.
           </p>
           <p className="font-inter text-xs text-background/60">
-            Questions? <a href="mailto:info@allergyvoices.com" className="underline-offset-2 hover:underline">info@allergyvoices.com</a>
+            Questions? <a href="mailto:info@allergyvoices.com" className="underline-offset-2 hover:underline transition-colors">info@allergyvoices.com</a>
           </p>
         </div>
       </Container>

@@ -25,6 +25,7 @@ const Resources = () => {
       />
       <Section>
         <Container width="default">
+          <h2 className="sr-only">All family resources</h2>
           {resources.length === 0 ? (
             <p className="font-inter text-muted-foreground">Resources coming soon.</p>
           ) : (

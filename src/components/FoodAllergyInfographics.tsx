@@ -123,7 +123,7 @@ const FoodAllergyInfographics = () => {
           <CardContent className="p-3 lg:p-4 h-full flex flex-col">
             <div className="flex items-center space-x-2 mb-3 lg:mb-4">
               <TrendingUp className="w-4 h-4 text-primary" />
-              <h3 className="font-poppins font-semibold text-base lg:text-lg text-foreground">Growing Trend</h3>
+              <h2 className="font-poppins font-semibold text-base lg:text-lg text-foreground">Growing Trend</h2>
             </div>
             <div className="flex-1 flex items-center justify-center min-h-0">
               <div className="w-full h-40 lg:h-48">

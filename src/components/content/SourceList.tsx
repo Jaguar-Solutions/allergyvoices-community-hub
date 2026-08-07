@@ -19,7 +19,7 @@ export function SourceList({ sources }: SourceListProps) {
               href={source.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-start gap-1.5 text-primary hover:underline"
+              className="inline-flex items-start gap-1.5 text-primary hover:underline transition-colors"
             >
               <span>{source.name}</span>
               <ExternalLink className="h-3.5 w-3.5 mt-0.5 flex-shrink-0" aria-hidden="true" />

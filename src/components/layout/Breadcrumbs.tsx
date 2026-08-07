@@ -19,7 +19,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
         <li className="flex items-center">
           <Link
             to="/"
-            className="inline-flex items-center gap-1 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="-m-1.5 inline-flex min-h-[24px] min-w-[24px] items-center justify-center gap-1 rounded p-1.5 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Home"
           >
             <Home className="h-3.5 w-3.5" aria-hidden="true" />

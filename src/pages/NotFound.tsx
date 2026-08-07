@@ -53,7 +53,7 @@ const NotFound = () => {
                   <li key={item.href}>
                     <Link
                       to={item.href}
-                      className="inline-flex rounded-full border border-border bg-background px-4 py-2 font-inter text-sm text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      className="inline-flex min-h-[44px] items-center rounded-full border border-border bg-background px-4 py-2 font-inter text-sm text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       {item.label}
                     </Link>
