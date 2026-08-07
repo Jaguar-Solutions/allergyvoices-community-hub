@@ -53,6 +53,10 @@ export default {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+          // Fourth member of the same family as primary/secondary/accent
+          // -strong: a semantic colour used as small text on its own tint
+          // never clears 4.5:1 at its default lightness.
+          strong: "hsl(var(--destructive-strong))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",

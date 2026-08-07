@@ -1,14 +1,13 @@
-import { ExternalLink } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { ExternalLink, TriangleAlert } from "lucide-react";
 import { ALLERGEN_LABELS, type RecallAlert } from "@/content/schemas";
-import { ContentMeta } from "./ContentMeta";
+import { ALLERGEN_TINT_BG } from "./allergen-tints";
+import { cn } from "@/lib/utils";
 
 const AGENCY_LABELS: Record<RecallAlert["agency"], string> = {
   fda: "FDA",
   "usda-fsis": "USDA FSIS",
-  cfia: "CFIA (Canada)",
-  "fsa-uk": "FSA (UK)",
+  cfia: "CFIA",
+  "fsa-uk": "FSA UK",
   other: "Other agency",
 };
 
@@ -20,77 +19,104 @@ const REGION_LABELS: Record<RecallAlert["region"], string> = {
   global: "Global",
 };
 
-const CLASS_LABELS: Record<RecallAlert["recall_class"], string> = {
-  "class-i": "Class I (highest risk)",
+export const CLASS_LABELS: Record<RecallAlert["recall_class"], string> = {
+  "class-i": "Class I",
   "class-ii": "Class II",
   "class-iii": "Class III",
   voluntary: "Voluntary",
-  unspecified: "Unspecified class",
+  unspecified: "Class not stated",
 };
 
-interface RecallCardProps {
-  recall: RecallAlert;
-}
+/**
+ * One recall.
+ *
+ * The undeclared allergen leads, in the site's per-allergen tints, because
+ * that is the single thing a parent is scanning a recall list for. It used to
+ * sit mid-card in small grey text under a label.
+ *
+ * Class I is the agency's own "reasonable probability of serious harm"
+ * classification, so it gets weight the other classes don't. Everything else
+ * stays visually equal: we surface the agency's judgement, we don't add one.
+ */
+export function RecallCard({ recall }: { recall: RecallAlert }) {
+  const isHighestRisk = recall.recall_class === "class-i";
 
-export function RecallCard({ recall }: RecallCardProps) {
   return (
-    <Card className="border-l-4 border-l-accent">
-      <CardContent className="p-6 md:p-7 space-y-4">
-        <div className="flex flex-wrap items-center gap-2 text-xs font-medium">
-          <Badge variant="outline" className="bg-accent/10 text-accent-strong border-accent/30">
-            {AGENCY_LABELS[recall.agency]}
-          </Badge>
-          <Badge variant="outline" className="font-normal">
+    <article
+      className={cn(
+        "group flex h-full flex-col rounded-2xl border bg-card p-5 transition-shadow hover:shadow-md",
+        isHighestRisk ? "border-destructive/30" : "border-border",
+      )}
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        {isHighestRisk && (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-destructive/10 px-2.5 py-1 font-inter text-xs font-semibold text-destructive-strong">
+            <TriangleAlert className="h-3.5 w-3.5" aria-hidden="true" />
+            Highest risk
+          </span>
+        )}
+        <span className="rounded-full border border-border px-2.5 py-1 font-inter text-xs font-medium text-muted-foreground">
+          {AGENCY_LABELS[recall.agency]}
+        </span>
+        {!isHighestRisk && (
+          <span className="font-inter text-xs text-muted-foreground">
             {CLASS_LABELS[recall.recall_class]}
-          </Badge>
-          <Badge variant="outline" className="font-normal">
-            {REGION_LABELS[recall.region]}
-          </Badge>
-        </div>
+          </span>
+        )}
+        <time
+          dateTime={recall.recall_date}
+          className="ml-auto font-inter text-xs text-muted-foreground"
+        >
+          {new Date(`${recall.recall_date}T00:00:00`).toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </time>
+      </div>
 
-        <div>
-          <h2 className="font-poppins font-semibold text-lg md:text-xl text-foreground">
-            {recall.product_name}
-          </h2>
-          {recall.brand && (
-            <p className="font-inter text-sm text-muted-foreground mt-0.5">
-              {recall.brand}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <p className="font-inter text-xs font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Undeclared allergens
-          </p>
-          <ul className="flex flex-wrap gap-1.5">
-            {recall.undeclared_allergens.map((a) => (
-              <li key={a}>
-                <Badge className="bg-accent text-accent-foreground hover:bg-accent">
-                  {ALLERGEN_LABELS[a]}
-                </Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <p className="font-inter text-foreground/85 leading-relaxed text-sm md:text-base">
-          {recall.recall_reason}
-        </p>
-
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-          <ContentMeta publishedDate={recall.recall_date} lastReviewed={recall.last_reviewed} />
-          <a
-            href={recall.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 font-inter text-sm font-medium text-primary hover:underline"
+      <ul className="mt-3 flex flex-wrap gap-1.5">
+        {recall.undeclared_allergens.map((a) => (
+          <li
+            key={a}
+            className={cn(
+              "rounded-full px-2.5 py-1 font-inter text-sm font-semibold text-foreground",
+              ALLERGEN_TINT_BG[a],
+            )}
           >
-            Official source
-            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-          </a>
-        </div>
-      </CardContent>
-    </Card>
+            {ALLERGEN_LABELS[a]}
+          </li>
+        ))}
+      </ul>
+
+      <h3 className="mt-3 break-words font-poppins text-base font-semibold leading-snug text-foreground">
+        {recall.product_name}
+      </h3>
+      {recall.brand && (
+        <p className="mt-0.5 font-inter text-sm text-muted-foreground">
+          {recall.brand}
+        </p>
+      )}
+
+      <p className="mt-2 line-clamp-3 font-inter text-sm leading-relaxed text-foreground/80">
+        {recall.recall_reason}
+      </p>
+
+      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4">
+        <span className="font-inter text-xs text-muted-foreground">
+          {REGION_LABELS[recall.region]}
+        </span>
+        <a
+          href={recall.source_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-[24px] items-center gap-1.5 rounded-sm font-inter text-sm font-medium text-primary transition-colors hover:text-primary-strong hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          Official source
+          <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          <span className="sr-only">for {recall.product_name}</span>
+        </a>
+      </div>
+    </article>
   );
 }

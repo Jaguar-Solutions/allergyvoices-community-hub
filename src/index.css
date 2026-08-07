@@ -76,6 +76,7 @@
 
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
+    --destructive-strong: 0 72% 40%;       /* red as text on a red tint */
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
@@ -132,6 +133,7 @@
 
     --destructive: 0 62% 45%;
     --destructive-foreground: 210 40% 96%;
+    --destructive-strong: 0 75% 72%;
 
     --border: 222 24% 20%;
     --input: 222 24% 20%;
