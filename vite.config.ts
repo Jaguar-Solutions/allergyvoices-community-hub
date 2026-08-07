@@ -16,8 +16,11 @@ export default defineConfig({
     // offline as a side effect.
     VitePWA({
       registerType: "autoUpdate",
-      // Enabled in dev so the offline path can actually be tested locally.
-      devOptions: { enabled: true, type: "module" },
+      // Off in dev. A service worker in `npm run dev` serves stale bundles
+      // after every edit, which looks exactly like "my change didn't apply".
+      // Test offline behaviour with `npm run build && npm run preview`, which
+      // is the bundle that actually ships.
+      devOptions: { enabled: false },
       includeAssets: ["favicon-32.png", "favicon-16.png", "apple-touch-icon.png"],
       manifest: {
         name: "Allergy Voices",

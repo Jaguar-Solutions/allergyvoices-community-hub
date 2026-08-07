@@ -51,6 +51,8 @@ const RestaurantDirectory = () => {
   );
 
   const hasFilters = hasActiveFilters(filters);
+  // A young directory should look deliberate, not empty.
+  const useFeature = results.length > 0 && results.length <= 2;
 
   const set = (patch: Partial<DirectoryFilters>) =>
     setFilters((f) => ({ ...f, ...patch }));
@@ -176,7 +178,7 @@ const RestaurantDirectory = () => {
         </Container>
       </Section>
 
-      <Section spacing="sm" className="pt-0">
+      <Section spacing="sm" className="pt-0 md:pt-0">
         <Container width="wide">
           {isLoading && <DirectorySkeleton />}
 
@@ -189,7 +191,16 @@ const RestaurantDirectory = () => {
           {!isLoading && !isError && (
             <>
               {results.length > 0 && (
-                <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                <ul
+                  className={
+                    // One or two listings in a three-column grid look like a
+                    // failed page load. Below that threshold the cards go
+                    // full width and carry more detail instead.
+                    useFeature
+                      ? "grid gap-5"
+                      : "grid gap-5 md:grid-cols-2 lg:grid-cols-3"
+                  }
+                >
                   {results.map((listing, index) => (
                     <li
                       key={listing.id}
@@ -200,7 +211,10 @@ const RestaurantDirectory = () => {
                       // index.css disables this entirely.
                       style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
                     >
-                      <RestaurantCard listing={listing} />
+                      <RestaurantCard
+                        listing={listing}
+                        variant={useFeature ? "feature" : "compact"}
+                      />
                     </li>
                   ))}
                 </ul>
