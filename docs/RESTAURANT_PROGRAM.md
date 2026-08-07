@@ -191,7 +191,8 @@ link resolves to the React app's 404 page.
 | Edit listing details | Name, address, phone, website, cuisine, publish consent. Applies immediately to the listing. |
 | Edit responses | Writes a **new submission version**. The restaurant's original answers are never overwritten. |
 | Publish | Derives public facets from the chosen version, generates the slug once, geocodes, sets status. |
-| Request changes | Sets status and records the note in the audit log. |
+| Request changes | Sets status, records the note, and **emails the restaurant** the note so they can reply. |
+| Tell them they're live | Emails a published restaurant a link to their listing. |
 | Hide | Pulls a published listing without deleting it. |
 | Do not publish | Marks the listing declined. |
 | Export CSV | Current filtered view, including answers from submissions not yet published. |
@@ -199,6 +200,24 @@ link resolves to the React app's 404 page.
 Publishing is blocked — in the UI *and* by a database constraint — for any
 restaurant whose consent is "No". A restaurant that asked to be contacted
 first is publishable, but the admin sees a warning with their email address.
+
+## Admin email
+
+`restaurant-notify` sends on an admin's behalf. Two things keep it safe:
+
+- It requires a JWT (`verify_jwt = true`) **and** independently re-checks the
+  admin role inside the function. Without the second check, any signed-in
+  user could send mail from the allergyvoices.com domain.
+- The recipient is never taken from the request. It is looked up from
+  `restaurant_contacts` with the service role, so a caller cannot aim it at
+  an arbitrary inbox. Admin-typed text is HTML-escaped before it goes into
+  the body.
+
+Every send is written to `restaurant_events` as `email:<kind>`, so a
+restaurant's history shows what was sent and when.
+
+Verified against the live project: unauthenticated returns 401, the public
+anon key returns 401, and a genuine admin returns 200.
 
 ## How data flows
 

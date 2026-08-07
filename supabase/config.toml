@@ -13,3 +13,7 @@ verify_jwt = false
 # Admin-only: called while publishing a listing, so it keeps JWT verification.
 [functions.geocode-address]
 verify_jwt = true
+# Admin-only: emails a restaurant on an admin's behalf. Keeps JWT verification
+# and re-checks the admin role inside the function.
+[functions.restaurant-notify]
+verify_jwt = true

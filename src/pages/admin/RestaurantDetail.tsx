@@ -7,6 +7,7 @@ import {
   ExternalLink,
   Eye,
   EyeOff,
+  Mail,
   MessageSquare,
   Save,
 } from "lucide-react";
@@ -29,6 +30,7 @@ import {
   fetchRestaurantDetail,
   publishRestaurant,
   requestChanges,
+  notifyRestaurant,
   saveAdminEdit,
   setStatus,
   updateRestaurantFields,
@@ -135,14 +137,37 @@ function RestaurantDetailInner() {
 
   const changesMutation = useMutation({
     mutationFn: () => requestChanges(id, changeNote),
-    onSuccess: () => {
-      toast({
-        title: "Marked as changes requested",
-        description: "Email the restaurant to let them know what you need.",
-      });
+    onSuccess: (result) => {
+      // The status always changes; the email may not. Say which happened,
+      // rather than implying the restaurant was told when it wasn't.
+      if (result.ok) {
+        toast({
+          title: "Changes requested",
+          description: `Emailed ${result.sentTo}. They can reply directly.`,
+        });
+      } else {
+        toast({
+          title: "Status saved, but the email did not send",
+          description: `${result.error} Contact them directly.`,
+          variant: "destructive",
+        });
+      }
       setChangeNote("");
       refresh();
     },
+    onError: notifyError,
+  });
+
+  const publishNotifyMutation = useMutation({
+    mutationFn: () => notifyRestaurant(id, "published"),
+    onSuccess: (result) =>
+      result.ok
+        ? toast({ title: "Restaurant notified", description: `Emailed ${result.sentTo}.` })
+        : toast({
+            title: "Could not send the email",
+            description: result.error,
+            variant: "destructive",
+          }),
     onError: notifyError,
   });
 
@@ -320,6 +345,20 @@ function RestaurantDetailInner() {
                       : "Publish to directory"}
                   </Button>
 
+                  {restaurant.status === "published" && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      disabled={busy || publishNotifyMutation.isPending}
+                      onClick={() => publishNotifyMutation.mutate()}
+                    >
+                      <Mail className="mr-1.5 h-4 w-4" aria-hidden="true" />
+                      {publishNotifyMutation.isPending
+                        ? "Sending…"
+                        : "Tell them they're live"}
+                    </Button>
+                  )}
+
                   {restaurant.status !== "in_review" && (
                     <Button
                       variant="outline"
@@ -363,6 +402,10 @@ function RestaurantDetailInner() {
                   <Label htmlFor="change-note" className="font-inter text-sm">
                     What do you need from them?
                   </Label>
+                  <p className="font-inter text-xs text-muted-foreground">
+                    This is emailed to {contact?.manager_email ?? "the contact on file"},
+                    who can reply directly.
+                  </p>
                   <Textarea
                     id="change-note"
                     rows={3}
@@ -376,7 +419,7 @@ function RestaurantDetailInner() {
                     disabled={busy || !changeNote.trim()}
                     onClick={() => changesMutation.mutate()}
                   >
-                    Save request
+                    Send request
                   </Button>
                 </CardContent>
               </Card>

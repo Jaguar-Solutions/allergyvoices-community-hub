@@ -160,8 +160,60 @@ export async function setStatus(
   await logEvent(restaurantId, `status:${status}`, note);
 }
 
-export async function requestChanges(restaurantId: string, note: string) {
+export interface NotifyResult {
+  ok: boolean;
+  sentTo?: string;
+  error?: string;
+}
+
+/**
+ * Emails the restaurant. The recipient is resolved server-side from our own
+ * contact records, so nothing here can redirect the message.
+ */
+export async function notifyRestaurant(
+  restaurantId: string,
+  kind: "changes_requested" | "published",
+  message = "",
+): Promise<NotifyResult> {
+  try {
+    const { data, error } = await supabase.functions.invoke("restaurant-notify", {
+      body: { restaurantId, kind, message },
+    });
+
+    if (error) {
+      // The edge function puts a readable reason in the body; surface that
+      // instead of "non-2xx status code".
+      let detail = error.message;
+      if (error.name === "FunctionsHttpError") {
+        try {
+          const body = await (error as { context?: Response }).context?.json();
+          if (body && typeof body.error === "string") detail = body.error;
+        } catch {
+          // Non-JSON body; keep the original message.
+        }
+      }
+      return { ok: false, error: detail };
+    }
+    return { ok: true, sentTo: (data as { sentTo?: string })?.sentTo };
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Could not send the email.",
+    };
+  }
+}
+
+/**
+ * Mark a submission as needing something from the restaurant, and tell them
+ * what. The status change is the record; the email is the part that actually
+ * reaches a human, so a failure to send is reported rather than swallowed.
+ */
+export async function requestChanges(
+  restaurantId: string,
+  note: string,
+): Promise<NotifyResult> {
   await setStatus(restaurantId, "changes_requested", note);
+  return notifyRestaurant(restaurantId, "changes_requested", note);
 }
 
 async function geocode(address: string): Promise<{ lat: number; lon: number } | null> {
