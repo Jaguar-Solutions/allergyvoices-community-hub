@@ -95,12 +95,14 @@ export interface CardHighlight {
 export function cardHighlights(facets: Facets): CardHighlight[] {
   const highlights: CardHighlight[] = [];
 
-  // Labels read as short statements ("Has an allergy process: Yes") rather
-  // than as bare topics. "Allergy discussions: Yes" tells a parent nothing.
+  // Short topic labels, sized to fit one line in a card column. Truncated
+  // text loses meaning, and a wrapped "Talk to a manager or / chef" reads as
+  // a layout bug. The full statements and their plain-language explainers
+  // live on the profile page, where there's room for them.
   const process = single(facets, "allergy_process");
   if (process) {
     highlights.push({
-      label: "Has an allergy process",
+      label: "Allergy process",
       value: optionLabel("allergy_process", process),
     });
   }
@@ -108,7 +110,7 @@ export function cardHighlights(facets: Facets): CardHighlight[] {
   const manager = single(facets, "manager_chef_access");
   if (manager) {
     highlights.push({
-      label: "Talk to a manager or chef",
+      label: "Manager or chef",
       value: optionLabel("manager_chef_access", manager),
     });
   }
@@ -116,7 +118,7 @@ export function cardHighlights(facets: Facets): CardHighlight[] {
   const menu = single(facets, "menu_modification");
   if (menu) {
     highlights.push({
-      label: "Can change dishes",
+      label: "Menu changes",
       value: optionLabel("menu_modification", menu),
     });
   }
@@ -124,7 +126,7 @@ export function cardHighlights(facets: Facets): CardHighlight[] {
   const ingredients = single(facets, "ingredient_info");
   if (ingredients) {
     highlights.push({
-      label: "Shares ingredient info",
+      label: "Ingredient info",
       value: optionLabel("ingredient_info", ingredients),
     });
   }

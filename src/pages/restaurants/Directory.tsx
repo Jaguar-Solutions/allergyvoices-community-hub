@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Search, SlidersHorizontal, Store } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import { Container, PageHeader, PageLayout, Section } from "@/components/layout";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RestaurantCard } from "@/components/restaurants/RestaurantCard";
+import { DirectorySkeleton } from "@/components/restaurants/DirectorySkeleton";
 import { ProgramDisclaimer } from "@/components/restaurants/ProgramDisclaimer";
 import { AllergenFilter, SelectedAllergens } from "@/components/restaurants/AllergenFilter";
 import {
@@ -66,7 +66,7 @@ const RestaurantDirectory = () => {
       <PageHeader
         eyebrow="Restaurant directory"
         title="Restaurants that shared how they handle food allergies"
-        intro="Every listing here was filled out by the restaurant itself. We publish what they told us, along with the date they last updated it."
+        intro="Every restaurant here took part voluntarily and filled this out themselves. We publish what they told us, with the date they last confirmed it."
         breadcrumbs={[
           { label: "Restaurants", href: "/restaurants" },
           { label: "Directory" },
@@ -80,11 +80,20 @@ const RestaurantDirectory = () => {
 
       <Section spacing="sm">
         <Container width="wide">
-          <div className="rounded-2xl border border-border bg-background-subtle p-5 md:p-6">
-            <h2 className="flex items-center gap-2 font-poppins font-semibold text-foreground">
-              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
-              Find a restaurant
-            </h2>
+          <div className="rounded-2xl border border-border bg-background-subtle p-5">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <h2 className="flex items-center gap-2 font-poppins font-semibold text-foreground">
+                <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+                Find a restaurant
+              </h2>
+              {!isLoading && !isError && (
+                <p className="font-inter text-sm text-muted-foreground" role="status">
+                  <span className="font-semibold text-foreground">{results.length}</span>{" "}
+                  {results.length === 1 ? "restaurant" : "restaurants"}
+                  {hasFilters ? " match" : ""}
+                </p>
+              )}
+            </div>
 
             {/* Six tracks so the double-width search box plus four filters
                 fill exactly one row on wide screens. */}
@@ -167,13 +176,9 @@ const RestaurantDirectory = () => {
         </Container>
       </Section>
 
-      <Section spacing="sm">
+      <Section spacing="sm" className="pt-0">
         <Container width="wide">
-          {isLoading && (
-            <div className="flex justify-center py-12">
-              <LoadingSpinner />
-            </div>
-          )}
+          {isLoading && <DirectorySkeleton />}
 
           {isError && (
             <p className="py-12 text-center font-inter text-muted-foreground">
@@ -183,19 +188,18 @@ const RestaurantDirectory = () => {
 
           {!isLoading && !isError && (
             <>
-              <p className="mb-6 font-inter text-sm text-muted-foreground" role="status">
-                {results.length} {results.length === 1 ? "restaurant" : "restaurants"}
-                {hasFilters
-                  ? results.length === 1
-                    ? " matches your search"
-                    : " match your search"
-                  : " participating so far"}
-              </p>
-
               {results.length > 0 && (
                 <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                  {results.map((listing) => (
-                    <li key={listing.id}>
+                  {results.map((listing, index) => (
+                    <li
+                      key={listing.id}
+                      className="min-w-0 duration-500 animate-in fade-in slide-in-from-bottom-2 fill-mode-both"
+                      // A short cascade so results feel like they arrive rather
+                      // than blink in. Capped so the last card is never left
+                      // waiting. The global prefers-reduced-motion rule in
+                      // index.css disables this entirely.
+                      style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
+                    >
                       <RestaurantCard listing={listing} />
                     </li>
                   ))}
