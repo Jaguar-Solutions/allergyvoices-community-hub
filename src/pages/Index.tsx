@@ -175,22 +175,33 @@ const Index = () => {
                 </Button>
               </div>
 
-              {/* A quiet entry point for the other audience that reaches this
-                  page — restaurant owners — without competing with the
-                  family-facing message above it. */}
-              <p className="font-inter text-sm text-muted-foreground">
-                Run a restaurant?{" "}
-                <Link
-                  to="/restaurants/participate"
-                  className="group inline-flex items-center gap-1 font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+              {/* The other audience that lands here. Given its own bordered
+                  card so it survives a glance, but kept visually secondary to
+                  the family message above: no fill, no brand colour, and it
+                  sits below the primary actions. */}
+              <Link
+                to="/restaurants/participate"
+                className="group flex items-center gap-3 rounded-xl border border-border bg-background/60 p-3 backdrop-blur-sm transition-colors hover:border-primary/40 hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:max-w-md"
+              >
+                <span
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-coral/15"
+                  aria-hidden="true"
                 >
-                  Share how you handle food allergies
-                  <ArrowRight
-                    className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
-                </Link>
-              </p>
+                  <Utensils className="h-4 w-4 text-accent-strong" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-poppins text-sm font-semibold text-foreground">
+                    Run a restaurant?
+                  </span>
+                  <span className="block font-inter text-sm text-muted-foreground">
+                    Share how you handle food allergies. It's free.
+                  </span>
+                </span>
+                <ArrowRight
+                  className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                />
+              </Link>
             </div>
             <div className="relative">
               <FoodAllergyInfographics />

@@ -24,6 +24,17 @@ const FoodAllergyInfographics = () => {
       }, 20);
     };
 
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      setTotalCount(32);
+      setChildrenCount(5.6);
+      setHospitalCount(200);
+      return;
+    }
+
     const timer = setTimeout(() => {
       animateCounter(32, setTotalCount);
       animateCounter(5.6, setChildrenCount);
@@ -43,8 +54,35 @@ const FoodAllergyInfographics = () => {
     { year: '2024', prevalence: 7.6 }
   ];
 
+  const COMPACT = [
+    { value: `${totalCount}M`, label: "Americans", Icon: Users, tint: "text-primary" },
+    { value: `${childrenCount}M`, label: "Children", Icon: Heart, tint: "text-secondary-strong" },
+    { value: `${hospitalCount}K`, label: "ER visits a year", Icon: AlertTriangle, tint: "text-accent-strong" },
+  ];
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 max-w-5xl mx-auto">
+    <>
+      {/* Phones get the numbers without the full card stack. The desktop
+          treatment is 576px tall here, which is most of a phone screen and
+          pushes everything below it more than a full scroll away. */}
+      <ul className="grid grid-cols-3 gap-2 lg:hidden" aria-label="Food allergy prevalence">
+        {COMPACT.map(({ value, label, Icon, tint }) => (
+          <li
+            key={label}
+            className="rounded-xl border border-border bg-background/70 p-3 text-center backdrop-blur-sm"
+          >
+            <Icon className={`mx-auto h-4 w-4 ${tint}`} aria-hidden="true" />
+            <span className="mt-1 block font-poppins text-xl font-bold text-foreground">
+              {value}
+            </span>
+            <span className="block font-inter text-xs leading-tight text-muted-foreground">
+              {label}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+    <div className="hidden lg:grid lg:grid-cols-2 gap-4 lg:gap-6 max-w-5xl mx-auto">
       {/* Left Column - Main Stats */}
       <div className="space-y-3 lg:space-y-4">
         {/* Total Americans */}
@@ -167,6 +205,7 @@ const FoodAllergyInfographics = () => {
         </Card>
       </div>
     </div>
+    </>
   );
 };
 
