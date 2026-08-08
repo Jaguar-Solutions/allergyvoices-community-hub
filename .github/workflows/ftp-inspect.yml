@@ -1,39 +1,51 @@
 name: FTP — inspect server layout
 
-# Diagnostic only. Writes a tiny marker file into each candidate directory so
-# fetching it over HTTP reveals which one Apache actually serves as the
-# document root for allergyvoices.com.
+# Diagnostic only. Answers one question: what absolute path does the deploy
+# account log in to, and where does that sit relative to the real document
+# root (/home/u687874164/domains/allergyvoices.com/public_html)?
 #
-# It uploads two small text files and nothing else. Delete this workflow, and
-# the two av-probe.txt files, once server-dir is confirmed.
+# Reads only — no uploads. Delete this workflow once server-dir is confirmed.
 
 on:
   workflow_dispatch:
+
+env:
+  DOCROOT: /home/u687874164/domains/allergyvoices.com/public_html
 
 jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: Probe which directory is the document root
+      - name: Report the FTP login directory and the real document root
         env:
           HOST: ${{ secrets.FTP_HOST }}
           USER_NAME: ${{ secrets.FTP_USERNAME }}
           PASS: ${{ secrets.FTP_PASSWORD }}
         run: |
           # -k because FTP_HOST is a bare IP, so the TLS certificate can never
-          # match it; -S so a failure is reported instead of silently empty.
-          put() {
-            echo "$2" > probe.txt
+          # match it. In curl, ftp://host/x is RELATIVE to the login dir and
+          # ftp://host//x is ABSOLUTE — that distinction is the whole probe.
+          ftp_ls() {
             curl -sS -k --ssl-reqd --connect-timeout 20 --max-time 60 \
-                 --user "$USER_NAME:$PASS" \
-                 -T probe.txt "ftp://$HOST/$1av-probe.txt" 2>&1 | head -5
-            echo "  wrote '$2' to /$1  [curl exit $?]"
+                 --user "$USER_NAME:$PASS" "$1" 2>&1 | head -40
           }
 
-          put ""             "SERVED_FROM_FTP_HOME"
-          put "public_html/" "SERVED_FROM_PUBLIC_HTML"
+          echo "=== 1. Absolute path of the login directory (FTP PWD) ==="
+          # The 257 reply to PWD carries the absolute path. It only appears on
+          # the verbose stream, hence -v and the grep.
+          curl -v -k --ssl-reqd --connect-timeout 20 --max-time 60 \
+               --user "$USER_NAME:$PASS" "ftp://$HOST/" -o /dev/null 2>&1 \
+            | grep -E '^< 257|^< 250|Entry path' || echo "  (no PWD reply seen)"
 
-          echo "----------------------------------------------------------"
-          echo "Root listing after probe:"
-          curl -sS -k --ssl-reqd --connect-timeout 20 --max-time 60 \
-               --user "$USER_NAME:$PASS" "ftp://$HOST/" 2>&1 | head -30
+          echo
+          echo "=== 2. Login dir, relative listing ==="
+          ftp_ls "ftp://$HOST/"
+
+          echo
+          echo "=== 3. The real document root, by absolute path ==="
+          echo "    $DOCROOT"
+          ftp_ls "ftp://$HOST//${DOCROOT#/}/"
+
+          echo
+          echo "=== 4. Its parent (the domain folder) ==="
+          ftp_ls "ftp://$HOST//${DOCROOT#/}/../"
