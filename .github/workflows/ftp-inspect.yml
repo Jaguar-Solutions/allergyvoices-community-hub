@@ -1,0 +1,40 @@
+name: FTP — inspect server layout
+
+# Diagnostic only. Lists what the deploy account actually sees on Hostinger so
+# `server-dir` in deploy-hostinger.yml can point at the real document root.
+#
+# It only lists directory names — it never uploads, deletes, or prints file
+# contents, and the credentials stay inside curl's --user flag.
+#
+# Delete this workflow once the correct server-dir is confirmed.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List candidate directories
+        env:
+          HOST: ${{ secrets.FTP_HOST }}
+          USER_NAME: ${{ secrets.FTP_USERNAME }}
+          PASS: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          list() {
+            echo "----------------------------------------------------------"
+            echo "DIR: /$1"
+            curl -s --ssl-reqd --connect-timeout 20 --max-time 60 \
+                 --user "$USER_NAME:$PASS" \
+                 "ftp://$HOST/$1" 2>&1 | head -40 || echo "  (unreadable)"
+          }
+
+          # Home directory of the FTP account — tells us which layout this is.
+          list ""
+
+          # The two layouts Hostinger uses. Exactly one of these should contain
+          # the live site (index.html plus an assets/ folder).
+          list "public_html/"
+          list "domains/"
+          list "domains/allergyvoices.com/"
+          list "domains/allergyvoices.com/public_html/"
