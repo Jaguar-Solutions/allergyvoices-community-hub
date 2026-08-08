@@ -42,10 +42,13 @@ jobs:
           ftp_ls "ftp://$HOST/"
 
           echo
-          echo "=== 3. The real document root, by absolute path ==="
-          echo "    $DOCROOT"
-          ftp_ls "ftp://$HOST//${DOCROOT#/}/"
+          echo "=== 3. One level up from the login dir (the chroot root) ==="
+          # PWD says /public_html and absolute paths are denied, so the jail
+          # sits one level above. If the jail is the account home, this lists
+          # domains/ alongside public_html — and proves the deploy account is
+          # scoped to the WRONG public_html.
+          ftp_ls "ftp://$HOST/../"
 
           echo
-          echo "=== 4. Its parent (the domain folder) ==="
-          ftp_ls "ftp://$HOST//${DOCROOT#/}/../"
+          echo "=== 4. The domain's own public_html, reached via .. ==="
+          ftp_ls "ftp://$HOST/../domains/allergyvoices.com/public_html/"
