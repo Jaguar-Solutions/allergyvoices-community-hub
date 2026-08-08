@@ -69,4 +69,38 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: ./dist/
-          server-dir: public_html/
+          # The FTP account is chrooted to its login directory, so uploads must
+          # go straight there. This used to say "public_html/", which only
+          # nested a second public_html inside that jail.
+          #
+          # This is correct ONLY once the FTP account in hPanel is pointed at
+          # /domains/allergyvoices.com/public_html. As of 2026-08-08 it is
+          # scoped to the account-level /home/<uid>/public_html instead, which
+          # nothing serves — the verify step below will fail until that is
+          # changed. If you instead make an account rooted at the home
+          # directory, this becomes domains/allergyvoices.com/public_html/.
+          server-dir: ./
+
+      # Uploading successfully is not the same as being live: between June and
+      # August 2026 every run here was green while the site stayed frozen,
+      # because the FTP account was scoped to a directory nothing served. Fail
+      # the run unless the bundle we just built is the bundle the domain hands
+      # back.
+      - name: Verify the live site is serving this build
+        run: |
+          bundle=$(grep -o 'assets/index-[A-Za-z0-9_-]*\.js' dist/index.html | head -1)
+          echo "built:  $bundle"
+
+          # The upload is not always visible on the first request; give the
+          # origin a few seconds and retry rather than flapping.
+          for attempt in 1 2 3 4 5; do
+            live=$(curl -fsS -m 30 -H 'Cache-Control: no-cache' \
+                     "https://allergyvoices.com/?cachebust=${GITHUB_RUN_ID}${attempt}" \
+                   | grep -o 'assets/index-[A-Za-z0-9_-]*\.js' | head -1)
+            echo "attempt $attempt — live: ${live:-<none>}"
+            [ "$live" = "$bundle" ] && echo "Live site is serving this build." && exit 0
+            sleep 15
+          done
+
+          echo "::error::Deploy reported success but https://allergyvoices.com is still serving '${live:-<nothing>}' instead of '$bundle'. The upload is landing somewhere the domain does not serve — check the FTP account's directory against the document root."
+          exit 1
