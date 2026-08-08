@@ -19,6 +19,13 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const PROGRAM_FROM_EMAIL =
   Deno.env.get("PROGRAM_FROM_EMAIL") ?? "Allergy Voices <info@allergyvoices.com>";
 const REPLY_TO = Deno.env.get("PROGRAM_ADMIN_EMAIL") ?? "info@allergyvoices.com";
+/**
+ * Blind-copied on every admin-sent email so the team can see exactly what a
+ * restaurant received. Set PROGRAM_BCC_EMAIL to change it, or to an empty
+ * string to switch it off, without redeploying the function.
+ */
+const BCC_EMAIL = Deno.env.get("PROGRAM_BCC_EMAIL") ?? "jaguarsllc@gmail.com";
+const SITE_URL = Deno.env.get("PROGRAM_SITE_URL") ?? "https://allergyvoices.com";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -50,9 +57,12 @@ function buildEmail(
   restaurantName: string,
   message: string,
   profileUrl: string | null,
+  updateUrl: string,
 ): { subject: string; html: string } {
   const safeName = escapeHtml(restaurantName);
   const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
+  const button = (href: string, label: string) =>
+    `<p style="margin:24px 0"><a href="${href}" style="display:inline-block;background:#1b6fd1;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:600">${label}</a></p>`;
 
   if (kind === "published") {
     return {
@@ -63,8 +73,9 @@ function buildEmail(
         <p><strong>${safeName}</strong> is now published in our public
         directory, with the information you shared and the date you last
         confirmed it.</p>
-        ${profileUrl ? `<p><a href="${profileUrl}">View your listing</a></p>` : ""}
+        ${profileUrl ? button(profileUrl, "View your listing") : ""}
         ${safeMessage ? `<p>${safeMessage}</p>` : ""}
+        <p style="font-size:14px;color:#555">Need to change something? <a href="${updateUrl}">Update your listing</a>.</p>
         <p>Participation does not imply certification or endorsement. If
         anything needs correcting, just reply to this email.</p>
         <p>— Allergy Voices</p>`,
@@ -80,8 +91,12 @@ function buildEmail(
       <blockquote style="margin:16px 0;padding:12px 16px;border-left:3px solid #ddd;color:#333">
         ${safeMessage}
       </blockquote>
-      <p>Just reply to this email and we'll update your submission. Nothing is
-      published until you're happy with it.</p>
+      ${button(updateUrl, "Update your answers")}
+      <p style="font-size:14px;color:#555">The form opens with your restaurant
+      name, city, and state already filled in, so your answers replace what
+      you sent before rather than creating a second listing. You can also just
+      reply to this email if that is easier.</p>
+      <p>Nothing is published until you are happy with it.</p>
       <p>— Allergy Voices</p>`,
   };
 }
@@ -163,9 +178,31 @@ Deno.serve(async (req) => {
   }
 
   const profileUrl = restaurant.slug
-    ? `https://allergyvoices.com/restaurants/${restaurant.slug}`
+    ? `${SITE_URL}/restaurants/${restaurant.slug}`
     : null;
-  const { subject, html } = buildEmail(kind, restaurant.name, message, profileUrl);
+
+  // Prefilled with the three fields the submit function dedupes on, so what
+  // they send back becomes a new version of this listing rather than a
+  // second one competing with it in the directory.
+  const { data: identity } = await admin
+    .from("restaurants")
+    .select("name, city, state")
+    .eq("id", restaurantId)
+    .maybeSingle();
+  const params = new URLSearchParams({
+    name: identity?.name ?? restaurant.name,
+    city: identity?.city ?? "",
+    state: identity?.state ?? "",
+  });
+  const updateUrl = `${SITE_URL}/restaurants/participate?${params.toString()}`;
+
+  const { subject, html } = buildEmail(
+    kind,
+    restaurant.name,
+    message,
+    profileUrl,
+    updateUrl,
+  );
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -176,6 +213,7 @@ Deno.serve(async (req) => {
     body: JSON.stringify({
       from: PROGRAM_FROM_EMAIL,
       to: contact.manager_email,
+      ...(BCC_EMAIL ? { bcc: BCC_EMAIL } : {}),
       reply_to: REPLY_TO,
       subject,
       html,
