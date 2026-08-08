@@ -30,6 +30,19 @@ jobs:
                  --user "$USER_NAME:$PASS" "$1" 2>&1 | head -40
           }
 
+          echo "=== 0. Which username actually authenticates ==="
+          # hPanel displays the sub-account one way and may accept another, so
+          # try each spelling against the one password. Usernames are not
+          # secret; the password never reaches the log.
+          for candidate in "$USER_NAME" "deploy@allergyvoices.com" "deploy" \
+                           "u687874164_deploy" "u687874164"; do
+            reply=$(curl -sS -v -k --ssl-reqd --connect-timeout 15 --max-time 40 \
+                      --user "$candidate:$PASS" "ftp://$HOST/" -o /dev/null 2>&1 \
+                    | grep -E '^< (230|530)|^< 257|Entry path' | head -3 | tr '\n' ' ')
+            echo "  $candidate  ->  ${reply:-no reply}"
+          done
+
+          echo
           echo "=== 1. Absolute path of the login directory (FTP PWD) ==="
           # The 257 reply to PWD carries the absolute path. It only appears on
           # the verbose stream, hence -v and the grep.
