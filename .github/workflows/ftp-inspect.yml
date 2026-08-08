@@ -1,12 +1,11 @@
 name: FTP — inspect server layout
 
-# Diagnostic only. Lists what the deploy account actually sees on Hostinger so
-# `server-dir` in deploy-hostinger.yml can point at the real document root.
+# Diagnostic only. Writes a tiny marker file into each candidate directory so
+# fetching it over HTTP reveals which one Apache actually serves as the
+# document root for allergyvoices.com.
 #
-# It only lists directory names — it never uploads, deletes, or prints file
-# contents, and the credentials stay inside curl's --user flag.
-#
-# Delete this workflow once the correct server-dir is confirmed.
+# It uploads two small text files and nothing else. Delete this workflow, and
+# the two av-probe.txt files, once server-dir is confirmed.
 
 on:
   workflow_dispatch:
@@ -15,7 +14,7 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: List candidate directories
+      - name: Probe which directory is the document root
         env:
           HOST: ${{ secrets.FTP_HOST }}
           USER_NAME: ${{ secrets.FTP_USERNAME }}
@@ -23,21 +22,18 @@ jobs:
         run: |
           # -k because FTP_HOST is a bare IP, so the TLS certificate can never
           # match it; -S so a failure is reported instead of silently empty.
-          list() {
-            echo "----------------------------------------------------------"
-            echo "DIR: /$1"
+          put() {
+            echo "$2" > probe.txt
             curl -sS -k --ssl-reqd --connect-timeout 20 --max-time 60 \
                  --user "$USER_NAME:$PASS" \
-                 "ftp://$HOST/$1" 2>&1 | head -40
-            echo "  [curl exit ${PIPESTATUS[0]}]"
+                 -T probe.txt "ftp://$HOST/$1av-probe.txt" 2>&1 | head -5
+            echo "  wrote '$2' to /$1  [curl exit $?]"
           }
 
-          # Home directory of the FTP account — tells us which layout this is.
-          list ""
+          put ""             "SERVED_FROM_FTP_HOME"
+          put "public_html/" "SERVED_FROM_PUBLIC_HTML"
 
-          # The two layouts Hostinger uses. Exactly one of these should contain
-          # the live site (index.html plus an assets/ folder).
-          list "public_html/"
-          list "domains/"
-          list "domains/allergyvoices.com/"
-          list "domains/allergyvoices.com/public_html/"
+          echo "----------------------------------------------------------"
+          echo "Root listing after probe:"
+          curl -sS -k --ssl-reqd --connect-timeout 20 --max-time 60 \
+               --user "$USER_NAME:$PASS" "ftp://$HOST/" 2>&1 | head -30
