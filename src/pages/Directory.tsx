@@ -81,7 +81,7 @@ const Directory = () => (
   <PageLayout>
     <SEOHead
       title="Local Resources Directory"
-      description="National directories for allergists, dietitians, support groups, and camps — plus our growing list of community-vetted local resources."
+      description="National directories for allergists, dietitians, support groups, and camps — plus a growing list of local resources suggested by families."
     />
     <PageHeader
       eyebrow="Local resources"

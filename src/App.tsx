@@ -24,7 +24,7 @@ const DiningOut = lazy(() => import("./pages/DiningOut"));
 const SchoolTeens = lazy(() => import("./pages/SchoolTeens"));
 const About = lazy(() => import("./pages/About"));
 
-// Restaurant Allergy Transparency & Recognition Program
+// Restaurant Allergy Transparency Program
 const ProgramLanding = lazy(() => import("./pages/restaurants/ProgramLanding"));
 const RestaurantSurvey = lazy(() => import("./pages/restaurants/Survey"));
 const RestaurantSubmitted = lazy(() => import("./pages/restaurants/Submitted"));

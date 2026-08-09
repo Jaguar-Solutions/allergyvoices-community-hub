@@ -1,4 +1,4 @@
-# Restaurant Allergy Transparency & Recognition Program
+# Restaurant Allergy Transparency Program
 
 A free public directory of restaurants that voluntarily share how they handle
 food allergy requests. **Not** a certification, inspection, grade, score, or

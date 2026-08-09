@@ -1,4 +1,4 @@
-/** Domain types for the Restaurant Allergy Transparency & Recognition Program. */
+/** Domain types for the Restaurant Allergy Transparency Program. */
 
 export type RestaurantStatus =
   | "submitted"

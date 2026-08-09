@@ -100,7 +100,7 @@ const DiningOut = () => {
               <Utensils className="w-6 h-6 text-primary flex-shrink-0 mt-1" aria-hidden="true" />
               <div>
                 <h2 className="font-poppins font-bold text-xl md:text-2xl text-foreground">
-                  Are you a restaurant?
+                  Share your restaurant's practices
                 </h2>
                 <p className="font-inter text-muted-foreground mt-1">
                   A short, plain-language explanation aimed at restaurant owners and managers.

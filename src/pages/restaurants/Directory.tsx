@@ -32,6 +32,7 @@ import {
   LAUNCH_REGION,
   NATIONWIDE_NOTE,
 } from "@/config/launch";
+import { InviteRestaurantButton } from "@/components/restaurants/InviteRestaurantButton";
 import { stateName } from "@/program/us-states";
 
 /** Sentinel for "no filter", since a Radix Select item can't have an empty value. */
@@ -56,6 +57,19 @@ const RestaurantDirectory = () => {
   );
 
   const hasFilters = hasActiveFilters(filters);
+  /**
+   * True before the first listing is published.
+   *
+   * Showing "0 restaurants" above an empty grid of filters is negative social
+   * proof during the weeks when zero is the expected number — it reads as a
+   * directory that failed rather than one that has not opened. So the count,
+   * the filters and the "restaurants that shared" heading are all withheld
+   * until there is something to count.
+   *
+   * Derived from the fetched data, not a flag: publishing the first listing
+   * flips this page to its normal state with no deploy.
+   */
+  const preLaunch = !isLoading && !isError && listings.length === 0;
   // A young directory should look deliberate, not empty.
   const useFeature = results.length > 0 && results.length <= 2;
 
@@ -72,19 +86,28 @@ const RestaurantDirectory = () => {
       />
       <PageHeader
         eyebrow="Restaurant directory"
-        title="Restaurants that shared how they handle food allergies"
-        intro="Every restaurant here took part voluntarily and filled this out themselves. We publish what they told us, with the date they last confirmed it."
+        title={
+          preLaunch
+            ? `${LAUNCH_REGION.bareName} Restaurant Directory launching soon`
+            : "Restaurants that shared how they handle food allergies"
+        }
+        intro={
+          preLaunch
+            ? `We're preparing to begin restaurant outreach in ${LAUNCH_CITIES_PHRASE}. Restaurant profiles will appear here as participating restaurants complete the survey and approve their listings.`
+            : "Every restaurant here took part voluntarily and filled this out themselves. We publish what they told us, with the date they last confirmed it."
+        }
         breadcrumbs={[
           { label: "Restaurants", href: "/restaurants" },
           { label: "Directory" },
         ]}
         actions={
           <Button asChild variant="outline">
-            <Link to="/restaurants">Are you a restaurant?</Link>
+            <Link to="/restaurants">Share your restaurant's practices</Link>
           </Button>
         }
       />
 
+      {!preLaunch && (
       <Section spacing="sm">
         <Container width="wide">
           <div className="rounded-2xl border border-border bg-background-subtle p-5">
@@ -182,6 +205,7 @@ const RestaurantDirectory = () => {
           </div>
         </Container>
       </Section>
+      )}
 
       <Section spacing="sm" className="pt-0 md:pt-0">
         <Container width="wide">
@@ -274,9 +298,7 @@ function EmptyState({
           <Button type="button" variant="outline" onClick={onClear}>
             Clear filters
           </Button>
-          <Button asChild>
-            <Link to="/restaurants/participate">Invite a restaurant</Link>
-          </Button>
+          <InviteRestaurantButton variant="default" />
         </div>
       </div>
     );
@@ -303,9 +325,7 @@ function EmptyState({
           <Button asChild>
             <Link to="/restaurants/participate">Participate as a restaurant</Link>
           </Button>
-          <Button asChild variant="outline">
-            <Link to="/restaurants">Invite a restaurant</Link>
-          </Button>
+          <InviteRestaurantButton label="Recommend a restaurant" />
           <Button asChild variant="outline">
             <Link to="/restaurants#help-your-city">
               Join the {LAUNCH_REGION.bareName} launch

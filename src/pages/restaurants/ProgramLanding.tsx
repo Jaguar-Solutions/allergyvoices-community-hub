@@ -64,12 +64,12 @@ const HOW_IT_WORKS = [
 const ProgramLanding = () => (
   <PageLayout>
     <SEOHead
-      title="Restaurant Allergy Transparency & Recognition Program"
+      title="Restaurant Allergy Transparency Program"
       description="A free public directory of restaurants that voluntarily share how they handle food allergies. Not a certification, not an inspection — just transparency so families can make informed dining decisions."
     />
     <PageHeader
       eyebrow="For restaurants"
-      title="Restaurant Allergy Transparency & Recognition Program"
+      title="Restaurant Allergy Transparency Program"
       intro="Help food allergy families make informed dining decisions while showcasing your restaurant's commitment to serving guests with food allergies."
       breadcrumbs={[{ label: "Restaurants" }]}
       actions={
