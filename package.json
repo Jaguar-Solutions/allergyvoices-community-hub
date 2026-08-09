@@ -15,7 +15,8 @@
     "deploy:upload": "bash scripts/deploy-hostinger.sh --upload",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc -b --noEmit"
+    "typecheck": "tsc -b --noEmit",
+    "test:e2e": "python3 scripts/e2e/forms.py"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
