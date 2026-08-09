@@ -1,6 +1,6 @@
 ---
 title: "A guide for grandparents and caregivers"
-summary: "Family members and caregivers don't need to memorize every detail. They need to know a few important things really well. Print this and hand it over &mdash; or sit down and read it together over coffee."
+summary: "Family members and caregivers don't need to memorize every detail. They need to know a few important things really well. Print this and hand it over — or sit down and read it together over coffee."
 age_stage: [newly-diagnosed, infant, toddler, school-age]
 setting: [home]
 allergens: []
@@ -12,7 +12,7 @@ reviewed_by: "AllergyVoices editorial"
 ## Welcome and thank you
 
 If you're reading this, someone trusts you with a child who has a food
-allergy. That trust matters &mdash; and so does your willingness to learn what
+allergy. That trust matters — and so does your willingness to learn what
 to do.
 
 Food allergies are real, sometimes serious, and entirely manageable. Most
@@ -26,7 +26,7 @@ help you feel confident on the rare day when something happens.
 Ask the parent for a clear list. Write it down. Examples:
 
 - "Peanut and tree nut, including all forms (butter, oil, flour)."
-- "Milk &mdash; including butter, cheese, whey, casein. NOT lactose-free
+- "Milk — including butter, cheese, whey, casein. NOT lactose-free
   (different thing)."
 
 Put it on the fridge.
@@ -49,7 +49,7 @@ You're looking for any of these after the child has been around food:
 - Lips, tongue, or face swelling
 - Repeated vomiting
 - Sudden severe hives all over
-- Drop in energy &mdash; pale, very tired, dizzy, unresponsive
+- Drop in energy — pale, very tired, dizzy, unresponsive
 
 If you see any of these, **give the auto-injector and call 911.** When
 in doubt, give it. The medicine is safe; waiting through anaphylaxis is
@@ -60,7 +60,7 @@ not.
 - Look for a "Contains:" line at the bottom of the ingredient list. By
   U.S. law, the top 9 allergens must be declared in plain language there.
 - If you don't see that line, read the ingredient list itself.
-- If you're not 100% sure &mdash; **don't give it.** Call the parent or
+- If you're not 100% sure — **don't give it.** Call the parent or
   pick something else.
 
 The parent will tell you which words to watch for in their child's case.
@@ -72,7 +72,7 @@ The parent will tell you which words to watch for in their child's case.
 - **Air-borne reactions are uncommon** for most allergens (peanut, milk,
   egg). Don't worry about every restaurant or grocery store. The
   exception: shellfish steam in seafood restaurants can trigger
-  reactions in some patients &mdash; the parent will tell you if this
+  reactions in some patients — the parent will tell you if this
   applies.
 - **A small amount can still cause a big reaction.** This is why
   cross-contact (a peanut-buttery knife touching jam, then jam on toast)
@@ -83,7 +83,7 @@ The parent will tell you which words to watch for in their child's case.
 ## When you're caring for the child
 
 - **Confirm the food before they eat.** Even if it looks safe, even if
-  they had it last week, even if you bought it specifically for them &mdash;
+  they had it last week, even if you bought it specifically for them —
   read the label.
 - **Keep the auto-injector with you.** In your bag, on the playground,
   during meals. It does no good in the car.

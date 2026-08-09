@@ -140,6 +140,7 @@ const NewsFeed = () => {
                 className="inline-flex items-center text-sm text-primary hover:text-primary/80 transition-colors font-medium"
               >
                 Read more
+                <span className="sr-only"> about {item.title}</span>
                 <ExternalLink className="w-3 h-3 ml-1" />
               </a>
             </CardContent>

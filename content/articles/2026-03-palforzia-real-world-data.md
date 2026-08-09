@@ -12,7 +12,7 @@ who_affected: "Children ages 4-17 with confirmed peanut allergy whose families a
 family_takeaway: "Palforzia works for many families, but it's a multi-year commitment with daily dosing, monthly clinic visits during escalation, and real side effects (most commonly mild GI symptoms). Discontinuation rates in real-world settings are higher than in trials. Talk to an allergist who specializes in OIT to weigh the trade-offs for your child."
 questions_for_allergist:
   - "Is my child a candidate for Palforzia? What are the alternatives?"
-  - "What's the realistic expected outcome &mdash; protection from accidental exposure, or freely eating peanut?"
+  - "What's the realistic expected outcome — protection from accidental exposure, or freely eating peanut?"
   - "How does Palforzia compare with non-Palforzia OIT done at specialty centers?"
   - "What side effects should we expect, and when do we stop?"
   - "Will my insurance cover it? What does it cost out of pocket?"
@@ -33,14 +33,14 @@ tags: [peanut, treatment, oit, palforzia, fda]
 
 ## What changed
 
-In January 2020, the FDA approved **Palforzia** &mdash; brand name for AR101, a
-peanut-flour-based oral immunotherapy product &mdash; for children ages 4-17
+In January 2020, the FDA approved **Palforzia** — brand name for AR101, a
+peanut-flour-based oral immunotherapy product — for children ages 4-17
 with confirmed peanut allergy. It was the first FDA-approved treatment
 for peanut allergy.
 
 The original PALISADE trial showed that after roughly 6-12 months of
 escalating daily doses, most children could tolerate at least 600 mg of
-peanut protein (about 2-3 peanuts) without reacting &mdash; enough to protect
+peanut protein (about 2-3 peanuts) without reacting — enough to protect
 against accidental exposure.
 
 Five years later, real-world data from clinical practices is starting to
@@ -69,7 +69,7 @@ trials):
 - **Effectiveness**: Most patients who complete the dosing schedule
   reach a maintenance dose that protects against accidental exposure.
 - **Discontinuation**: Real-world drop-out rates have been **higher than
-  in the trials** &mdash; often 20-30% over the first year. Common reasons:
+  in the trials** — often 20-30% over the first year. Common reasons:
   GI side effects, dosing fatigue, and (less often) significant allergic
   reactions.
 - **Side effects**: Mild-to-moderate GI symptoms (stomach pain, nausea)
@@ -90,7 +90,7 @@ trials):
   still has gaps. Out-of-pocket costs can be significant if not covered.
   The manufacturer offers patient assistance programs.
 - **It's not a cure.** Most families describe the goal as "bite-proof"
-  &mdash; protection against an accidental nibble &mdash; rather than freely eating
+  — protection against an accidental nibble — rather than freely eating
   peanut.
 - **Daily compliance matters.** Missing doses can cause loss of
   tolerance and increase reaction risk on the next dose.

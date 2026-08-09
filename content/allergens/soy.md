@@ -20,7 +20,7 @@ family_tips:
   - "Many soy-allergic children outgrow it. Your allergist will track tolerance over time."
   - "Highly refined soybean oil and most soy lecithin are usually tolerated, even by soy-allergic patients. The proteins (which trigger the allergy) are largely removed in refining. Confirm with your allergist."
   - "Soy is a legume, not a grain. Soy allergy and peanut allergy are biologically separate but can co-occur."
-  - "Watch for unexpected soy in vegetable broth, bouillon cubes, and 'natural flavoring' &mdash; especially in restaurant soups and sauces."
+  - "Watch for unexpected soy in vegetable broth, bouillon cubes, and 'natural flavoring' — especially in restaurant soups and sauces."
   - "Carry two epinephrine auto-injectors at all times."
 related_article_slugs: []
 ---
@@ -49,12 +49,12 @@ FALCPA requires "soy" to be declared in plain language. Watch for:
 - **Tofu, tempeh, edamame, miso, natto**
 - **Hydrolyzed soy protein, textured vegetable protein (TVP)**
 - **Soy sauce, tamari, shoyu**
-- **Lecithin** &mdash; usually soy-derived (sunflower lecithin is the safer
+- **Lecithin** — usually soy-derived (sunflower lecithin is the safer
   alternative)
 
 What the rules don't cover well:
 
-- **Highly refined soybean oil** &mdash; legally not required to be declared,
+- **Highly refined soybean oil** — legally not required to be declared,
   but most labels do mention it now
 - **Cross-contact** during manufacturing in shared lines
 
@@ -62,10 +62,10 @@ What the rules don't cover well:
 
 Soy is one of the most-widely-used food ingredients in U.S. processed food:
 
-- **Most Asian sauces** &mdash; soy sauce, teriyaki, hoisin, oyster sauce, fish
+- **Most Asian sauces** — soy sauce, teriyaki, hoisin, oyster sauce, fish
   sauce blends, miso
 - **Vegetable broth and bouillon cubes** (read every label)
-- **Vegetarian meat substitutes** &mdash; veggie burgers, "chicken" nuggets,
+- **Vegetarian meat substitutes** — veggie burgers, "chicken" nuggets,
   hot dogs, faux deli slices
 - **Energy bars and protein bars**
 - **Many baked goods** (soy flour, soy lecithin)

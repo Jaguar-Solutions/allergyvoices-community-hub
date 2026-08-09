@@ -9,12 +9,12 @@ allergens: [peanut]
 evidence_level: clinical-trial
 geography: us
 who_affected: "Infants ages 4-11 months, especially those with severe eczema, egg allergy, or both. The guidance has expanded to apply broadly to most healthy infants."
-family_takeaway: "If your baby is at risk for peanut allergy, talk to your pediatrician or allergist about introducing peanut-containing foods early (around 4-6 months), under appropriate supervision. Doing nothing &mdash; or waiting until age 1 to introduce &mdash; is often the higher-risk choice."
+family_takeaway: "If your baby is at risk for peanut allergy, talk to your pediatrician or allergist about introducing peanut-containing foods early (around 4-6 months), under appropriate supervision. Doing nothing — or waiting until age 1 to introduce — is often the higher-risk choice."
 questions_for_allergist:
   - "Is my baby high-risk for peanut allergy? Should we screen first?"
   - "What's the safest way to introduce peanut at home?"
   - "Should we do the introduction in the office for safety?"
-  - "What about other allergens &mdash; egg, milk, tree nuts? Should we introduce those early too?"
+  - "What about other allergens — egg, milk, tree nuts? Should we introduce those early too?"
   - "If we missed the early window, is it too late?"
 sources:
   - name: "LEAP Trial: Randomized Trial of Peanut Consumption in Infants at Risk for Peanut Allergy (NEJM 2015)"
@@ -25,7 +25,7 @@ sources:
     url: "https://www.niaid.nih.gov/diseases-conditions/guidelines-clinicians-and-patients-food-allergy"
     agency: "NIAID"
     published_date: "2017-01-05"
-  - name: "LEAP-Trio: Peanut consumption in infants and young children &mdash; long-term protection from peanut allergy (NEJM 2024)"
+  - name: "LEAP-Trio: Peanut consumption in infants and young children — long-term protection from peanut allergy (NEJM 2024)"
     url: "https://www.nejm.org/doi/full/10.1056/NEJMoa2402069"
     agency: "New England Journal of Medicine"
     published_date: "2024-05-28"
@@ -34,8 +34,8 @@ tags: [prevention, infant, leap, niaid]
 
 ## What changed
 
-For decades, parents were told to **delay** introducing peanut to babies &mdash;
-sometimes until ages 2 or 3 &mdash; in the hope of preventing peanut allergy.
+For decades, parents were told to **delay** introducing peanut to babies —
+sometimes until ages 2 or 3 — in the hope of preventing peanut allergy.
 The 2015 **LEAP trial** (Learning Early About Peanut Allergy) flipped that
 advice on its head.
 
@@ -48,7 +48,7 @@ food regularly or avoid peanut entirely until age 5. The result:
 
 The 2024 **LEAP-Trio** follow-up confirmed something critical: that
 protection persists into adolescence, even after children resume normal
-eating patterns. Early introduction doesn't just delay the allergy &mdash; it
+eating patterns. Early introduction doesn't just delay the allergy — it
 appears to prevent it.
 
 ## Who this affects
@@ -91,7 +91,7 @@ regularly, around 4-6 months of age**, alongside other solid foods.
   eliminated.
 - It doesn't mean older children should suddenly start eating their
   allergens. If your child is already diagnosed with peanut allergy,
-  follow your allergist's plan &mdash; usually avoidance plus epinephrine,
+  follow your allergist's plan — usually avoidance plus epinephrine,
   with OIT or omalizumab as treatment options.
 - It doesn't apply if your child has had a clear allergic reaction to
   peanut. That's an allergist conversation.

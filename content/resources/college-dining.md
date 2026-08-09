@@ -14,7 +14,7 @@ reviewed_by: "AllergyVoices editorial"
 ### Connect with disability services
 
 Most colleges treat food allergies as a disability under the ADA, which
-means you can request **accommodations** &mdash; the equivalent of a 504 plan
+means you can request **accommodations** — the equivalent of a 504 plan
 in K-12, but college-flavored. Common ones:
 
 - **Single room** or specific roommate match (especially helpful for
@@ -26,7 +26,7 @@ in K-12, but college-flavored. Common ones:
 - **Documented dining-hall accommodations** (custom meal prep, ingredient
   disclosure on demand)
 
-The earlier you start this conversation the better &mdash; ideally before
+The earlier you start this conversation the better — ideally before
 you commit to a school.
 
 ### Meet with the dining director
@@ -69,7 +69,7 @@ Have a real conversation in the first week. Tell your roommate:
 - What to do if something happens
 
 Most roommates step up if you're clear. If they don't, you can request
-a different placement &mdash; lean on disability services.
+a different placement — lean on disability services.
 
 ### Dorm kitchen rules
 
@@ -93,14 +93,14 @@ If you have access to a shared kitchen, the rules of cross-contact apply:
 
 ## Dining hall navigation
 
-- **Ingredient cards** &mdash; most dining halls now post an ingredient list
+- **Ingredient cards** — most dining halls now post an ingredient list
   for every dish. If yours doesn't, ask the manager why and request it.
-- **Allergen-friendly stations** &mdash; check whether your school has a
+- **Allergen-friendly stations** — check whether your school has a
   dedicated station. Stations vary in quality from "labeled section
   with cross-contact" to "fully separate kitchen with dedicated staff."
-- **Dish-by-dish questions** &mdash; ask about prep, shared utensils, oils
+- **Dish-by-dish questions** — ask about prep, shared utensils, oils
   used for cooking.
-- **The chef relationship** &mdash; introduce yourself. The dining hall is
+- **The chef relationship** — introduce yourself. The dining hall is
   almost like a small restaurant; chefs who know you and your allergies
   will look out for you.
 
@@ -132,7 +132,7 @@ combination of:
 Strategies that work:
 
 - **Eat before.** Nothing replaces a meal you cooked yourself.
-- **Bring your own.** A safe drink, a safe snack &mdash; nobody minds.
+- **Bring your own.** A safe drink, a safe snack — nobody minds.
 - **Tell at least one sober friend** about your allergy and where your
   auto-injector is. Designate them as your contact if something happens.
 - **Have a soft exit plan.** If a place feels unsafe, leave.
@@ -145,7 +145,7 @@ shared food and travel:
 - Talk to the chapter ahead of time. The good ones will accommodate
   meals at events.
 - Confirm what travel and overnight events involve food.
-- Some chapters are better than others &mdash; talk to current allergic members
+- Some chapters are better than others — talk to current allergic members
   before joining.
 
 ## When something happens
@@ -153,7 +153,7 @@ shared food and travel:
 - Use your auto-injector at the first sign of anaphylaxis.
 - Call 911 or campus security (which can dispatch EMS).
 - After EMS arrives, call your parent and your allergist.
-- Document what happened &mdash; what you ate, where, what symptoms started
+- Document what happened — what you ate, where, what symptoms started
   when. This helps your allergist and is useful if you need to file a
   complaint with the dining hall.
 

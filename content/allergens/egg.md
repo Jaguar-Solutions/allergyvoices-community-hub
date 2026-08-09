@@ -28,8 +28,8 @@ related_article_slugs: []
 ## The basics
 
 Egg allergy affects about 2% of young children and is one of the most
-common childhood food allergies. The reaction is to egg proteins &mdash; most
-notably **ovalbumin** in the white and **livetin** in the yolk &mdash; not to
+common childhood food allergies. The reaction is to egg proteins — most
+notably **ovalbumin** in the white and **livetin** in the yolk — not to
 the cholesterol or fat.
 
 Most egg-allergic children outgrow the allergy, often by ages 5-8. Tolerance
@@ -45,7 +45,7 @@ FALCPA requires "egg" to be declared in plain language. Look for:
 - **Albumin, albumen, ovalbumin, ovomucin, ovomucoid, livetin**
 - **Lysozyme** (an egg-derived enzyme used in some cheeses and wines)
 - **Mayo, mayonnaise, aioli, hollandaise, meringue**
-- **Egg substitutes** &mdash; despite the name, most contain egg whites; check
+- **Egg substitutes** — despite the name, most contain egg whites; check
   the label
 
 ## Hidden sources
@@ -74,7 +74,7 @@ Many cafeterias use egg in unexpected places.
 (recombinant or cell-based) or contain such trace amounts that they're
 considered safe for egg-allergic patients. The CDC and most allergy
 organizations no longer recommend skipping flu shots because of egg
-allergy &mdash; but confirm with your allergist before each year's shot.
+allergy — but confirm with your allergist before each year's shot.
 The MMR vaccine, despite being grown in chicken cells, has not been shown
 to cause reactions in egg-allergic children.
 

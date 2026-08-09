@@ -1,6 +1,6 @@
 ---
 title: "Sesame is now the 9th major U.S. allergen: three years of the FASTER Act"
-summary: "The FASTER Act took effect on January 1, 2023, requiring 'sesame' to be declared in plain language on U.S. food labels. Three years in, the law is doing what it was meant to do &mdash; with one ironic side effect families need to know about."
+summary: "The FASTER Act took effect on January 1, 2023, requiring 'sesame' to be declared in plain language on U.S. food labels. Three years in, the law is doing what it was meant to do — with one ironic side effect families need to know about."
 published_date: "2026-01-22"
 status: published
 last_reviewed: "2026-04-30"
@@ -9,10 +9,10 @@ allergens: [sesame]
 evidence_level: regulatory
 geography: us
 who_affected: "Anyone with sesame allergy or sensitivity. Sesame allergy affects an estimated 1.5 million Americans, with growing prevalence in children."
-family_takeaway: "Sesame is now declared on labels in plain language &mdash; that's the good news. The bad news is that some bakeries chose to add sesame flour to their products rather than clean their lines, so previously trusted products may have changed. Recheck older trusted brands, especially bakery items."
+family_takeaway: "Sesame is now declared on labels in plain language — that's the good news. The bad news is that some bakeries chose to add sesame flour to their products rather than clean their lines, so previously trusted products may have changed. Recheck older trusted brands, especially bakery items."
 questions_for_allergist:
   - "Is highly refined sesame oil safe for us, or should we avoid all forms?"
-  - "Should we recheck our trusted brands &mdash; especially bakery items?"
+  - "Should we recheck our trusted brands — especially bakery items?"
   - "Is my child a candidate for sesame OIT or omalizumab?"
   - "How does sesame allergy interact with our other allergies?"
 sources:
@@ -24,7 +24,7 @@ sources:
     url: "https://www.fda.gov/food/food-allergens/sesame-labeling-and-faqs"
     agency: "FDA"
     published_date: "2023-01-01"
-  - name: "FARE: FASTER Act &mdash; what it means for sesame-allergic families"
+  - name: "FARE: FASTER Act — what it means for sesame-allergic families"
     url: "https://www.foodallergy.org/faster-act"
     agency: "Food Allergy Research & Education"
 tags: [sesame, regulatory, fda, labeling]
@@ -32,8 +32,8 @@ tags: [sesame, regulatory, fda, labeling]
 
 ## What changed
 
-The Food Allergy Safety, Treatment, Education, and Research Act &mdash; the
-**FASTER Act** &mdash; was signed into law in April 2021. Its core change took
+The Food Allergy Safety, Treatment, Education, and Research Act — the
+**FASTER Act** — was signed into law in April 2021. Its core change took
 effect on **January 1, 2023**: sesame became the 9th major U.S. food
 allergen, joining milk, egg, fish, shellfish, tree nuts, peanuts, wheat,
 and soy under the FALCPA labeling rules.
@@ -41,7 +41,7 @@ and soy under the FALCPA labeling rules.
 What that means in practice:
 
 - Packaged foods sold in the U.S. must now declare **"sesame"** in plain
-  language &mdash; either in the ingredient list or in a "Contains: sesame"
+  language — either in the ingredient list or in a "Contains: sesame"
   line at the end.
 - Before 2023, sesame could appear under names like *tahini*, *til*,
   *gingelly*, or *benne* with no warning to allergic consumers.

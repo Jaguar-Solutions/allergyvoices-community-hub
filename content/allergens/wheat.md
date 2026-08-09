@@ -41,7 +41,7 @@ These three things are often confused but require different management:
 | **Non-celiac gluten sensitivity** | Unclear | Avoid gluten if it makes you feel better | Generally not dangerous |
 
 If your child has wheat allergy, gluten-free products are usually safe to
-eat &mdash; but you don't need to avoid barley, rye, or oats unless they're
+eat — but you don't need to avoid barley, rye, or oats unless they're
 contaminated.
 
 Many children outgrow wheat allergy, often by ages 5-8. Track tolerance
@@ -60,21 +60,21 @@ related ingredients:
 
 Be cautious with these "may contain" candidates:
 
-- **Modified food starch** &mdash; in U.S. labeling, must declare wheat if
+- **Modified food starch** — in U.S. labeling, must declare wheat if
   derived from wheat
-- **Hydrolyzed vegetable protein** &mdash; same
-- **Natural flavoring** &mdash; ask the manufacturer
+- **Hydrolyzed vegetable protein** — same
+- **Natural flavoring** — ask the manufacturer
 
 ## Hidden sources
 
-- **Soy sauce** &mdash; most contains wheat; **tamari** is the wheat-free version
-- **Imitation crab and surimi** &mdash; wheat is a common binder
-- **Hot dogs, sausages, deli meats** &mdash; wheat as filler
-- **Beer** &mdash; most beer is brewed from wheat or barley
-- **Communion wafers** &mdash; some churches now offer rice or low-gluten options
-- **Play-doh** &mdash; the popular brand contains wheat; if your child has
+- **Soy sauce** — most contains wheat; **tamari** is the wheat-free version
+- **Imitation crab and surimi** — wheat is a common binder
+- **Hot dogs, sausages, deli meats** — wheat as filler
+- **Beer** — most beer is brewed from wheat or barley
+- **Communion wafers** — some churches now offer rice or low-gluten options
+- **Play-doh** — the popular brand contains wheat; if your child has
   contact reactions, look for wheat-free alternatives
-- **Some medications** &mdash; wheat starch is occasionally used as a binder
+- **Some medications** — wheat starch is occasionally used as a binder
 
 ## Daily life
 
@@ -89,7 +89,7 @@ team. Ask about backup options on bagel days and pizza days.
 **Eating out:** Italian, bakery-heavy, and Asian restaurants are
 highest-risk. The growth of gluten-free menus has made wheat-free dining
 much easier. Ask the kitchen to confirm a "gluten-free" item is also
-prepared without cross-contact &mdash; gluten-free preparation usually meets
+prepared without cross-contact — gluten-free preparation usually meets
 wheat-free needs.
 
 ## Treatments

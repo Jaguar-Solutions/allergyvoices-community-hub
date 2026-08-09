@@ -8,8 +8,8 @@ reviewed_by: "AllergyVoices editorial"
 allergens: []
 evidence_level: expert-opinion
 geography: us
-who_affected: "Anyone managing a food allergy &mdash; children, teens, adults, and parents/caregivers. Up to 1 in 3 patients report significant allergy-related anxiety."
-family_takeaway: "Allergy anxiety is common and treatable. If your child avoids social events, won't eat foods they used to enjoy, or has stomach symptoms before every meal, talk to your allergist about a referral to a mental health professional with food allergy experience. This isn't 'in their head' &mdash; it's a real condition with real support available."
+who_affected: "Anyone managing a food allergy — children, teens, adults, and parents/caregivers. Up to 1 in 3 patients report significant allergy-related anxiety."
+family_takeaway: "Allergy anxiety is common and treatable. If your child avoids social events, won't eat foods they used to enjoy, or has stomach symptoms before every meal, talk to your allergist about a referral to a mental health professional with food allergy experience. This isn't 'in their head' — it's a real condition with real support available."
 questions_for_allergist:
   - "Are my child's symptoms (or my own) consistent with food allergy anxiety?"
   - "Can you refer us to a therapist or psychologist who specializes in food allergy?"
@@ -43,7 +43,7 @@ Why the shift? Because the research is clear that:
   significant anxiety related to their condition
 - **Parents and caregivers** experience anxiety at similar or higher
   rates than the patient
-- **Untreated anxiety affects outcomes** &mdash; worse quality of life, fewer
+- **Untreated anxiety affects outcomes** — worse quality of life, fewer
   social activities, sometimes worse adherence to safety protocols (or,
   paradoxically, hypervigilance that makes life smaller)
 
@@ -70,7 +70,7 @@ Anxiety can show up in many forms. Some common patterns:
 
 **In parents and caregivers:**
 
-- Difficulty leaving the child with anyone &mdash; family, sitters, school
+- Difficulty leaving the child with anyone — family, sitters, school
 - Sleep disturbances, especially after a reaction
 - Feeling unable to enjoy meals or social events
 - Constant scanning for allergens in shared spaces
@@ -109,7 +109,7 @@ allergy is the most effective treatment. Sessions typically focus on:
 both understand. Anxiety is often worse when "what to do if" is
 ambiguous. A signed plan with explicit thresholds reduces uncertainty.
 
-**Confidence-building experiences** under appropriate supervision &mdash;
+**Confidence-building experiences** under appropriate supervision —
 practice with the auto-injector trainer, role-playing the dining-out
 script, attending an allergy-friendly camp.
 

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Search, SlidersHorizontal, Store } from "lucide-react";
+import { MapPin, Search, SlidersHorizontal, Store } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import { Container, PageHeader, PageLayout, Section } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,11 @@ import {
   type DirectoryFilters,
 } from "@/program/api";
 import { cuisineLabel } from "@/program/survey";
+import {
+  LAUNCH_CITIES_PHRASE,
+  LAUNCH_REGION,
+  NATIONWIDE_NOTE,
+} from "@/config/launch";
 import { stateName } from "@/program/us-states";
 
 /** Sentinel for "no filter", since a Radix Select item can't have an empty value. */
@@ -237,6 +242,15 @@ const RestaurantDirectory = () => {
   );
 };
 
+/**
+ * What a visitor sees when the directory has nothing to show.
+ *
+ * Two genuinely different situations, and conflating them is why an empty
+ * directory reads as broken. A filtered search that found nothing needs a way
+ * back; an unlaunched directory needs to explain that it is being built in one
+ * region first, and to say plainly that a restaurant in any state can still
+ * take part. Neither shows a fabricated listing.
+ */
 function EmptyState({
   hasFilters,
   onClear,
@@ -244,26 +258,77 @@ function EmptyState({
   hasFilters: boolean;
   onClear: () => void;
 }) {
-  return (
-    <div className="rounded-2xl border-2 border-dashed border-border bg-background p-8 text-center">
-      <Store className="mx-auto h-8 w-8 text-muted-foreground" aria-hidden="true" />
-      <h2 className="mt-4 font-poppins text-xl font-bold text-foreground">
-        {hasFilters ? "No restaurants match that search yet" : "We're just getting started"}
-      </h2>
-      <p className="mx-auto mt-2 max-w-xl font-inter leading-relaxed text-muted-foreground">
-        {hasFilters
-          ? "This directory grows one restaurant at a time. If you know a place that handles allergies well, ask them to add their information — it's free."
-          : "This directory is brand new. Restaurants are adding their information now, and every listing comes straight from the restaurant."}
-      </p>
-      <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-        {hasFilters && (
+  if (hasFilters) {
+    return (
+      <div className="rounded-2xl border-2 border-dashed border-border bg-background p-8 text-center">
+        <Store className="mx-auto h-8 w-8 text-muted-foreground" aria-hidden="true" />
+        <h2 className="mt-4 font-poppins text-xl font-bold text-foreground">
+          No restaurants match that search yet
+        </h2>
+        <p className="mx-auto mt-2 max-w-xl font-inter leading-relaxed text-muted-foreground">
+          This directory grows one restaurant at a time. If you know a place
+          that handles allergies well, ask them to add their information —
+          it&apos;s free.
+        </p>
+        <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
           <Button type="button" variant="outline" onClick={onClear}>
             Clear filters
           </Button>
-        )}
-        <Button asChild>
-          <Link to="/restaurants/participate">Add your restaurant</Link>
-        </Button>
+          <Button asChild>
+            <Link to="/restaurants/participate">Invite a restaurant</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border border-border bg-background p-8 md:p-10">
+      <div className="mx-auto max-w-2xl text-center">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/5 px-3 py-1 font-inter text-xs font-medium text-primary">
+          <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+          {LAUNCH_REGION.cities.join(" · ")}
+        </span>
+
+        <h2 className="mt-4 font-poppins text-2xl font-bold text-foreground md:text-3xl">
+          {LAUNCH_REGION.bareName} directory launching soon
+        </h2>
+
+        <p className="mt-3 font-inter leading-relaxed text-muted-foreground">
+          We&apos;re currently enrolling restaurants in {LAUNCH_CITIES_PHRASE}.{" "}
+          {NATIONWIDE_NOTE}
+        </p>
+
+        <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+          <Button asChild>
+            <Link to="/restaurants/participate">Participate as a restaurant</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link to="/restaurants">Invite a restaurant</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <a href="mailto:info@allergyvoices.com?subject=Join%20the%20Triangle%20launch">
+              Join the {LAUNCH_REGION.bareName} launch
+            </a>
+          </Button>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-8 max-w-2xl border-t border-border pt-6">
+        <h3 className="font-poppins text-sm font-semibold text-foreground">
+          Other cities coming soon
+        </h3>
+        <p className="mt-1.5 font-inter text-sm leading-relaxed text-muted-foreground">
+          Additional cities launch with local ambassadors, allergy families and
+          community partners. Want to help bring AllergyVoices to yours?{" "}
+          <a
+            href="mailto:info@allergyvoices.com?subject=Request%20my%20city"
+            className="text-primary underline-offset-2 hover:underline"
+          >
+            Request your city
+          </a>
+          .
+        </p>
       </div>
     </div>
   );

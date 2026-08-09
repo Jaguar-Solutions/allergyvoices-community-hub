@@ -55,7 +55,7 @@ tends to develop in adolescence or adulthood and is usually lifelong.
 
 ## Reading labels
 
-FALCPA requires the **specific crustacean** to be named &mdash; "shrimp,"
+FALCPA requires the **specific crustacean** to be named — "shrimp,"
 "crab," "lobster," etc. **Mollusks are not covered by FALCPA**, which is
 worth knowing. They may be listed under generic terms like "seafood" or
 "shellfish flavoring."
@@ -66,14 +66,14 @@ Watch for:
 - **Krill** (often in supplements and fish-oil substitutes)
 - **Clam, oyster, mussel, scallop, octopus, squid, calamari** (mollusks,
   not FALCPA-covered)
-- **Glucosamine** &mdash; usually shellfish-derived; vegan glucosamine exists
+- **Glucosamine** — usually shellfish-derived; vegan glucosamine exists
 - **Oyster-shell calcium** in some supplements
-- **Surimi** &mdash; often crab-flavored, sometimes shrimp-based
+- **Surimi** — often crab-flavored, sometimes shrimp-based
 
 ## Hidden sources
 
-- **Caesar dressing** &mdash; some Asian-style versions include shrimp paste
-- **Asian fish sauces and shrimp pastes** &mdash; nuoc mam, terasi, belacan
+- **Caesar dressing** — some Asian-style versions include shrimp paste
+- **Asian fish sauces and shrimp pastes** — nuoc mam, terasi, belacan
 - **Worcestershire sauce variants** in Asia (some include shrimp)
 - **Paella, jambalaya, gumbo, bouillabaisse**
 - **Surimi, imitation crab, California rolls**
@@ -94,7 +94,7 @@ rare in school cafeterias. Watch field trips and special events.
 **Eating out:** Seafood restaurants, sushi restaurants, and Asian
 restaurants are highest-risk. Many shellfish-allergic patients avoid
 them entirely. **Cross-contact in shared fryers, grills, and woks** is the
-most common cause of accidental exposure &mdash; ask specifically.
+most common cause of accidental exposure — ask specifically.
 
 **Travel:** Coastal regions and many Asian cuisines use shellfish heavily.
 Pack a chef card and review menus carefully.

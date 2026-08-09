@@ -13,13 +13,13 @@ reviewed_by: "AllergyVoices editorial"
 
 Different schools call them different things. Three you may encounter:
 
-- **504 plan** &mdash; a federal civil-rights protection for students whose
+- **504 plan** — a federal civil-rights protection for students whose
   disability (food allergy qualifies) substantially limits a major life
   activity. It's the document that legally requires accommodations.
-- **Individualized Health Plan (IHP)** &mdash; nursing-led, written by the
+- **Individualized Health Plan (IHP)** — nursing-led, written by the
   school nurse. Covers day-to-day care: where auto-injectors are stored,
   who administers, what symptoms trigger what response.
-- **Emergency Action Plan** &mdash; the one-pager from your allergist with
+- **Emergency Action Plan** — the one-pager from your allergist with
   symptoms and dosing. The IHP and 504 reference this document.
 
 You may have all three, or just an IHP, depending on your district.
@@ -30,17 +30,17 @@ Ask the school nurse what's standard at your school.
 - **Auto-injector storage** that's accessible, not locked away. Best
   practice is one set with the school nurse and one in the classroom
   with the teacher (especially for younger students).
-- **Trained staff** &mdash; not just the nurse. Cafeteria, recess monitors,
+- **Trained staff** — not just the nurse. Cafeteria, recess monitors,
   and teachers who can administer epinephrine. Many states allow trained
   unlicensed school personnel to give it under standing orders.
-- **Cafeteria coordination** &mdash; know what your child can and can't eat,
+- **Cafeteria coordination** — know what your child can and can't eat,
   and how the kitchen tracks ingredients.
-- **Field trip planning** &mdash; auto-injectors travel with the trip. Write
+- **Field trip planning** — auto-injectors travel with the trip. Write
   it into the plan.
-- **Birthday and classroom celebrations** &mdash; some schools have moved away
+- **Birthday and classroom celebrations** — some schools have moved away
   from food-based celebrations entirely. Others have a known
   "non-food-celebration" option for allergic students.
-- **Substitute teachers** &mdash; the IHP needs to be visible in the lesson
+- **Substitute teachers** — the IHP needs to be visible in the lesson
   plans so subs see it.
 
 ## Start-of-year checklist

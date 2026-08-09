@@ -13,6 +13,7 @@ import { Container, PageHeader, PageLayout, Section } from "@/components/layout"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProgramDisclaimer } from "@/components/restaurants/ProgramDisclaimer";
+import { LaunchRollout } from "@/components/restaurants/LaunchRollout";
 
 const BENEFITS = [
   {
@@ -193,6 +194,8 @@ const ProgramLanding = () => (
         </div>
       </Container>
     </Section>
+
+    <LaunchRollout />
 
     <Section tone="primary-soft">
       <Container width="narrow">

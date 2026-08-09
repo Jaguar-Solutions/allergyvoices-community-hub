@@ -17,8 +17,8 @@ hidden_sources:
   - "Some vegetarian burgers and cutlets"
   - "Bagels with seeded tops or shared baking surfaces"
 family_tips:
-  - "Since the FASTER Act took effect in January 2023, U.S. labels must declare 'sesame' in plain language &mdash; same rules as the other top 8 allergens."
-  - "Some bakeries responded to the FASTER Act by ADDING sesame to their products rather than cleaning their lines. Ironic but real &mdash; check labels you trusted before 2023."
+  - "Since the FASTER Act took effect in January 2023, U.S. labels must declare 'sesame' in plain language — same rules as the other top 8 allergens."
+  - "Some bakeries responded to the FASTER Act by ADDING sesame to their products rather than cleaning their lines. Ironic but real — check labels you trusted before 2023."
   - "Sesame oil varies. Highly refined sesame oil is sometimes tolerated; cold-pressed or unrefined is not. Ask your allergist before introducing."
   - "Tahini, gomashio, gingelly, til, and benne are all sesame. Watch for these names."
   - "Carry two epinephrine auto-injectors at all times."
@@ -42,7 +42,7 @@ benne, sim sim, gomashio**. They're all sesame.
 ## Reading labels
 
 Since January 2023, U.S. food labels must declare **"sesame"** in plain
-language &mdash; either in the ingredient list or in a "Contains:" statement.
+language — either in the ingredient list or in a "Contains:" statement.
 
 What the rules don't cover well:
 
@@ -59,11 +59,11 @@ What the rules don't cover well:
 
 Sesame is widespread in:
 
-- **Middle Eastern cuisine** &mdash; hummus, baba ghanoush, tahini-based sauces,
+- **Middle Eastern cuisine** — hummus, baba ghanoush, tahini-based sauces,
   falafel, halvah
-- **Asian cuisine** &mdash; sesame oil, sesame seeds on noodles, dumpling
+- **Asian cuisine** — sesame oil, sesame seeds on noodles, dumpling
   fillings, certain dressings
-- **Bakery items** &mdash; multigrain breads, "everything" bagels, breadsticks,
+- **Bakery items** — multigrain breads, "everything" bagels, breadsticks,
   buns with seeded tops
 - **Granola, trail mix, energy bars**
 - **Salad dressings and marinades** (tahini and sesame oil)

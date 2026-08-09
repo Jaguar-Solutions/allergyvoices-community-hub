@@ -37,7 +37,7 @@ including anaphylaxis, that may occur with accidental exposure to one or more
 foods. It's the first medication approved for **multiple** food allergies at
 once.
 
-Omalizumab is not new &mdash; it's been used for years to treat severe asthma and
+Omalizumab is not new — it's been used for years to treat severe asthma and
 chronic hives. The food allergy approval is based on the **OUtMATCH** clinical
 trial, which showed that participants taking omalizumab were able to tolerate
 significantly higher amounts of peanut, milk, egg, and cashew before reacting

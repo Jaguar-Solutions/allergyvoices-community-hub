@@ -38,17 +38,17 @@ By high school, most teens carry their own auto-injectors. A few practical
 things:
 
 - **Always two.** No exceptions. They go where you go.
-- **Where they live:** backpack is fine, but not buried in the bottom &mdash;
+- **Where they live:** backpack is fine, but not buried in the bottom —
   somewhere fast to reach. A purse or jacket pocket is fine. Definitely
   not in your locker.
-- **Self-carry rights** &mdash; in most states, schools must let you carry
+- **Self-carry rights** — in most states, schools must let you carry
   your own epinephrine. Your school should have a self-carry agreement on
   file. If they push back, your allergist can write a letter.
 - **At parties or sleepovers,** you carry. Don't hand them to a friend.
 
 ## Talking to friends
 
-Friends mostly want to do the right thing &mdash; they just don't know what
+Friends mostly want to do the right thing — they just don't know what
 that is. Tell them:
 
 - "I have a serious allergy to [X]. If I have a reaction, here's what
@@ -57,7 +57,7 @@ that is. Tell them:
 - Tell them where you keep your phone and who to call.
 - Ask them to learn how to use the trainer (it takes 30 seconds).
 
-Most friends step up. The ones who don't get serious about it &mdash; you can
+Most friends step up. The ones who don't get serious about it — you can
 notice and adjust without making a big deal out of it.
 
 ## Dating
@@ -65,9 +65,9 @@ notice and adjust without making a big deal out of it.
 This is going to come up. A few things that have worked for other people:
 
 - **Mention it early.** Not as a confession, just as part of getting to
-  know each other ("oh, by the way, I have a peanut allergy &mdash; if we ever
+  know each other ("oh, by the way, I have a peanut allergy — if we ever
   share food, that matters").
-- **Kissing and food allergies.** This is a real thing &mdash; reactions can
+- **Kissing and food allergies.** This is a real thing — reactions can
   happen from kissing someone who's recently eaten your allergen. The
   rule of thumb: if your partner just ate it, brushing teeth + waiting a
   few hours is the cautious path. Your allergist can give you a more

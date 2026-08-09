@@ -1,6 +1,6 @@
 ---
 title: "The NIAID peanut introduction guidelines, in plain English"
-summary: "The 2017 NIAID guidelines turned the LEAP findings into specific, actionable recommendations for parents and pediatricians. Nearly a decade in, they're still the U.S. standard &mdash; and they're remarkably simple once you cut through the jargon."
+summary: "The 2017 NIAID guidelines turned the LEAP findings into specific, actionable recommendations for parents and pediatricians. Nearly a decade in, they're still the U.S. standard — and they're remarkably simple once you cut through the jargon."
 published_date: "2026-02-15"
 status: published
 last_reviewed: "2026-04-30"
@@ -9,7 +9,7 @@ allergens: [peanut]
 evidence_level: guideline
 geography: us
 who_affected: "All infants in the 4-11 month age window, with specific guidance based on whether the infant has eczema, egg allergy, or neither."
-family_takeaway: "Three categories of infants, three different approaches. Most babies are 'no eczema, no allergy' and can have peanut introduced freely with other solids around 6 months. High-risk babies need a plan with their pediatrician or allergist first &mdash; sometimes a screening test, sometimes a supervised first feeding."
+family_takeaway: "Three categories of infants, three different approaches. Most babies are 'no eczema, no allergy' and can have peanut introduced freely with other solids around 6 months. High-risk babies need a plan with their pediatrician or allergist first — sometimes a screening test, sometimes a supervised first feeding."
 questions_for_allergist:
   - "Which NIAID risk category does my baby fall into?"
   - "Should we do a skin test or blood test before introduction?"
@@ -25,7 +25,7 @@ sources:
     url: "https://publications.aap.org/aapnews/news/13205"
     agency: "American Academy of Pediatrics"
     published_date: "2017-02-01"
-  - name: "FDA Acknowledgement of Qualified Health Claim &mdash; Early Peanut Introduction"
+  - name: "FDA Acknowledgement of Qualified Health Claim — Early Peanut Introduction"
     url: "https://www.fda.gov/food/cfsan-constituent-updates/fda-acknowledges-qualified-health-claim-linking-early-peanut-introduction-and-reduced-risk-developing"
     agency: "FDA"
     published_date: "2017-09-07"
@@ -83,7 +83,7 @@ This is the **majority of infants**. The recommendation:
 Whole peanuts are a choking hazard for infants. Practical options:
 
 - **Smooth peanut butter thinned with water, breast milk, or formula**
-  (2 teaspoons stirred into ~2 tablespoons of warm water) &mdash; a common
+  (2 teaspoons stirred into ~2 tablespoons of warm water) — a common
   starting amount is 2 grams of peanut protein
 - **Peanut puffs** that dissolve easily in saliva (Bamba is a common one
   used in research; many U.S. brands also work)
@@ -98,7 +98,7 @@ week**, sustained over many months. That's roughly:
 
 ## Why "regular" matters
 
-LEAP didn't just show that early introduction works &mdash; it showed that
+LEAP didn't just show that early introduction works — it showed that
 **sustained, regular consumption** is what builds and maintains
 tolerance. Sporadic exposure doesn't have the same protective effect.
 
@@ -109,7 +109,7 @@ least age 5.
 
 ## What families should know
 
-- **Most babies are Category 3.** No special steps required &mdash; just
+- **Most babies are Category 3.** No special steps required — just
   introduce peanut along with everything else.
 - **High-risk babies should have a plan.** If your baby has bad eczema or
   is already egg-allergic, talk to a pediatrician or allergist before

@@ -30,7 +30,7 @@ const AllergenHub = () => {
       <PageLayout>
         <SEOHead
           title={`${name} allergen hub`}
-          description={`${name} allergy basics &mdash; coming soon.`}
+          description={`${name} allergy basics — coming soon.`}
         />
         <PageHeader
           eyebrow="Allergen hub"

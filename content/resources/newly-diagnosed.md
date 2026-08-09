@@ -54,7 +54,7 @@ You don't owe everyone an explanation. Start small:
 ## Day 7: Take a breath
 
 A diagnosis is a beginning, not an emergency in itself. Most days will be
-ordinary. The plan, the auto-injectors, the people who know &mdash; that's
+ordinary. The plan, the auto-injectors, the people who know — that's
 the foundation. Everything else (label-reading shortcuts, restaurant
 strategies, school party planning) builds from there over weeks and months,
 not days.

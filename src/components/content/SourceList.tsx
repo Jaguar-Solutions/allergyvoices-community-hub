@@ -25,7 +25,7 @@ export function SourceList({ sources }: SourceListProps) {
               <ExternalLink className="h-3.5 w-3.5 mt-0.5 flex-shrink-0" aria-hidden="true" />
             </a>
             {source.agency && (
-              <span className="text-muted-foreground"> &mdash; {source.agency}</span>
+              <span className="text-muted-foreground"> — {source.agency}</span>
             )}
             {source.published_date && (
               <span className="text-muted-foreground"> &middot; {source.published_date}</span>

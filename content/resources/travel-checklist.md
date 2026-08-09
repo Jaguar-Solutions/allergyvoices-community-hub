@@ -11,18 +11,18 @@ reviewed_by: "AllergyVoices editorial"
 
 ## Before you go
 
-- [ ] **Auto-injectors not expiring during the trip** &mdash; refill if needed
+- [ ] **Auto-injectors not expiring during the trip** — refill if needed
 - [ ] **Antihistamines** packed in their original bottle
 - [ ] **Emergency action plan** (paper copy and photo on phone)
 - [ ] **Doctor's letter** for international travel explaining the
-  medications &mdash; useful at customs and for purchasing replacements
+  medications — useful at customs and for purchasing replacements
   abroad if needed
 - [ ] **Chef card** in the local language(s) of your destination
   (translation services exist; ask your allergist or use a vetted
   template)
 - [ ] **Travel insurance** that covers medical evacuation, especially
   international
-- [ ] **Locate hospitals** at your destination &mdash; bookmark addresses on
+- [ ] **Locate hospitals** at your destination — bookmark addresses on
   your phone
 - [ ] **Safe snacks** for travel days: granola bars, fruit, crackers, etc.
 
@@ -43,7 +43,7 @@ reviewed_by: "AllergyVoices editorial"
   bag at your feet, not 30 seconds away.
 - **Pre-board if you have a peanut/tree-nut allergy** to wipe down your
   seat area. Most airlines accommodate this if you ask in advance.
-- **Don't rely on airline meals** &mdash; even "allergy-friendly" options vary
+- **Don't rely on airline meals** — even "allergy-friendly" options vary
   in reliability. Pack what you'll eat.
 - **Tell the flight attendants** about the allergy when you board. They
   can sometimes adjust nearby snacks (some airlines stop peanut snack
@@ -81,7 +81,7 @@ reviewed_by: "AllergyVoices editorial"
 - **Know the local emergency number** (911 in US, 112 in much of Europe,
   119 in Japan, 000 in Australia, etc.). Save it in your phone before
   you fly.
-- **Replacement auto-injectors abroad** &mdash; brand and dosing differ from
+- **Replacement auto-injectors abroad** — brand and dosing differ from
   country to country. Try not to need this; if you do, the doctor's letter
   helps. EpiPen is widely available; Auvi-Q is not.
 
@@ -90,4 +90,4 @@ reviewed_by: "AllergyVoices editorial"
 - Note what worked and what didn't in your phone (or this guide). The
   next trip will be easier.
 - Replace any auto-injector you used in transit (and call 911 if you
-  used one &mdash; observation in a hospital still applies, even abroad).
+  used one — observation in a hospital still applies, even abroad).

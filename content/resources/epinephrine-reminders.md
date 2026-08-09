@@ -1,6 +1,6 @@
 ---
 title: "Epinephrine: the rules of two, expiration, storage, and travel"
-summary: "Two auto-injectors, always together, always in date, never in a hot car. The basics every food allergy family commits to memory &mdash; plus the things that surprise people."
+summary: "Two auto-injectors, always together, always in date, never in a hot car. The basics every food allergy family commits to memory — plus the things that surprise people."
 age_stage: [newly-diagnosed, school-age, teen, adult]
 setting: [home, school, restaurant, travel, clinic]
 allergens: []
@@ -28,7 +28,7 @@ reviewed_by: "AllergyVoices editorial"
 - **Not in a freezing pocket.** Cold won't ruin it instantly but repeated
   freezing is bad. In winter coats, an inside pocket near body heat is
   better than an outside pocket.
-- **Not in a refrigerator.** Some families think this preserves it &mdash; it
+- **Not in a refrigerator.** Some families think this preserves it — it
   doesn't, and cold-stored epinephrine takes longer to work.
 
 ## How to use the trainer
@@ -37,7 +37,7 @@ Every auto-injector brand ships with a trainer device that has no needle
 and no medication. Practice once on a pillow:
 
 1. Take the trainer out of the case.
-2. Remove the safety cap (different per brand &mdash; learn yours).
+2. Remove the safety cap (different per brand — learn yours).
 3. Press firmly into the outer thigh. Through clothing is fine.
 4. Hold for the brand-specific count (varies, usually 2-10 seconds).
 5. Remove and gently massage the injection site.
@@ -48,7 +48,7 @@ Practicing once means your hands know the motion before stress takes over.
 ## Generic vs brand-name
 
 Generic epinephrine auto-injectors work the same as brand names. The
-**device** (how you operate it) is what differs &mdash; trainer practice for
+**device** (how you operate it) is what differs — trainer practice for
 your specific device matters more than which brand you have.
 
 If your prescription changes brands at refill, take 30 seconds with the

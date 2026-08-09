@@ -1,6 +1,6 @@
 ---
 title: "Birthday parties: hosting and attending without losing your mind"
-summary: "Birthday parties are the hardest social moment for many food allergy families &mdash; lots of unknown food, lots of distracted kids, lots of well-meaning parents who don't fully understand. Here's a calm playbook for both sides of the invitation."
+summary: "Birthday parties are the hardest social moment for many food allergy families — lots of unknown food, lots of distracted kids, lots of well-meaning parents who don't fully understand. Here's a calm playbook for both sides of the invitation."
 age_stage: [school-age]
 setting: [home]
 allergens: []
@@ -40,13 +40,13 @@ reasonable choice. As they get older you'll trust their judgment more.
 ## When you're hosting
 
 The easier path is **make the entire party allergen-free.** It sounds
-restrictive but it's actually freeing &mdash; you don't spend the party
+restrictive but it's actually freeing — you don't spend the party
 policing what's coming through the door.
 
 For a peanut-free or tree-nut-free party:
 
 - Confirm with the bakery (or bake yourself) that the cake is safe
-- Pizza, fruit, vegetables, store-bought safe snacks &mdash; easy to make work
+- Pizza, fruit, vegetables, store-bought safe snacks — easy to make work
 - Goody bags with stickers, small toys, or non-food prizes
 
 If you do allow some allergens (e.g. you can't avoid milk for a milk
@@ -68,7 +68,7 @@ Three approaches:
 ## Goody bags
 
 When you're hosting, non-food goody bags solve a lot of problems. Stickers,
-small toys, bubbles, mini puzzles &mdash; kids actually love these more than
+small toys, bubbles, mini puzzles — kids actually love these more than
 candy in many cases.
 
 When you're attending, check the goody bag before your child opens it

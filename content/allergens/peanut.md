@@ -17,7 +17,7 @@ hidden_sources:
 family_tips:
   - "Peanut is a legume; tree nut allergy and peanut allergy are different but often co-occur."
   - "On U.S. labels, peanut must be declared in plain language under FALCPA."
-  - "Watch for 'may contain' or 'made on shared equipment' lines &mdash; talk to your allergist about how strict to be."
+  - "Watch for 'may contain' or 'made on shared equipment' lines — talk to your allergist about how strict to be."
   - "Carry two epinephrine auto-injectors at all times. Always."
   - "For school, ask whether classrooms or cafeterias are peanut-aware vs peanut-free, and what 'peanut-free' actually covers."
 related_article_slugs: []
@@ -28,12 +28,12 @@ related_article_slugs: []
 Peanuts grow underground (they're a legume, like beans and lentils), so peanut
 allergy is biologically separate from tree nut allergies like almond or cashew.
 That said, many people allergic to peanut are also allergic to one or more tree
-nuts &mdash; about 25-40% by some estimates. Your allergist can test for both.
+nuts — about 25-40% by some estimates. Your allergist can test for both.
 
 Peanut allergy tends to start in early childhood and is more often lifelong than
 milk or egg allergy. Recent guidelines support **early introduction** of
 peanut-containing foods to lower the risk of developing a peanut allergy in
-infants who don't already have one &mdash; talk to your pediatrician about
+infants who don't already have one — talk to your pediatrician about
 timing, especially if your baby has eczema or an egg allergy.
 
 ## Reading labels
@@ -52,7 +52,7 @@ What labels **don't** cover well:
 
 ## Hidden sources
 
-Peanut shows up in unexpected places &mdash; especially in cuisines that use it as
+Peanut shows up in unexpected places — especially in cuisines that use it as
 a thickener or sauce base. Always ask about ingredients in:
 
 - Mole, satay sauce, and pad thai
@@ -73,7 +73,7 @@ The cafeteria? Snacks brought from home? Birthday treats? Field trips?
 
 **Eating out:** Speak directly to the manager or chef. Ask about shared
 fryers, woks, and prep surfaces. Asian, African, and Mexican kitchens often
-use peanut as a regular ingredient &mdash; ask before assuming a dish is safe.
+use peanut as a regular ingredient — ask before assuming a dish is safe.
 
 **Travel:** Pack two epinephrine auto-injectors (always two), antihistamines,
 a chef card in the local language, and safe snacks for the journey.
@@ -85,7 +85,7 @@ Peanut is the only food allergen with an FDA-approved oral immunotherapy
 sublingual immunotherapy approaches are offered at specialty allergy centers.
 **Omalizumab** (Xolair) was approved by the FDA in 2024 to reduce the risk of
 allergic reactions to multiple foods, including peanut, after accidental
-exposure &mdash; it doesn't cure allergy but raises the threshold.
+exposure — it doesn't cure allergy but raises the threshold.
 
 These are personal decisions. Talk through risks, time commitment, and your
 child's readiness with an allergist who specializes in food allergy.

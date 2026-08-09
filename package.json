@@ -14,7 +14,8 @@
     "deploy": "bash scripts/deploy-hostinger.sh",
     "deploy:upload": "bash scripts/deploy-hostinger.sh --upload",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

@@ -1,6 +1,6 @@
 ---
 title: "Dining out: the script, the questions, and the red flags"
-summary: "Restaurants are one of the harder parts of food allergy life because you can't read the label. The fix is a short, repeatable script that puts your allergy in front of the person who can actually do something about it &mdash; the chef or manager."
+summary: "Restaurants are one of the harder parts of food allergy life because you can't read the label. The fix is a short, repeatable script that puts your allergy in front of the person who can actually do something about it — the chef or manager."
 age_stage: [school-age, teen, adult]
 setting: [restaurant]
 allergens: []
@@ -25,7 +25,7 @@ reviewed_by: "AllergyVoices editorial"
 When you're seated, lead with this (or your own version):
 
 > "Hi, before we order I want to let you know I have a [peanut / milk /
-> sesame] allergy. It's serious &mdash; it can cause anaphylaxis. Could you
+> sesame] allergy. It's serious — it can cause anaphylaxis. Could you
 > please let the manager or chef know so we can talk about what's safe?"
 
 Saying "anaphylaxis" or "serious" matters. Some staff have heard "I'm
@@ -35,7 +35,7 @@ When the manager or chef arrives:
 
 > "Thanks for coming over. I'd like to know what dishes you'd recommend
 > for someone with [allergen] allergy. I'm asking specifically about
-> ingredients **and** about cross-contact &mdash; shared fryers, grills,
+> ingredients **and** about cross-contact — shared fryers, grills,
 > or surfaces."
 
 ## Questions to ask
@@ -80,14 +80,14 @@ oil in the fryer" is more useful than "you'll be fine."
 
 These come up often enough to mention:
 
-- **Shared fryers** &mdash; french fries from a fryer that also cooks shrimp
+- **Shared fryers** — french fries from a fryer that also cooks shrimp
   tempura are not safe for shellfish allergy. Same for breaded chicken
   in a wheat-cross-contact context, etc.
-- **Shared grills** &mdash; a chicken breast and a fish fillet on the same
+- **Shared grills** — a chicken breast and a fish fillet on the same
   grill share proteins.
-- **Shared woks** &mdash; in Asian restaurants, the wok rarely gets washed
+- **Shared woks** — in Asian restaurants, the wok rarely gets washed
   between dishes. Cross-contact is the rule, not the exception.
-- **Shared scoops** &mdash; ice cream shops, yogurt bars, and bulk-food
+- **Shared scoops** — ice cream shops, yogurt bars, and bulk-food
   stores are high-cross-contact environments.
 
 ## Chef cards
@@ -107,6 +107,6 @@ Save the cards on your phone in a notes app for easy access.
 
 ## When it goes well
 
-When a restaurant nails it &mdash; quiet, careful, attentive &mdash; **come back**
+When a restaurant nails it — quiet, careful, attentive — **come back**
 and tell them so. Allergy-friendly dining is built on positive
 reinforcement. The places that take it seriously deserve repeat business.

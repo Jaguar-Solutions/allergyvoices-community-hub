@@ -46,7 +46,7 @@ export function Footer() {
 
             <p className="font-inter text-sm text-background/70 max-w-md leading-relaxed">
               Every ingredient matters. Every voice counts. A calm, practical hub
-              for food allergy families &mdash; medical findings, recalls, and
+              for food allergy families — medical findings, recalls, and
               real-world resources.
             </p>
             <p className="font-inter text-xs text-background/60 max-w-md leading-relaxed">

@@ -60,7 +60,7 @@ them for low-risk allergens.
 
 Even with U.S. labeling, a few things are not fully covered:
 
-- **Sesame** &mdash; required since January 2023, but some bakeries responded
+- **Sesame** — required since January 2023, but some bakeries responded
   by adding sesame to products rather than cleaning lines. Recheck old
   trusted brands.
 - **Mollusks** (clam, oyster, mussel, scallop) are NOT covered by FALCPA.
@@ -85,7 +85,7 @@ arrive.
 
 - **New owner or co-packer.** Companies acquire each other; manufacturing
   moves. The label can change subtly.
-- **A reformulation.** Watch for "new and improved" callouts &mdash; that's a
+- **A reformulation.** Watch for "new and improved" callouts — that's a
   cue to recheck the label.
 - **A new product line.** A brand might add a peanut-containing variant
   to its lineup. Cross-contact risk goes up across the line.
@@ -101,5 +101,5 @@ verified. Group by category (cookies, breads, sauces, etc.) for fast
 shopping. Recheck once a year.
 
 This list is easier to maintain than memorizing every ingredient. It also
-makes meal-planning faster &mdash; you start from "what we know works" rather
+makes meal-planning faster — you start from "what we know works" rather
 than from a blank slate.

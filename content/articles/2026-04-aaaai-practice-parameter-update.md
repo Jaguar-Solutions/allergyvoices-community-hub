@@ -32,7 +32,7 @@ tags: [guideline, aaaai, treatment, mental-health]
 
 The American Academy of Allergy, Asthma & Immunology (AAAAI) and its
 sister organizations periodically update the **Food Allergy Practice
-Parameter** &mdash; the consensus document that guides how U.S. allergists
+Parameter** — the consensus document that guides how U.S. allergists
 manage food allergy. The most recent updates over the past few years
 have shifted the field meaningfully.
 
@@ -111,13 +111,13 @@ The parameter now explicitly recommends:
 
 ## What families should know
 
-- **Bring the practice parameter to your visits** &mdash; or at least, bring
+- **Bring the practice parameter to your visits** — or at least, bring
   the questions it raises. "Have we talked about OIT?" and "Is our
   action plan up to date?" are simple questions a current parameter
   expects every patient to address.
 - **The parameter changes faster than most older clinical norms.** If
   your allergist hasn't mentioned OIT or omalizumab, it's reasonable to
-  ask why &mdash; not as a confrontation, just as part of an informed
+  ask why — not as a confrontation, just as part of an informed
   decision.
 - **The parameter is for the U.S.** International guidelines (EAACI,
   Australasian) overlap heavily but have some differences worth knowing
@@ -132,5 +132,5 @@ The parameter now explicitly recommends:
 If your last allergist visit felt like a maintenance check-up rather
 than a real conversation about your options, this is the article that
 suggests asking for more. The current guidance is clear that food
-allergy management has more options than strict avoidance &mdash; and that
+allergy management has more options than strict avoidance — and that
 mental health is part of the picture, not separate from it.

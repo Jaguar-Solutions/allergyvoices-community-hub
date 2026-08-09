@@ -484,7 +484,10 @@ export async function fetchLatestReport(
     .maybeSingle();
 
   if (error) throw error;
-  return (data as RestaurantReport | null) ?? null;
+  // jsonb columns come back as `Json`, which the generated types cannot narrow
+  // to the shapes the engine wrote. Going through `unknown` is the honest cast:
+  // the structure is guaranteed by `restaurant-report`, not by the schema.
+  return (data as unknown as RestaurantReport | null) ?? null;
 }
 
 async function invokeReport(

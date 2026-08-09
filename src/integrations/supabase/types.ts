@@ -12,38 +12,33 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "13.0.5"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
-      news: {
-        Row: {
-          created_at: string | null
-          id: string
-          published_at: string
-          source: string | null
-          summary: string | null
-          title: string
-          url: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          published_at: string
-          source?: string | null
-          summary?: string | null
-          title: string
-          url: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          published_at?: string
-          source?: string | null
-          summary?: string | null
-          title?: string
-          url?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           created_at: string | null
@@ -232,6 +227,125 @@ export type Database = {
           },
         ]
       }
+      restaurant_interests: {
+        Row: {
+          created_at: string
+          requested_at: string
+          restaurant_id: string
+          updated_at: string
+          wants_best_practices_guide: boolean
+          wants_menu_help: boolean
+          wants_updates: boolean
+        }
+        Insert: {
+          created_at?: string
+          requested_at?: string
+          restaurant_id: string
+          updated_at?: string
+          wants_best_practices_guide?: boolean
+          wants_menu_help?: boolean
+          wants_updates?: boolean
+        }
+        Update: {
+          created_at?: string
+          requested_at?: string
+          restaurant_id?: string
+          updated_at?: string
+          wants_best_practices_guide?: boolean
+          wants_menu_help?: boolean
+          wants_updates?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_interests_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: true
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurant_reports: {
+        Row: {
+          created_at: string
+          email_error: string | null
+          email_sent_at: string | null
+          email_status: string
+          email_to: string | null
+          engine_version: number
+          generated_at: string
+          generated_by: string | null
+          id: string
+          next_steps: Json
+          pdf_bytes: number | null
+          pdf_path: string | null
+          recommendations: Json
+          restaurant_id: string
+          strengths: Json
+          submission_id: string | null
+          survey_schema_version: number | null
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          email_error?: string | null
+          email_sent_at?: string | null
+          email_status?: string
+          email_to?: string | null
+          engine_version: number
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          next_steps?: Json
+          pdf_bytes?: number | null
+          pdf_path?: string | null
+          recommendations?: Json
+          restaurant_id: string
+          strengths?: Json
+          submission_id?: string | null
+          survey_schema_version?: number | null
+          updated_at?: string
+          version: number
+        }
+        Update: {
+          created_at?: string
+          email_error?: string | null
+          email_sent_at?: string | null
+          email_status?: string
+          email_to?: string | null
+          engine_version?: number
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          next_steps?: Json
+          pdf_bytes?: number | null
+          pdf_path?: string | null
+          recommendations?: Json
+          restaurant_id?: string
+          strengths?: Json
+          submission_id?: string | null
+          survey_schema_version?: number | null
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_reports_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "restaurant_reports_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurant_submissions: {
         Row: {
           answers: Json
@@ -376,30 +490,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      site_metrics: {
-        Row: {
-          families_joined: number
-          id: string
-          policy_updates_tracked: number
-          restaurants_tracked: number
-          updated_at: string | null
-        }
-        Insert: {
-          families_joined?: number
-          id?: string
-          policy_updates_tracked?: number
-          restaurants_tracked?: number
-          updated_at?: string | null
-        }
-        Update: {
-          families_joined?: number
-          id?: string
-          policy_updates_tracked?: number
-          restaurants_tracked?: number
-          updated_at?: string | null
-        }
-        Relationships: []
       }
       subscribers: {
         Row: {
@@ -591,9 +681,24 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      restaurant_claim_status: ["unclaimed", "pending", "claimed"],
+      restaurant_listing_source: ["self_submitted", "admin_entered"],
+      restaurant_publish_consent: ["yes", "yes_contact_first", "no"],
+      restaurant_status: [
+        "submitted",
+        "in_review",
+        "changes_requested",
+        "published",
+        "hidden",
+        "declined",
+      ],
+      restaurant_submission_source: ["web_form", "owner_update", "admin_edit"],
     },
   },
 } as const

@@ -49,7 +49,7 @@ const NATIONAL_RESOURCES: NationalResource[] = [
     name: "FARE — Walk for Food Allergy",
     url: "https://www.foodallergy.org/our-initiatives/awareness-campaigns/walk",
     description:
-      "Annual community walks across the U.S. &mdash; a low-barrier way to meet other allergy families locally.",
+      "Annual community walks across the U.S. — a low-barrier way to meet other allergy families locally.",
     category: "Community",
   },
   {
@@ -81,7 +81,7 @@ const Directory = () => (
   <PageLayout>
     <SEOHead
       title="Local Resources Directory"
-      description="National directories for allergists, dietitians, support groups, and camps &mdash; plus our growing list of community-vetted local resources."
+      description="National directories for allergists, dietitians, support groups, and camps — plus our growing list of community-vetted local resources."
     />
     <PageHeader
       eyebrow="Local resources"

@@ -1,6 +1,6 @@
 ---
 title: "Baked-milk and baked-egg ladders: a path many families don't know about"
-summary: "Many milk- and egg-allergic children tolerate their allergen when it's been baked into something at high heat. That's not a curiosity &mdash; it's a structured tool, the 'ladder,' that allergists use to help children build tolerance and sometimes outgrow the allergy."
+summary: "Many milk- and egg-allergic children tolerate their allergen when it's been baked into something at high heat. That's not a curiosity — it's a structured tool, the 'ladder,' that allergists use to help children build tolerance and sometimes outgrow the allergy."
 published_date: "2026-02-12"
 status: published
 last_reviewed: "2026-04-30"
@@ -21,7 +21,7 @@ sources:
     url: "https://www.jacionline.org/article/S0091-6749(08)00568-3/fulltext"
     agency: "Journal of Allergy and Clinical Immunology"
     published_date: "2008-08-01"
-  - name: "AAAAI Practice Parameter: Food Allergy &mdash; A Practice Parameter Update 2014"
+  - name: "AAAAI Practice Parameter: Food Allergy — A Practice Parameter Update 2014"
     url: "https://www.aaaai.org/practice-resources/parameters-guidelines"
     agency: "AAAAI"
     published_date: "2014-11-01"
@@ -34,7 +34,7 @@ tags: [milk, egg, tolerance, treatment, ladder]
 ## What changed
 
 For years the standard advice for milk- or egg-allergic children was
-strict avoidance &mdash; no exposure of any kind. That's still appropriate for
+strict avoidance — no exposure of any kind. That's still appropriate for
 many children, but research has clarified an important nuance: **the
 allergenic proteins in milk and egg change shape when baked at high heat
 for long enough**.
@@ -75,7 +75,7 @@ often over weeks or months.
 For **baked egg**, the parallel sequence runs from "egg in a muffin" up
 to "scrambled egg" or a soft-boiled yolk.
 
-## Who this is for &mdash; and who it isn't
+## Who this is for — and who it isn't
 
 The baked-milk/baked-egg ladder is appropriate for:
 
@@ -112,7 +112,7 @@ This is the kind of decision that lives squarely with your allergist.
 ## Why this matters
 
 In long-term studies, children who tolerate baked milk and incorporate
-it regularly are more likely to outgrow milk allergy entirely &mdash; sometimes
+it regularly are more likely to outgrow milk allergy entirely — sometimes
 years sooner than children kept on strict avoidance. The same pattern
 holds for baked egg.
 

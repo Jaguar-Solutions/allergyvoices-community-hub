@@ -17,9 +17,16 @@ interface NavGroup {
   children?: NavItem[];
 }
 
+/**
+ * Top-level order puts the directory first.
+ *
+ * "Find Restaurants" was previously reachable only by opening the Restaurants
+ * dropdown, which is where a restaurant owner would look — not a family. It is
+ * the thing most visitors arrive wanting, so it is a link rather than a menu
+ * item, and the owner-facing pages keep their own group.
+ */
 const NAV: NavGroup[] = [
-  { name: "Findings", href: "/findings" },
-  { name: "Recalls", href: "/recalls" },
+  { name: "Find Restaurants", href: "/restaurants/directory" },
   {
     name: "Resources",
     children: [
@@ -30,13 +37,9 @@ const NAV: NavGroup[] = [
       { name: "Local Resources", href: "/directory", description: "Allergists, dietitians, support groups" },
     ],
   },
-  {
-    name: "Restaurants",
-    children: [
-      { name: "Restaurant Directory", href: "/restaurants/directory", description: "Restaurants that shared how they handle allergies" },
-      { name: "For Restaurants", href: "/restaurants", description: "Join the transparency program — free" },
-    ],
-  },
+  { name: "Recalls", href: "/recalls" },
+  { name: "Findings", href: "/findings" },
+  { name: "For Restaurants", href: "/restaurants" },
   { name: "About", href: "/about" },
 ];
 

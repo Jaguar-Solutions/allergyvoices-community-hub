@@ -2,7 +2,7 @@
 
 All editorial content for AllergyVoices lives in this directory as markdown
 files with YAML frontmatter. Each file is validated against a zod schema in
-[`src/content/schemas.ts`](../src/content/schemas.ts) at build time &mdash;
+[`src/content/schemas.ts`](../src/content/schemas.ts) at build time —
 invalid frontmatter is logged to the console and skipped.
 
 ## Layout
@@ -19,7 +19,7 @@ content/
 
 - **Articles**: `YYYY-MM-short-slug.md` (e.g. `2026-03-omalizumab-multifood.md`)
 - **Recalls**: `YYYY-MM-DD-product-slug.md`
-- **Allergens**: `<allergen-slug>.md` &mdash; must match one of:
+- **Allergens**: `<allergen-slug>.md` — must match one of:
   `peanut`, `tree-nuts`, `milk`, `egg`, `sesame`, `wheat`, `soy`, `fish`, `shellfish`
 - **Resources**: `kebab-case-slug.md` (e.g. `newly-diagnosed.md`)
 
@@ -35,7 +35,7 @@ The filename (minus `.md`) becomes the URL slug.
    `reviewed_by`, and merge.
 6. The site rebuilds and the new content goes live.
 
-That's your "review queue." No CMS to log into &mdash; the PR list at
+That's your "review queue." No CMS to log into — the PR list at
 `https://github.com/<repo>/pulls?q=is%3Apr+is%3Aopen` is the queue.
 
 ## Frontmatter cheat sheet
@@ -133,6 +133,6 @@ reviewed_by: "Your name"
 - **Calm, not alarming.** Match the tone of the homepage: "every ingredient
   matters, every voice counts." Avoid fear-based framing.
 - **Mark your AI drafts.** If a piece was AI-drafted, set `status: needs-review`
-  and put a note in the PR description &mdash; never `published` until a human reviews.
+  and put a note in the PR description — never `published` until a human reviews.
 
 See `/about` on the live site for the full editorial policy.

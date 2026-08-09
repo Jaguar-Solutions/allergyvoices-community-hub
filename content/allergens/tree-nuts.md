@@ -1,7 +1,7 @@
 ---
 allergen: tree-nuts
 title: "Tree nut allergy"
-summary: "Tree nuts are a group of about a dozen distinct nuts &mdash; almond, cashew, walnut, pecan, hazelnut, pistachio, Brazil nut, and others. Many people are allergic to one or two specific tree nuts, not all of them. Tree nut allergy and peanut allergy are different (peanut is a legume) but often co-occur."
+summary: "Tree nuts are a group of about a dozen distinct nuts — almond, cashew, walnut, pecan, hazelnut, pistachio, Brazil nut, and others. Many people are allergic to one or two specific tree nuts, not all of them. Tree nut allergy and peanut allergy are different (peanut is a legume) but often co-occur."
 status: published
 last_reviewed: "2026-04-15"
 reviewed_by: "AllergyVoices editorial"
@@ -18,7 +18,7 @@ hidden_sources:
   - "Vegetarian meat substitutes (cashew is a common base)"
 family_tips:
   - "Tree nut allergy and peanut allergy are biologically different but often co-occur. Your allergist may test for both."
-  - "Many people are allergic to specific tree nuts. Ask your allergist which ones to avoid &mdash; some families work with a list rather than a blanket avoidance."
+  - "Many people are allergic to specific tree nuts. Ask your allergist which ones to avoid — some families work with a list rather than a blanket avoidance."
   - "Coconut is classified by the FDA as a tree nut for labeling purposes, but biologically it's a fruit. Many people allergic to other tree nuts tolerate coconut. Talk to your allergist."
   - "Cross-contact during baking and at ice cream counters is a common exposure path. Ask about shared equipment."
   - "Carry two epinephrine auto-injectors at all times."
@@ -30,7 +30,7 @@ related_article_slugs: []
 "Tree nuts" is an umbrella label for about a dozen distinct foods: almond,
 cashew, walnut, pecan, hazelnut, pistachio, Brazil nut, macadamia, pine nut,
 and a handful of less-common ones. They look related and they share a label
-category, but they're botanically diverse &mdash; some are seeds of fruit (almond,
+category, but they're botanically diverse — some are seeds of fruit (almond,
 cashew, pistachio), some are true nuts (hazelnut, chestnut), and some are
 something else entirely.
 
@@ -40,13 +40,13 @@ together (they're related) but tolerate almond. Others react to walnut and
 pecan but not cashew. Your allergist can test for individual tree nuts and
 help you build the list that fits your situation.
 
-About 25-40% of people with peanut allergy also have a tree nut allergy &mdash;
+About 25-40% of people with peanut allergy also have a tree nut allergy —
 worth knowing, but the two are biologically distinct.
 
 ## Reading labels
 
 In the United States, FALCPA requires the **specific tree nut** to be named
-on the label &mdash; "almond," "cashew," "walnut," etc. &mdash; rather than just
+on the label — "almond," "cashew," "walnut," etc. — rather than just
 "tree nuts."
 
 What the rules don't cover well:
@@ -75,7 +75,7 @@ ask about ingredients in:
 list. Some families remove all tree nuts; others keep tolerated ones in
 clearly labeled, separated areas.
 
-**At school:** Ask the school what "nut-free" means in their building &mdash;
+**At school:** Ask the school what "nut-free" means in their building —
 specifically whether it covers both peanuts and tree nuts and whether it
 applies to classroom snacks, the cafeteria, and outside food at events.
 
@@ -84,7 +84,7 @@ high-cross-contact environments. Speak directly to the manager or chef and
 ask about shared scoops, prep surfaces, and grills.
 
 **Travel:** Pack two epinephrine auto-injectors, a chef card, and safe
-snacks. International labeling rules vary &mdash; some countries don't
+snacks. International labeling rules vary — some countries don't
 require specific tree nut naming.
 
 ## Treatments

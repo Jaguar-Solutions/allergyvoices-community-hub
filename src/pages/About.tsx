@@ -122,7 +122,7 @@ const About = () => (
         <div className="mt-5 space-y-6 font-inter text-lg leading-relaxed text-foreground">
           <p>
             Allergy Voices is a family-led food allergy advocacy initiative
-            based in the Triangle, North Carolina. We&rsquo;re building a free
+            based in the Triangle, North Carolina. We’re building a free
             restaurant transparency directory to help families ask better
             questions, and to help restaurants explain the allergy practices
             they already have.
@@ -138,7 +138,7 @@ const About = () => (
               </li>
               <li>
                 We do not certify, inspect, grade, rate, or approve
-                restaurants, and we never call a restaurant &ldquo;safe.&rdquo;
+                restaurants, and we never call a restaurant “safe.”
               </li>
               <li>
                 We are not a government agency and have no regulatory
@@ -185,7 +185,7 @@ const About = () => (
           <p>
             Restaurant listings are written by the restaurants themselves. We
             check submissions for clarity and completeness before publishing,
-            with permission, and we do not edit a restaurant&rsquo;s
+            with permission, and we do not edit a restaurant’s
             description of its own practices to make it sound better or worse.
           </p>
         </div>

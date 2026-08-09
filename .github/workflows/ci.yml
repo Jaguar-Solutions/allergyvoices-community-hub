@@ -28,6 +28,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # `tsc --noEmit` alone checks nothing here: tsconfig.json is a solution
+      # file with "files": [] and project references, so it exits 0 having
+      # compiled no source at all. `tsc -b` follows the references.
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Validate /content frontmatter
         run: npm run content:check
 

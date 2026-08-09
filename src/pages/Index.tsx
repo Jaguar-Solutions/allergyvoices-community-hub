@@ -23,6 +23,7 @@ import NewsFeed from "@/components/NewsFeed";
 import { SurveyInvitation } from "@/components/restaurants/SurveyInvitation";
 import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
+import { LAUNCH_BADGE, LAUNCH_CITIES_PHRASE } from "@/config/launch";
 import { useToast } from "@/hooks/use-toast";
 
 const QUICK_LINKS = [
@@ -149,10 +150,14 @@ const Index = () => {
         <Container width="wide" className="relative">
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div className="space-y-6">
+              {/* Replaces a "calm, practical, family-first" chip that described
+                  our tone. The scope of the directory is the thing a visitor
+                  actually needs in the first second — nationwide in intent,
+                  one region in practice today. */}
               <span className="inline-flex items-center gap-2 rounded-full border border-brand-cyan/30 bg-background/70 px-3 py-1 backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand-coral" aria-hidden="true" />
-                <span className="font-inter text-xs font-medium uppercase tracking-wide text-foreground/80">
-                  Calm, practical, family-first
+                <span className="font-inter text-xs font-medium tracking-wide text-foreground/80">
+                  {LAUNCH_BADGE}
                 </span>
               </span>
               <h1 className="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
@@ -162,16 +167,21 @@ const Index = () => {
                 </span>
               </h1>
               <p className="font-inter text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
-                A calm, practical hub for food allergy families. Plain-language
+                A calm, practical hub for food allergy families — plain-language
                 research updates, recalls from official sources, and real-world
                 tools for home, school, dining, and travel.
               </p>
+              <p className="font-inter text-base text-muted-foreground leading-relaxed max-w-xl">
+                We&apos;re also building a nationwide restaurant
+                allergy-transparency directory, enrolling first in{" "}
+                {LAUNCH_CITIES_PHRASE}.
+              </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button asChild size="lg" className="font-poppins">
-                  <Link to="/resources">Start with the Resource Center</Link>
+                  <Link to="/resources">Explore Family Resources</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="font-poppins">
-                  <Link to="/findings">See Latest Findings</Link>
+                  <Link to="/restaurants/directory">Find Restaurants</Link>
                 </Button>
               </div>
 
@@ -194,7 +204,8 @@ const Index = () => {
                     Run a restaurant?
                   </span>
                   <span className="block font-inter text-sm text-muted-foreground">
-                    Share how you handle food allergies. It's free.
+                    Share your restaurant&apos;s practices. It&apos;s free,
+                    anywhere in the U.S.
                   </span>
                 </span>
                 <ArrowRight
@@ -227,7 +238,7 @@ const Index = () => {
               </h2>
             </div>
             <p className="font-inter text-muted-foreground text-sm md:max-w-md">
-              Everything is organized by who it's for and where you'll use it &mdash; home, school, dining, travel, or shopping.
+              Everything is organized by who it's for and where you'll use it — home, school, dining, travel, or shopping.
             </p>
           </div>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -301,7 +312,7 @@ const Index = () => {
                   Coming soon
                 </p>
                 <h2 className="font-poppins font-semibold text-xl md:text-2xl text-foreground mt-1">
-                  Featured tools &amp; checklists
+                  Featured tools & checklists
                 </h2>
                 <p className="font-inter text-sm md:text-base text-muted-foreground mt-2 max-w-2xl leading-relaxed">
                   Printable chef cards, school-form templates, a birthday-party
@@ -321,7 +332,7 @@ const Index = () => {
             Your story can make a difference.
           </h2>
           <p className="font-inter text-lg text-muted-foreground mb-8">
-            Join families helping each other navigate food allergies. No spam &mdash; just useful updates.
+            Join families helping each other navigate food allergies. No spam — just useful updates.
           </p>
 
           {isSuccess ? (

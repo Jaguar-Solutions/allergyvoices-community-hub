@@ -44,7 +44,7 @@ guidance most plans use:
   effective when given early, and the side effects are mild and short.
 - **Call 911 after** giving epinephrine, even if symptoms improve.
 
-If you're not sure whether to give it &mdash; **give it.** A dose of
+If you're not sure whether to give it — **give it.** A dose of
 epinephrine is far less risky than waiting through anaphylaxis.
 
 ## What happens after epinephrine
@@ -85,5 +85,5 @@ treat the airway or blood-pressure parts of anaphylaxis. They're a
 supportive tool, not the emergency tool.
 
 If your plan only includes antihistamines for mild reactions, that's
-intentional &mdash; just make sure you and everyone caring for your child
+intentional — just make sure you and everyone caring for your child
 knows where the line is.

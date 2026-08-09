@@ -27,7 +27,7 @@ related_article_slugs: []
 
 ## The basics
 
-Fish allergy is allergic reaction to finned fish &mdash; salmon, tuna, cod,
+Fish allergy is allergic reaction to finned fish — salmon, tuna, cod,
 tilapia, halibut, anchovy, and others. It's biologically distinct from
 shellfish allergy (crustaceans and mollusks). The two often co-occur but
 not always.
@@ -35,25 +35,25 @@ not always.
 Many people allergic to one fish react to multiple species because the main
 allergenic protein, **parvalbumin**, is conserved across species. Some
 patients tolerate certain fish (often tuna or salmon) while reacting to
-others &mdash; testing is the only way to know.
+others — testing is the only way to know.
 
 Fish allergy is more often an adult-onset allergy than other Top-9
 allergens, and it tends to be **lifelong**. Most patients don't outgrow it.
 
 ## Reading labels
 
-FALCPA requires the **specific fish** to be named &mdash; "salmon," "tuna,"
-"cod," "anchovy," etc. &mdash; not just "fish."
+FALCPA requires the **specific fish** to be named — "salmon," "tuna,"
+"cod," "anchovy," etc. — not just "fish."
 
 Watch for these less-obvious sources:
 
 - **Anchovy** in sauces and dressings
-- **Surimi**, **imitation crab**, **kamaboko** &mdash; whitefish-based
+- **Surimi**, **imitation crab**, **kamaboko** — whitefish-based
 - **Fish stock**, **fish broth**, **dashi** (Japanese, often bonito-based)
 - **Caviar and fish roe**
 - **Worcestershire sauce** (most contains anchovy)
 - **Caesar dressing** (anchovy)
-- **Many Asian fish sauces** &mdash; Vietnamese nuoc mam, Thai nam pla,
+- **Many Asian fish sauces** — Vietnamese nuoc mam, Thai nam pla,
   Filipino patis, Chinese yu lu
 
 ## Hidden sources
@@ -68,7 +68,7 @@ Fish appears in:
 - **Pizza** (anchovy on Caesar pizza, puttanesca pizza)
 - **Bouillabaisse, paella, cioppino, and other seafood stews**
 - **Some omega-3 supplements** (fish oil; algae-based alternatives exist)
-- **Some pet foods** &mdash; not a direct exposure but a cross-contact concern
+- **Some pet foods** — not a direct exposure but a cross-contact concern
   in shared kitchens
 
 ## Daily life

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ExternalLink, ShieldCheck, Utensils } from "lucide-react";
+import { ArrowRight, BookOpenCheck, ExternalLink, Utensils } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import {
   Container,
@@ -8,6 +8,7 @@ import {
   PageLayout,
   Section,
 } from "@/components/layout";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResourceCard } from "@/components/content/ResourceCard";
 import { getResourcesBySetting } from "@/content";
@@ -57,7 +58,7 @@ const DiningOut = () => {
                   Dining out: the script, the questions, and the red flags
                 </h2>
                 <p className="font-inter text-muted-foreground leading-relaxed">
-                  The whole playbook in one page &mdash; from "how to call
+                  The whole playbook in one page — from "how to call
                   ahead" through "how to talk to the chef" to "what to do
                   when something goes wrong."
                 </p>
@@ -110,7 +111,7 @@ const DiningOut = () => {
             <div className="space-y-3 font-inter text-foreground/85 leading-relaxed">
               <p>
                 Food allergy families want to eat at your restaurant. We're a real
-                slice of your customer base &mdash; over 32 million Americans live
+                slice of your customer base — over 32 million Americans live
                 with food allergies, and we eat out with friends and family the
                 same as everyone else.
               </p>
@@ -120,7 +121,7 @@ const DiningOut = () => {
               <ul className="list-disc pl-5 space-y-1">
                 <li>An ingredient list we can check, on request</li>
                 <li>A staff who'll bring questions to the chef instead of guessing</li>
-                <li>Honesty when the kitchen can't safely accommodate an allergy &mdash; "we can't do that today" beats "you'll be fine"</li>
+                <li>Honesty when the kitchen can't safely accommodate an allergy — "we can't do that today" beats "you'll be fine"</li>
                 <li>Awareness of cross-contact (shared fryers, grills, woks, scoops)</li>
               </ul>
               <p>
@@ -142,36 +143,45 @@ const DiningOut = () => {
         </Container>
       </Section>
 
-      {/* AllergyVoices Approved badge concept (placeholder) */}
+      {/* Replaces a "AllergyVoices Approved" coming-soon badge that promised
+          community verification against "our standards". That directly
+          contradicted every restaurant page, which says we do not inspect,
+          certify, grade or approve — and a badge is exactly the thing a family
+          would rely on hardest. What we actually publish is below. */}
       <Section tone="subtle">
         <Container width="default">
-          <div className="rounded-2xl border-2 border-dashed border-border p-6 md:p-8 bg-background">
+          <div className="rounded-2xl border border-border bg-background p-6 md:p-8">
             <div className="flex items-start gap-3">
-              <ShieldCheck className="w-6 h-6 text-primary flex-shrink-0 mt-1" aria-hidden="true" />
-              <div>
-                <p className="font-inter text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Coming soon
-                </p>
-                <h2 className="font-poppins font-bold text-xl md:text-2xl text-foreground mt-1">
-                  AllergyVoices Approved
+              <BookOpenCheck
+                className="mt-1 h-6 w-6 flex-shrink-0 text-primary"
+                aria-hidden="true"
+              />
+              <div className="min-w-0">
+                <h2 className="font-poppins text-xl font-bold text-foreground md:text-2xl">
+                  Restaurant Allergy Transparency Directory
                 </h2>
-                <p className="font-inter text-muted-foreground mt-2 max-w-2xl leading-relaxed">
-                  A community-vetted badge for restaurants that consistently
-                  meet our standards: written allergen menus, trained staff,
-                  cross-contact awareness, and a manager or chef willing to
-                  talk through every order. Restaurants apply, families
-                  verify, and listings include the date of last verification.
+                <p className="mt-2 max-w-2xl font-inter leading-relaxed text-muted-foreground">
+                  See what participating restaurants report about staff
+                  training, ingredient information, cross-contact practices and
+                  allergy-request procedures. Listings show when the restaurant
+                  last confirmed its information.
                 </p>
-                <p className="font-inter text-sm text-muted-foreground mt-4">
-                  We're shaping the criteria with families and restaurant
-                  partners. Interested in being one of the first?{" "}
-                  <a
-                    href="mailto:info@allergyvoices.com"
-                    className="text-primary hover:underline font-medium"
-                  >
-                    info@allergyvoices.com
-                  </a>
+
+                <p className="mt-4 max-w-2xl font-inter text-sm leading-relaxed text-muted-foreground">
+                  This is not a rating, a review, a certification or an
+                  inspection, and it is never a guarantee of safety. Always
+                  discuss your specific needs with restaurant staff before
+                  ordering.
                 </p>
+
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                  <Button asChild>
+                    <Link to="/restaurants/directory">Find restaurants</Link>
+                  </Button>
+                  <Button asChild variant="outline">
+                    <Link to="/restaurants">Share your restaurant's practices</Link>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

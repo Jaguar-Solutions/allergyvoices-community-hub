@@ -17,9 +17,9 @@ hidden_sources:
   - "Probiotics and certain medications (often cultured on milk media)"
   - "Some artificial flavors"
 family_tips:
-  - "Milk allergy, lactose intolerance, and FPIES are different conditions. Ask your allergist which one your child has &mdash; the response is different for each."
+  - "Milk allergy, lactose intolerance, and FPIES are different conditions. Ask your allergist which one your child has — the response is different for each."
   - "'Non-dairy' doesn't mean 'milk-free.' U.S. law allows products labeled 'non-dairy' to contain caseinate (a milk protein). Read the ingredient list."
-  - "Many milk-allergic children tolerate milk that's been baked into things (the 'baked-milk ladder'). This requires testing and supervision &mdash; do not try at home."
+  - "Many milk-allergic children tolerate milk that's been baked into things (the 'baked-milk ladder'). This requires testing and supervision — do not try at home."
   - "Goat and sheep milk are NOT safe substitutes for cow's milk allergy. Their proteins cross-react."
   - "Carry two epinephrine auto-injectors at all times."
 related_article_slugs: []
@@ -29,7 +29,7 @@ related_article_slugs: []
 
 Cow's milk allergy is the most common food allergy in infants and young
 children, affecting roughly 2-3% of children under three. The body's immune
-system reacts to one or more milk proteins &mdash; most often **casein** and
+system reacts to one or more milk proteins — most often **casein** and
 **whey**.
 
 A few things milk allergy is **not**:
@@ -47,7 +47,7 @@ time. Some carry it into adulthood.
 ## Reading labels
 
 In the United States, FALCPA requires "milk" to be declared in plain
-language &mdash; either in the ingredient list or in a "Contains: milk" line.
+language — either in the ingredient list or in a "Contains: milk" line.
 That covers casein, whey, lactalbumin, lactoglobulin, and other derivatives.
 
 Common milk-derived ingredients to recognize:
@@ -55,7 +55,7 @@ Common milk-derived ingredients to recognize:
 - **Casein, caseinate, sodium caseinate, calcium caseinate**
 - **Whey, whey protein concentrate, whey protein isolate**
 - **Lactalbumin, lactoglobulin**
-- **Ghee** (clarified butter &mdash; still contains some milk proteins)
+- **Ghee** (clarified butter — still contains some milk proteins)
 - **Butter, butter fat, buttermilk**
 - **Milk solids, milk powder, dry milk**
 
@@ -79,7 +79,7 @@ Milk shows up in places that don't seem dairy at all:
 - **Probiotics and some medications** (the bacteria are often cultured on
   milk-based media, leaving traces)
 - **Dark chocolate** (often produced on shared equipment with milk chocolate)
-- **Some artificial flavors and "natural flavors"** &mdash; if the label
+- **Some artificial flavors and "natural flavors"** — if the label
   doesn't say milk-free explicitly, ask the manufacturer.
 
 ## Daily life
@@ -95,7 +95,7 @@ unless specifically directed.
 **The baked-milk ladder:** Many milk-allergic children tolerate milk that
 has been baked into a muffin or cookie at high temperature for long enough.
 This is sometimes used as a step toward outgrowing the allergy. **It
-requires medical supervision** &mdash; do not try this at home without your
+requires medical supervision** — do not try this at home without your
 allergist.
 
 **At school:** Coordinate with the school nurse, cafeteria, and teacher.
@@ -104,7 +104,7 @@ parties) all need a plan.
 
 **Eating out:** Italian, Mexican, and bakery-heavy menus tend to use a lot
 of milk. Asian and many vegan-leaning restaurants tend to use less. Always
-ask &mdash; "vegan" usually means milk-free, but not always.
+ask — "vegan" usually means milk-free, but not always.
 
 ## Treatments
 
