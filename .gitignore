@@ -35,3 +35,18 @@ legacy-supabase-export
 # Local environment. The anon key is public-by-design, but this file is
 # where a real secret would eventually land — keep it out of git.
 .env
+
+# Plugin-installed agent skills. `.claude/skills/` holds two different kinds
+# of thing: a few skills written for this project and committed deliberately,
+# and symlinks into `.agents/skills/` created by installing a plugin. Ignore
+# everything by default so a new plugin install doesn't show up as untracked
+# noise, then re-admit the project's own skills by name.
+.agents/
+.claude/skills/*
+!.claude/skills/design-taste-frontend/
+!.claude/skills/frontend-design/
+!.claude/skills/ui-ux-pro-max/
+
+# Scratch area. Holds a build zip and recovered git lock files; nothing here
+# should ever reach a commit.
+_to_delete/
