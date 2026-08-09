@@ -23,6 +23,7 @@ const Directory = lazy(() => import("./pages/Directory"));
 const DiningOut = lazy(() => import("./pages/DiningOut"));
 const SchoolTeens = lazy(() => import("./pages/SchoolTeens"));
 const About = lazy(() => import("./pages/About"));
+const Policies = lazy(() => import("./pages/Policies"));
 
 // Restaurant Allergy Transparency Program
 const ProgramLanding = lazy(() => import("./pages/restaurants/ProgramLanding"));
@@ -102,6 +103,11 @@ const App = () => (
 
             {/* About / Editorial Policy */}
             <Route path="/about" element={<About />} />
+
+            {/* Privacy, Terms and Restaurant Participation. Drafts pending
+                legal review — see the page for what is still open. */}
+            <Route path="/policies/:slug" element={<Policies />} />
+            <Route path="/policies" element={<Navigate to="/policies/privacy" replace />} />
 
             {/* Legacy redirects: blog moved into Findings */}
             <Route

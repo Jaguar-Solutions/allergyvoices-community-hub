@@ -45,7 +45,7 @@ export function AllergenFilter({ selected, onChange, id = "allergen-filter" }: A
   return (
     <div className="space-y-2">
       <Label htmlFor={id} className="font-inter text-sm font-medium">
-        Allergy experience
+        Common allergy requests
       </Label>
       <Popover>
         <PopoverTrigger asChild>
@@ -57,7 +57,7 @@ export function AllergenFilter({ selected, onChange, id = "allergen-filter" }: A
             aria-describedby={`${id}-help`}
             aria-label={
               selected.length === 0
-                ? "Filter by allergy experience"
+                ? "Filter by common allergy requests"
                 : `Filter by allergen. ${selected.length} selected: ${selected.map(allergenLabel).join(", ")}`
             }
           >

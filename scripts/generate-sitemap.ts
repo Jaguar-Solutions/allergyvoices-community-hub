@@ -33,6 +33,9 @@ const STATIC_ROUTES: { path: string; changefreq: string; priority: number }[] = 
   { path: "/restaurants/directory", changefreq: "daily", priority: 0.8 },
   { path: "/restaurants/participate", changefreq: "monthly", priority: 0.6 },
   { path: "/about", changefreq: "monthly", priority: 0.5 },
+  { path: "/policies/privacy", changefreq: "yearly", priority: 0.3 },
+  { path: "/policies/terms", changefreq: "yearly", priority: 0.3 },
+  { path: "/policies/restaurant-participation", changefreq: "yearly", priority: 0.4 },
 ];
 
 interface ContentRoute {

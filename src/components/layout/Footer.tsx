@@ -15,6 +15,10 @@ const ABOUT_LINKS = [
   { label: "Editorial Policy", href: "/about#editorial" },
   { label: "Local Resources", href: "/directory" },
   { label: "Contact", href: "mailto:info@allergyvoices.com" },
+  { label: "Privacy Policy", href: "/policies/privacy" },
+  { label: "Terms of Use", href: "/policies/terms" },
+  { label: "Restaurant Participation", href: "/policies/restaurant-participation" },
+  { label: "Medical Disclaimer", href: "/policies/terms" },
 ];
 
 const SOCIAL_LINKS = [

@@ -44,12 +44,26 @@ const FindingDetail = () => {
         ogType="article"
         structuredData={{
           "@context": "https://schema.org",
-          "@type": "MedicalScholarlyArticle",
+          "@type": "MedicalWebPage",
           headline: article.title,
+          description: article.summary,
           datePublished: article.published_date,
           dateModified: article.last_reviewed ?? article.published_date,
+          inLanguage: "en-US",
+          // Named as the author, not as a reviewer — there is no clinical
+          // reviewer, and reviewedBy here would assert one in machine-readable
+          // form.
           author: { "@type": "Organization", name: "AllergyVoices" },
-          description: article.summary,
+          publisher: {
+            "@type": "Organization",
+            name: "AllergyVoices",
+            url: "https://allergyvoices.com",
+          },
+          citation: article.sources.map((source) => ({
+            "@type": "CreativeWork",
+            name: source.name,
+            url: source.url,
+          })),
         }}
       />
       <PageHeader

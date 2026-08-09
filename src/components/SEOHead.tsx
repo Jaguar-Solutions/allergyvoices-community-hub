@@ -15,7 +15,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   description = "Making life with food allergies safer, easier, and more inclusive. Join our community for resources, safe dining guides, and advocacy efforts.",
   keywords = "food allergies, allergy advocacy, safe dining, allergy-friendly restaurants, food allergy community, allergy resources, allergen management",
   canonical,
-  ogImage = "/allergy-voices-logo.png",
+  // Absolute, not relative. Facebook, LinkedIn and iMessage all refuse to
+  // resolve a relative og:image against the page URL, so a shared link showed
+  // no preview image at all.
+  ogImage = "https://allergyvoices.com/og-image.png",
   ogType = "website",
   structuredData
 }) => {

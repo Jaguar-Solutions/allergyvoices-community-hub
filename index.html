@@ -38,6 +38,37 @@
 
       gtag('config', 'G-TRF7BCJSJ5');
     </script>
+    <!-- Organization and WebSite, in the served HTML rather than injected by
+         React, so a crawler that does not run JavaScript still sees them.
+         Deliberately no aggregateRating, review or certification markup: we
+         publish none of those things, and claiming them in schema would be a
+         machine-readable version of the exact overstatement the site copy is
+         careful to avoid. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://allergyvoices.com/#organization",
+          "name": "AllergyVoices",
+          "url": "https://allergyvoices.com",
+          "logo": "https://allergyvoices.com/allergy-voices-logo.png",
+          "email": "info@allergyvoices.com",
+          "description": "A family-led food allergy initiative building a nationwide restaurant transparency directory, launching first in the Triangle region of North Carolina.",
+          "areaServed": { "@type": "Country", "name": "United States" }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://allergyvoices.com/#website",
+          "url": "https://allergyvoices.com",
+          "name": "AllergyVoices",
+          "publisher": { "@id": "https://allergyvoices.com/#organization" },
+          "inLanguage": "en-US"
+        }
+      ]
+    }
+    </script>
   </head>
 
   <body>

@@ -73,6 +73,24 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://allergyvoices.com/policies/privacy</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/policies/terms</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/policies/restaurant-participation</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://allergyvoices.com/findings/2025-11-fda-allergen-thresholds</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -151,6 +169,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://allergyvoices.com/recalls/2026-03-27-heck-minted-lamb-burgers-2-pack</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-03-31-m-m-s-pipoca</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://allergyvoices.com/recalls/2026-04-01-label-is-predominantly-green-with-white-lettering-in-a-clear</loc>
     <lastmod>2026-05-02</lastmod>
     <changefreq>monthly</changefreq>
@@ -177,6 +207,30 @@
   <url>
     <loc>https://allergyvoices.com/recalls/2026-04-02-wawa-iced-tea-lemon-16-oz-pint</loc>
     <lastmod>2026-06-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-04-14-the-fishmonger-hot-smoked-2-salmon-fillets-honey-roasted</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-04-17-millennium-peanuts-caramel-milk-chocolate</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-04-18-authentic-greek-yoghurt-with-vanilla</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-04-20-almond-biscuits</loc>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -225,6 +279,12 @@
   <url>
     <loc>https://allergyvoices.com/recalls/2026-04-29-8-9-5oz-tub-nut-sunflower-seed</loc>
     <lastmod>2026-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-04-30-exceptional-by-asda-beer-battered-cod-fishcakes</loc>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -379,6 +439,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://allergyvoices.com/recalls/2026-05-06-daylesford-organic-minestrone-soup-with-cannellini-beans-pas</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://allergyvoices.com/recalls/2026-05-07-coopers-bbq-60-gal-bean-mix-box</loc>
     <lastmod>2026-07-22</lastmod>
     <changefreq>monthly</changefreq>
@@ -439,6 +505,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://allergyvoices.com/recalls/2026-05-16-hot-chilli-pesto</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://allergyvoices.com/recalls/2026-05-18-raw-shelled-peanuts-runner-type-2</loc>
     <lastmod>2026-06-16</lastmod>
     <changefreq>monthly</changefreq>
@@ -453,6 +525,12 @@
   <url>
     <loc>https://allergyvoices.com/recalls/2026-05-20-birch-benders-sweet-potato-pancake-and-waffle-mix-12oz-bag</loc>
     <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-05-21-divilly-brothers-no-added-nitrite-crumbed-ham</loc>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -475,8 +553,20 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://allergyvoices.com/recalls/2026-05-22-shama-falooda-almond-flavour-drink</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://allergyvoices.com/recalls/2026-05-28-azuma-foods-tako-wasabi-seasoned-octopus-with-wasabi-perisha</loc>
     <lastmod>2026-06-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-05-28-gu-double-sea-salted-caramel-frozen-dessert</loc>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -487,8 +577,20 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://allergyvoices.com/recalls/2026-06-04-inarah-s-frozen-foods-all-frozen-products</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://allergyvoices.com/recalls/2026-06-10-pepperoni-rolls</loc>
     <lastmod>2026-07-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-06-11-honeycomb-blast-choc-bar</loc>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -511,8 +613,20 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://allergyvoices.com/recalls/2026-06-24-dunnes-stores-velvety-mild-french-brie</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://allergyvoices.com/recalls/2026-06-24-high-valley-orchard-chocolate-covered-raisins</loc>
     <lastmod>2026-07-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-06-24-morrisons-coronation-chicken-pasta</loc>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -523,8 +637,140 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://allergyvoices.com/recalls/2026-06-27-morrisons-maple-bacon-back-of-the-net</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-06-30-clayton-park-kitchen-chicken-mushroom-sauce</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-03-capsicana-easy-going-mild-salsa</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-03-minton-donello-organic-white-orzo</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://allergyvoices.com/recalls/2026-07-08-wonton-wrappers-packed-into-clear-flexible-plastic-bag-and-s</loc>
     <lastmod>2026-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-14-1001-delights-dubai-style-pistachio-ice-cream</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-18-doritos-chilli-heatwave</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-22-graham-s-family-dairy-semi-skimmed-milk</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-23-bci-foods-inc-recalls-chicken-noodle-soup-product-imported-w</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-24-maple-leaf-foods-inc-recalls-not-ready-to-eat-nrte-bacon-pro</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-25-medium-coloured-ladybird</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-29-steak-burrito-product</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-30-chicken-salad-product-that-may-be-contaminated-with-listeria</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-31-lay-s-sour-cream-dill-crisps</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-31-ukrop-039-s-homestyle-foods-recalls-spaghetti-and-chicken-pr</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-08-06-compliments-brand-smashed-100-chicken-burgers</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-08-07-asda-cheese-tomato-pasta-salad</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-08-07-corte-argentino-usa-llc-recalls-raw-beef-products-imported-w</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-08-07-momchipz-brand-veggie-chips-broccoli-florets-cauliflower</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-08-07-shan-distribution-network-inc-recalls-ineligible-frozen-silu</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-08-08-city-foods-inc-recalls-ready-to-eat-pastrami-and-corned-beef</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-08-08-pc-organics-brand-and-frankie-s-organic-brand-plant-based-ch</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-08-08-various-meat-and-poultry-products-containing-fda-regulated-j</loc>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

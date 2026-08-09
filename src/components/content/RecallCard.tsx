@@ -50,9 +50,17 @@ export function RecallCard({ recall }: { recall: RecallAlert }) {
     >
       <div className="flex flex-wrap items-center gap-2">
         {isHighestRisk && (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-destructive/10 px-2.5 py-1 font-inter text-xs font-semibold text-destructive-strong">
+          /* "Highest risk" on its own reads as an AllergyVoices judgement.
+             It is not: Class I is the issuing agency's own classification,
+             so the label now names it and the title says whose it is. We
+             never assign a severity ourselves — a record with no stated
+             class shows none. */
+          <span
+            className="inline-flex items-center gap-1.5 rounded-full bg-destructive/10 px-2.5 py-1 font-inter text-xs font-semibold text-destructive-strong"
+            title={`Class I is ${AGENCY_LABELS[recall.agency]}'s own classification for a reasonable probability of serious health consequences. AllergyVoices does not assign risk levels.`}
+          >
             <TriangleAlert className="h-3.5 w-3.5" aria-hidden="true" />
-            Highest risk
+            Class I — {AGENCY_LABELS[recall.agency]}
           </span>
         )}
         <span className="rounded-full border border-border px-2.5 py-1 font-inter text-xs font-medium text-muted-foreground">
