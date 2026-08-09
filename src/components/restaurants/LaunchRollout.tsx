@@ -1,7 +1,6 @@
-import { MapPin } from "lucide-react";
-
 import { Container, Section } from "@/components/layout";
 import { LAUNCH_REGION, ROLLOUT } from "@/config/launch";
+import { CityRequestForm } from "./CityRequestForm";
 
 /**
  * How the directory expands, stated plainly.
@@ -47,40 +46,8 @@ export function LaunchRollout({ className }: { className?: string }) {
           ))}
         </ol>
 
-        <div className="mt-8 rounded-2xl border border-border bg-background p-5 md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="min-w-0">
-              <h3 className="flex items-center gap-2 font-poppins font-semibold text-foreground">
-                <MapPin className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                Want to help bring AllergyVoices to your city?
-              </h3>
-              <p className="mt-1.5 font-inter text-sm leading-relaxed text-muted-foreground">
-                Cities launch with local families and community partners, not
-                advertising. Email us and say which one.
-              </p>
-            </div>
-            {/* Deliberately mailto rather than a new signup surface: the brief
-                asked not to build an ambassador system for this change, and a
-                message we answer beats a form nobody has staffed. */}
-            <ul className="flex flex-wrap gap-2 md:shrink-0">
-              {[
-                { label: "Become a local ambassador", subject: "Local ambassador" },
-                { label: "Recommend a restaurant", subject: "Restaurant recommendation" },
-                { label: "Request your city", subject: "Request a city" },
-              ].map((action) => (
-                <li key={action.subject}>
-                  <a
-                    href={`mailto:info@allergyvoices.com?subject=${encodeURIComponent(
-                      `${action.subject} — AllergyVoices`,
-                    )}`}
-                    className="inline-flex rounded-full border border-border bg-background px-3 py-1.5 font-inter text-sm text-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    {action.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div id="help-your-city" className="mt-8 scroll-mt-24">
+          <CityRequestForm />
         </div>
 
         <p className="mt-4 font-inter text-sm text-muted-foreground">

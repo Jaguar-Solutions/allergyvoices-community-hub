@@ -307,9 +307,9 @@ function EmptyState({
             <Link to="/restaurants">Invite a restaurant</Link>
           </Button>
           <Button asChild variant="outline">
-            <a href="mailto:info@allergyvoices.com?subject=Join%20the%20Triangle%20launch">
+            <Link to="/restaurants#help-your-city">
               Join the {LAUNCH_REGION.bareName} launch
-            </a>
+            </Link>
           </Button>
         </div>
       </div>
@@ -321,12 +321,12 @@ function EmptyState({
         <p className="mt-1.5 font-inter text-sm leading-relaxed text-muted-foreground">
           Additional cities launch with local ambassadors, allergy families and
           community partners. Want to help bring AllergyVoices to yours?{" "}
-          <a
-            href="mailto:info@allergyvoices.com?subject=Request%20my%20city"
+          <Link
+            to="/restaurants#help-your-city"
             className="text-primary underline-offset-2 hover:underline"
           >
             Request your city
-          </a>
+          </Link>
           .
         </p>
       </div>

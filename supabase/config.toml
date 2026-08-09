@@ -28,3 +28,8 @@ verify_jwt = true
 # submitting. Writes three booleans and nothing else.
 [functions.restaurant-interests]
 verify_jwt = false
+
+# Public: "help bring AllergyVoices to your city" form. Records the request,
+# emails the team, and subscribes the person if they asked.
+[functions.city-request]
+verify_jwt = false
