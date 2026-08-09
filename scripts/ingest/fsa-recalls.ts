@@ -82,7 +82,8 @@ async function main() {
     console.error(`[fsa-uk] RSS fetch failed for ${RSS_URL}`);
     console.error(err instanceof Error ? err.message : err);
     console.error("[fsa-uk] If the URL has changed, update RSS_URL in scripts/ingest/fsa-recalls.ts.");
-    process.exit(0);
+    // Non-zero so a dead feed is visible. See fsis-recalls.ts for why.
+    process.exit(1);
   }
 
   console.log(`[fsa-uk] Feed returned ${items.length} item(s).`);

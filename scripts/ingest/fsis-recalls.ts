@@ -81,7 +81,15 @@ async function main() {
     console.error(`[fsis] RSS fetch failed for ${RSS_URL}`);
     console.error(err instanceof Error ? err.message : err);
     console.error("[fsis] If the URL has changed, update RSS_URL in scripts/ingest/fsis-recalls.ts.");
-    process.exit(0); // Don't fail the workflow on transient feed issues.
+    // Exit non-zero. This used to exit 0 so a transient blip wouldn't turn the
+    // workflow red — but the effect was that a permanently dead feed looked
+    // exactly like a healthy one. Three of the four feeds were broken for a
+    // month while every scheduled run reported success and nobody could tell.
+    //
+    // A genuinely transient failure now produces a single red run that heals
+    // itself the next day; a dead feed produces an unbroken red line, which is
+    // the signal that was missing.
+    process.exit(1);
   }
 
   console.log(`[fsis] Feed returned ${items.length} item(s).`);
