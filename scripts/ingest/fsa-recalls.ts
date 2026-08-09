@@ -7,86 +7,98 @@
  * allergen-detection regex naturally filters to AA, but we don't fail if a
  * non-allergy item slips into the feed &mdash; it's just skipped.
  */
-import Parser from "rss-parser";
 import { detectAllergens, isoDateOf, stripHtml, writeRecall } from "./shared.js";
 import type { RecallDraft } from "./shared.js";
 
-const RSS_URL = "https://www.food.gov.uk/news-alerts/rss/alerts.xml";
+/**
+ * The FSA's JSON API, not RSS.
+ *
+ * The old news-alerts RSS URL began returning 404 and the feed appears to be
+ * gone; data.food.gov.uk is the documented, supported interface and carries
+ * structured product and risk fields an RSS description does not.
+ *
+ * Sorted newest first — the default order is oldest first, which returns 2018.
+ *
+ * Docs: https://data.food.gov.uk/food-alerts/ui/reference
+ */
+const API_URL =
+  "https://data.food.gov.uk/food-alerts/id?_sort=-created&_limit=50";
 
-const parser = new Parser({
-  headers: {
-    "User-Agent": "AllergyVoices-Ingest/1.0 (+https://allergyvoices.com)",
-    Accept: "application/rss+xml, application/xml, text/xml",
-  },
-});
-
-interface RssItem {
+interface FsaAlert {
+  "@id"?: string;
   title?: string;
-  link?: string;
-  contentSnippet?: string;
-  content?: string;
-  pubDate?: string;
-  guid?: string;
+  shortTitle?: string;
+  created?: string;
+  modified?: string;
+  notation?: string;
+  alertURL?: string;
+  problem?: { riskStatement?: string }[];
+  productDetails?: { productName?: string }[];
+  descriptionOfAction?: string;
 }
 
-function extractProductName(title: string): string {
-  // FSA titles look like "Allergy alert: Brand X Y due to undeclared peanut"
-  return title
+function extractProductName(alert: FsaAlert): string {
+  // The API names products explicitly, so there is no need to pick a title
+  // apart with a regex the way the RSS version had to.
+  const named = alert.productDetails?.find((p) => p.productName)?.productName;
+  if (named) return named.trim().slice(0, 80);
+
+  return (alert.shortTitle ?? alert.title ?? "")
     .replace(/^(Allergy\s*Alert:?\s*|Food\s*Alert:?\s*)/i, "")
     .replace(/\s+(due\s+to|because\s+of|containing)\s+.*$/i, "")
     .trim()
     .slice(0, 80);
 }
 
-function extractAlertNumber(item: RssItem): string | undefined {
-  // FSA alert pattern: e.g. FSA-AA-12-2026 or FSA-FA-XX-2026
-  const candidates = [item.guid, item.link, item.title].filter(Boolean) as string[];
-  for (const c of candidates) {
-    const m = c.match(/\bFSA-(?:AA|FA)-\d+-\d{4}\b/i);
-    if (m) return m[0];
-  }
-  return undefined;
-}
+function toDraft(alert: FsaAlert): RecallDraft | null {
+  const title = (alert.title ?? alert.shortTitle ?? "").trim();
+  const risk = alert.problem?.map((p) => p.riskStatement ?? "").join(" ") ?? "";
+  const products = alert.productDetails?.map((p) => p.productName ?? "").join(", ") ?? "";
+  const body = stripHtml([risk, alert.descriptionOfAction ?? ""].join(" ")).trim();
 
-function toDraft(item: RssItem): RecallDraft | null {
-  const title = (item.title ?? "").trim();
-  const body = stripHtml((item.content ?? item.contentSnippet ?? "").toString());
-  const haystack = `${title} ${body}`;
-
-  const allergens = detectAllergens(haystack);
+  // Product names carry the allergen as often as the risk statement does.
+  const allergens = detectAllergens(`${title} ${risk} ${products}`);
   if (allergens.length === 0) return null;
 
-  const recallDate = isoDateOf(item.pubDate);
+  const recallDate = isoDateOf(alert.created ?? alert.modified);
   if (!recallDate) return null;
 
   return {
-    product_name: extractProductName(title) || "UK FSA allergy alert",
+    product_name: extractProductName(alert) || "UK FSA allergy alert",
     undeclared_allergens: allergens,
-    recall_reason: body.slice(0, 500) || title,
+    recall_reason: (risk || title).slice(0, 500),
     recall_date: recallDate,
     region: "uk",
     agency: "fsa-uk",
-    agency_recall_id: extractAlertNumber(item),
+    agency_recall_id: alert.notation,
     recall_class: "unspecified",
-    source_url: item.link ?? "https://www.food.gov.uk/news-alerts",
-    body: body.length > 500 ? `**Full RSS description:**\n\n${body}` : "",
+    source_url:
+      alert.alertURL ?? alert["@id"] ?? "https://data.food.gov.uk/food-alerts",
+    body: body.length > 500 ? `**Full alert text:**\n\n${body}` : "",
   };
 }
 
 async function main() {
-  let items: RssItem[];
+  let items: FsaAlert[];
   try {
-    const feed = await parser.parseURL(RSS_URL);
-    items = feed.items as RssItem[];
+    const response = await fetch(API_URL, {
+      headers: {
+        "User-Agent": "AllergyVoices-Ingest/1.0 (+https://allergyvoices.com)",
+        Accept: "application/json",
+      },
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = (await response.json()) as { items?: FsaAlert[] };
+    items = payload.items ?? [];
   } catch (err) {
-    console.error(`[fsa-uk] RSS fetch failed for ${RSS_URL}`);
+    console.error(`[fsa-uk] API fetch failed for ${API_URL}`);
     console.error(err instanceof Error ? err.message : err);
-    console.error("[fsa-uk] If the URL has changed, update RSS_URL in scripts/ingest/fsa-recalls.ts.");
+    console.error("[fsa-uk] Docs: https://data.food.gov.uk/food-alerts/ui/reference");
     // Non-zero so a dead feed is visible. See fsis-recalls.ts for why.
     process.exit(1);
   }
 
-  console.log(`[fsa-uk] Feed returned ${items.length} item(s).`);
+  console.log(`[fsa-uk] API returned ${items.length} alert(s).`);
 
   let written = 0;
   let skippedNoAllergen = 0;

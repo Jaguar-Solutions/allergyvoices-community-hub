@@ -10,7 +10,7 @@ import Parser from "rss-parser";
 import { detectAllergens, isoDateOf, stripHtml, writeRecall } from "./shared.js";
 import type { RecallDraft } from "./shared.js";
 
-const RSS_URL = "https://recalls-rappels.canada.ca/en/rss/recalls";
+const RSS_URL = "https://recalls-rappels.canada.ca/en/feed/cfia-alerts-recalls";
 
 const parser = new Parser({
   headers: {
