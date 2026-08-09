@@ -12,7 +12,12 @@
  * sees, because they cannot do anything about it and would simply resubmit.
  */
 
-import { createClient } from "@supabase/supabase-js";
+// Full URL, matching the other public functions. A bare specifier only
+// resolves when `--import-map supabase/functions/deno.json` is passed to
+// `functions deploy`, which is a flag that is easy to forget and fails the
+// deploy rather than degrading — restaurant-report needs it for pdf-lib, this
+// function does not need it at all.
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
