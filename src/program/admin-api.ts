@@ -464,7 +464,7 @@ export interface RestaurantReport {
   next_steps: string[];
   pdf_path: string | null;
   pdf_bytes: number | null;
-  email_status: "not_sent" | "sent" | "failed";
+  email_status: "not_sent" | "sent" | "failed" | "suppressed";
   email_to: string | null;
   email_sent_at: string | null;
   email_error: string | null;

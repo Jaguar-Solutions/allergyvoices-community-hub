@@ -269,11 +269,21 @@ Deno.serve(async (req) => {
        <a href="https://allergyvoices.com">allergyvoices.com</a><br />
        info@allergyvoices.com</p>`;
 
-  const recordFailure = async (reason: string) => {
+  /**
+   * Record why an email did not go out.
+   *
+   * "suppressed" is deliberately not "failed". Suppression is a configuration
+   * choice working correctly, and showing it as a failure sends someone
+   * hunting for a broken mail setup that isn't broken.
+   */
+  const recordNotSent = async (
+    status: "failed" | "suppressed",
+    reason: string,
+  ) => {
     await admin
       .from("restaurant_reports")
       .update({
-        email_status: "failed",
+        email_status: status,
         email_to: contact.manager_email,
         email_error: reason.slice(0, 500),
       })
@@ -283,8 +293,11 @@ Deno.serve(async (req) => {
   if (SUPPRESS_EMAIL || !RESEND_API_KEY) {
     // Development and automated checks stop here: the report is rendered and
     // stored, and nothing is handed to the mail provider.
-    await recordFailure(
-      SUPPRESS_EMAIL ? "Suppressed: PROGRAM_SUPPRESS_EMAIL=1" : "RESEND_API_KEY not configured",
+    await recordNotSent(
+      SUPPRESS_EMAIL ? "suppressed" : "failed",
+      SUPPRESS_EMAIL
+        ? "Email sending is switched off in this environment (PROGRAM_SUPPRESS_EMAIL=1). The report was rendered and stored."
+        : "RESEND_API_KEY is not configured for this project.",
     );
     return json({
       ok: false,
@@ -317,7 +330,7 @@ Deno.serve(async (req) => {
   if (!response.ok) {
     const detail = await response.text();
     console.error("resend failed", detail);
-    await recordFailure(detail);
+    await recordNotSent("failed", detail);
     return json({ error: "The email could not be sent." }, 502);
   }
 

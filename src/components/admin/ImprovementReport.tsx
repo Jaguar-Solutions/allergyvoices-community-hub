@@ -36,6 +36,9 @@ const EMAIL_STATUS_LABEL = {
   not_sent: "Not sent",
   sent: "Sent",
   failed: "Failed",
+  // Not a failure: the safety switch doing its job. Styled as ordinary
+  // information below rather than in the destructive colour.
+  suppressed: "Not sent (sending switched off)",
 } as const;
 
 /**
@@ -178,8 +181,14 @@ export function ImprovementReport({
                   ` · ${format(new Date(report.email_sent_at), "MMM d, yyyy")}`}
               </dd>
             </div>
-            {report.email_status === "failed" && report.email_error && (
-              <p className="pt-1 font-inter text-xs text-destructive">
+            {report.email_error && report.email_status !== "sent" && (
+              <p
+                className={
+                  report.email_status === "failed"
+                    ? "pt-1 font-inter text-xs text-destructive"
+                    : "pt-1 font-inter text-xs text-muted-foreground"
+                }
+              >
                 {report.email_error}
               </p>
             )}
