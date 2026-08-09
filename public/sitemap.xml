@@ -2,73 +2,73 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://allergyvoices.com/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/findings</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/recalls</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/resources</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/allergens</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/dining</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/schools-teens</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/directory</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/restaurants</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/restaurants/directory</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/restaurants/participate</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://allergyvoices.com/about</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -517,6 +517,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://allergyvoices.com/recalls/2026-06-25-fusia-asian-inspirations-kimchi-tofu-kimbap-8-1-oz-230-g-pap</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://allergyvoices.com/recalls/2026-07-08-wonton-wrappers-packed-into-clear-flexible-plastic-bag-and-s</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://allergyvoices.com/allergens/egg</loc>
     <lastmod>2026-04-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -635,11 +647,5 @@
     <lastmod>2026-04-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://allergyvoices.com/restaurants/awaze-cary-nc</loc>
-    <lastmod>2026-08-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
 </urlset>

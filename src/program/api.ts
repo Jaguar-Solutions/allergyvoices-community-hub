@@ -87,17 +87,23 @@ export const EMPTY_FILTERS: DirectoryFilters = {
 };
 
 /**
- * Every selected allergen must be accommodated, not just one of them.
+ * Every selected allergen must be one the restaurant regularly discusses, not
+ * just one of them.
  *
- * A family managing peanut *and* milk needs a restaurant that handles both —
- * showing places that handle only one would be worse than showing nothing,
+ * A family managing peanut *and* milk needs a restaurant familiar with both —
+ * showing places that named only one would be worse than showing nothing,
  * because it looks like a match.
+ *
+ * Note what this filter does NOT mean: matching on "Peanut" says the
+ * restaurant gets peanut questions often enough to be ready to talk about
+ * them. It is not a claim that the restaurant is peanut-safe, and the
+ * directory says so next to the filter.
  */
 function matchesAllergens(listing: DirectoryListing, allergens: string[]): boolean {
   if (allergens.length === 0) return true;
-  const accommodated = listing.facets.allergens_accommodated;
-  if (!Array.isArray(accommodated)) return false;
-  return allergens.every((allergen) => accommodated.includes(allergen));
+  const discussed = listing.facets.allergens_discussed;
+  if (!Array.isArray(discussed)) return false;
+  return allergens.every((allergen) => discussed.includes(allergen));
 }
 
 export function filterListings(
@@ -210,6 +216,48 @@ export async function submitRestaurant(
       ok: false,
       error: error instanceof Error ? error.message : "Network error",
       offline: true,
+    };
+  }
+}
+
+export interface RestaurantInterests {
+  wants_best_practices_guide: boolean;
+  wants_menu_help: boolean;
+  wants_updates: boolean;
+}
+
+/**
+ * Records what a restaurant asked for *after* it finished the survey.
+ *
+ * Deliberately a separate call on a separate page. These three questions used
+ * to sit inside the survey, which put a paid service (the allergen-menu
+ * build) in front of a restaurant while it was still deciding whether to
+ * participate at all. Participation and the public listing are free and must
+ * feel that way; anything with a fee attached is offered afterwards, once the
+ * free thing is already done.
+ *
+ * A failure here is intentionally not surfaced as an error to the restaurant
+ * — their survey is already safely submitted, and a broken newsletter opt-in
+ * is not worth ending that flow on a red message.
+ */
+export async function recordRestaurantInterests(
+  restaurantId: string,
+  interests: RestaurantInterests,
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const { data, error } = await supabase.functions.invoke(
+      "restaurant-interests",
+      { body: { restaurantId, ...interests } },
+    );
+    if (error) return { ok: false, error: error.message };
+    if (data && typeof data === "object" && "error" in data) {
+      return { ok: false, error: String((data as { error: unknown }).error) };
+    }
+    return { ok: true };
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Network error",
     };
   }
 }

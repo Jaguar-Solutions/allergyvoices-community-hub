@@ -8,10 +8,12 @@
  *
  * Language rule for this whole program: we describe what a restaurant does,
  * never how well it does it. No grades, scores, ratings, inspections, or
- * certifications — in copy, in option labels, or in identifiers.
+ * certifications — in copy, in option labels, or in identifiers. In
+ * particular, an allergen a restaurant selects is one it is *prepared to
+ * discuss*, never one it is "safe" for.
  */
 
-export const SURVEY_SCHEMA_VERSION = 1;
+export const SURVEY_SCHEMA_VERSION = 2;
 
 export type QuestionType = "single" | "multi" | "textarea" | "text" | "yesno";
 
@@ -28,8 +30,11 @@ export interface Question {
   options?: QuestionOption[];
   required?: boolean;
   maxLength?: number;
-  /** Renders only when the named question currently includes `showWhenValue`. */
-  showWhen?: { question: string; value: string };
+  /**
+   * Renders only when the named question currently holds (or, for
+   * multi-selects, includes) one of `value`. A list means "any of these".
+   */
+  showWhen?: { question: string; value: string | string[] };
   /** Included in the published, publicly readable facets. */
   publicFacet?: boolean;
   /** Short label used on the public profile, where the question phrasing is too long. */
@@ -102,19 +107,30 @@ export const CUISINE_OPTIONS: QuestionOption[] = [
   { value: "other", label: "Other" },
 ];
 
-export const KITCHEN_PRACTICE_OPTIONS: QuestionOption[] = [
-  { value: "dedicated_fryer", label: "Dedicated fryer" },
-  { value: "separate_prep_area", label: "Separate prep area" },
-  { value: "dedicated_equipment", label: "Dedicated utensils/equipment" },
-  { value: "dedicated_procedures", label: "Dedicated allergy procedures" },
-  { value: "color_coded_utensils", label: "Color-coded utensils" },
-  { value: "none", label: "None of the above" },
+/**
+ * Cross-contact steps, phrased as things a kitchen *may* do for an allergy
+ * order rather than equipment it owns. "Dedicated fryer" is deliberately in
+ * this list and also has its own follow-up: on its own the phrase is one of
+ * the most over-read claims in allergy dining, so we ask what it actually
+ * means here instead of publishing the label alone.
+ */
+export const CROSS_CONTACT_OPTIONS: QuestionOption[] = [
+  { value: "wash_hands_gloves", label: "Staff wash hands/change gloves" },
+  { value: "clean_surfaces", label: "Clean and sanitize preparation surfaces" },
+  { value: "clean_utensils", label: "Use clean/separate utensils or equipment" },
+  { value: "separate_prep_area", label: "Use a separate preparation area" },
+  { value: "clean_pan", label: "Use a clean pan or cooking surface" },
+  { value: "order_flagged", label: "Allergy order is identified/flagged for kitchen staff" },
+  { value: "manager_verifies", label: "Manager or chef oversees/verifies the order" },
+  { value: "dedicated_fryer", label: "Dedicated fryer is available" },
+  { value: "other", label: "Other" },
+  { value: "none", label: "No specific cross-contact procedure" },
 ];
 
 export const SURVEY_SECTIONS: SurveySection[] = [
   {
-    id: "procedures",
-    title: "Allergy procedures",
+    id: "practices",
+    title: "Allergy practices",
     intro:
       "Tell us how your restaurant handles allergy requests today. There are no wrong answers — families find it just as useful to know what you don't offer as what you do.",
     questions: [
@@ -124,70 +140,95 @@ export const SURVEY_SECTIONS: SurveySection[] = [
         label: "Does your restaurant have a process for handling food allergy requests?",
         required: true,
         publicFacet: true,
-        publicLabel: "Has a process for allergy requests",
+        publicLabel: "Allergy process",
         explainer:
           "Whether the restaurant has a set way of handling allergy requests, rather than working it out case by case.",
         options: [
-          { value: "yes", label: "Yes" },
-          { value: "partially", label: "Partially" },
-          { value: "no", label: "No" },
+          { value: "yes_documented", label: "Yes — documented process" },
+          { value: "yes_informal", label: "Yes — informal process" },
+          { value: "no_specific", label: "No specific process" },
+          { value: "unsure", label: "Unsure" },
         ],
       },
       {
-        id: "server_training",
+        id: "staff_training",
         type: "single",
-        label: "Are servers trained to handle food allergy requests?",
+        label: "Do staff receive food allergy training?",
         required: true,
         publicFacet: true,
-        publicLabel: "Servers trained on allergies",
+        publicLabel: "Staff allergy training",
         explainer:
-          "Whether the people taking your order have been trained to handle an allergy request and pass it to the kitchen correctly.",
+          "Which staff have been trained to handle an allergy request and pass it to the kitchen correctly.",
         options: [
-          { value: "yes", label: "Yes" },
+          { value: "servers_and_kitchen", label: "Yes — servers and kitchen staff" },
           { value: "some_staff", label: "Some staff" },
-          { value: "no", label: "No" },
+          { value: "managers_chefs_only", label: "Managers/chefs only" },
+          { value: "none", label: "No formal allergy training" },
+          { value: "unsure", label: "Unsure" },
         ],
       },
       {
-        id: "manager_chef_access",
+        id: "training_type",
         type: "single",
-        label: "Can guests speak directly with a manager or chef about food allergies?",
-        required: true,
+        label: "What type of allergy training is used?",
+        help: "Optional.",
+        showWhen: {
+          question: "staff_training",
+          value: ["servers_and_kitchen", "some_staff", "managers_chefs_only"],
+        },
         publicFacet: true,
-        publicLabel: "Can speak to a manager or chef",
+        publicLabel: "Type of training",
         explainer:
-          "Whether you can talk directly to someone responsible for preparing the food, not only to your server.",
+          "The kind of allergy training staff have had. Programs differ in depth; this is what the restaurant reported using.",
         options: [
-          { value: "yes", label: "Yes" },
-          { value: "manager_only", label: "Manager only" },
-          { value: "chef_when_available", label: "Chef when available" },
-          { value: "no", label: "No" },
+          { value: "servsafe", label: "ServSafe Allergens" },
+          { value: "internal", label: "Internal/company training" },
+          { value: "other", label: "Other" },
+          { value: "unsure", label: "Unsure" },
+        ],
+      },
+      {
+        id: "who_to_ask",
+        type: "multi",
+        label: "When a guest reports a food allergy, who can they speak with?",
+        help: "Choose everyone a guest could reasonably be put in touch with.",
+        publicFacet: true,
+        publicLabel: "Who you can speak with",
+        explainer:
+          "Who the restaurant says a guest can talk to about an allergy — useful when you'd rather speak to whoever is preparing the food.",
+        options: [
+          { value: "server", label: "Server" },
+          { value: "manager", label: "Manager" },
+          { value: "chef", label: "Chef/kitchen manager" },
+          { value: "other_trained", label: "Other trained employee" },
         ],
       },
       {
         id: "ingredient_info",
         type: "single",
-        label: "Can guests review ingredient information or discuss ingredients upon request?",
+        label: "Can staff access ingredient information when helping a guest with an allergy?",
         required: true,
         publicFacet: true,
-        publicLabel: "Shares ingredient information",
+        publicLabel: "Ingredient information",
         explainer:
-          "Whether staff can tell you what is in a dish, or show you ingredient information, when you ask.",
+          "Whether staff can find out what is actually in a dish when you ask — from documentation, or by checking packaging.",
         options: [
-          { value: "yes", label: "Yes" },
+          { value: "documented", label: "Yes — ingredient/allergen information is documented" },
+          { value: "staff_can_check", label: "Yes — staff can check ingredients/packages" },
           { value: "limited", label: "Limited information" },
           { value: "no", label: "No" },
+          { value: "unsure", label: "Unsure" },
         ],
       },
       {
         id: "menu_modification",
         type: "single",
-        label: "Can menu items be modified for allergy concerns?",
+        label: "Can menu items be modified for allergy requests?",
         required: true,
         publicFacet: true,
-        publicLabel: "Can change dishes for allergies",
+        publicLabel: "Menu changes",
         explainer:
-          "Whether dishes can be prepared differently \u2014 leaving out or swapping an ingredient \u2014 to avoid an allergen.",
+          "Whether dishes can be prepared differently — leaving out or swapping an ingredient — to avoid an allergen.",
         options: [
           { value: "most_items", label: "Most items" },
           { value: "some_items", label: "Some items" },
@@ -195,92 +236,85 @@ export const SURVEY_SECTIONS: SurveySection[] = [
           { value: "no", label: "No" },
         ],
       },
+    ],
+  },
+  {
+    id: "cross_contact",
+    title: "Cross-contact practices",
+    intro:
+      "Cross-contact is when a trace of an allergen moves from one food to another — on a shared fryer, board, or utensil. This section matters more to families than almost anything else on your listing.",
+    questions: [
       {
-        id: "kitchen_practices",
+        id: "cross_contact_steps",
         type: "multi",
-        label: "Which of the following does your restaurant have?",
-        publicFacet: true,
-        publicLabel: "Separate equipment and areas",
-        explainer:
-          "Equipment or areas the kitchen keeps separate to reduce the chance of an allergen ending up in the wrong dish.",
-        options: KITCHEN_PRACTICE_OPTIONS,
-      },
-      {
-        id: "cross_contact_practices",
-        type: "textarea",
-        label: "How does your restaurant reduce cross-contact risk?",
-        help: "A sentence or two is plenty. Families read this closely.",
-        maxLength: 2000,
+        label: "When preparing an allergy order, which practices may be used?",
+        help: "Choose everything that may apply. It is genuinely useful to families to know if the answer is none.",
         publicFacet: true,
         publicLabel: "How they reduce cross-contact",
         explainer:
-          "Cross-contact is when a trace of an allergen moves from one food to another \u2014 on a shared fryer, board, or utensil.",
+          "Steps the kitchen says it may take on an allergy order to keep an allergen out of the dish.",
+        options: CROSS_CONTACT_OPTIONS,
       },
       {
-        id: "request_frequency",
+        /**
+         * "Dedicated fryer" is the single most over-read phrase in allergy
+         * dining — it usually means "not shared with fish", not "free of all
+         * allergens". Asking the follow-up is what keeps the published answer
+         * honest, so this is never displayed without it.
+         */
+        id: "dedicated_fryer_detail",
         type: "single",
-        label: "Approximately how many allergy-related requests does your restaurant receive?",
-        help: "This helps us understand demand across the program. It is not shown on your public profile.",
-        options: [
-          { value: "daily", label: "Daily" },
-          { value: "weekly", label: "Weekly" },
-          { value: "monthly", label: "Monthly" },
-          { value: "rarely", label: "Rarely" },
-          { value: "unsure", label: "Unsure" },
-        ],
-      },
-      {
-        id: "who_to_ask",
-        type: "single",
-        label: "Who should guests ask to speak with regarding food allergies?",
+        label:
+          "Do you have a fryer that is not shared with foods containing certain allergens?",
+        showWhen: { question: "cross_contact_steps", value: "dedicated_fryer" },
         publicFacet: true,
-        publicLabel: "Ask to speak with",
+        publicLabel: "Dedicated fryer",
         explainer:
-          "Who the restaurant would rather you raise an allergy with when you arrive.",
-        options: [
-          { value: "server", label: "Server" },
-          { value: "manager", label: "Manager" },
-          { value: "chef", label: "Chef" },
-          { value: "any_trained_employee", label: "Any trained employee" },
-        ],
-      },
-      {
-        id: "procedures_reviewed",
-        type: "single",
-        label: "Are your allergy procedures reviewed or updated regularly?",
-        publicFacet: true,
-        publicLabel: "Reviews its allergy procedures",
-        explainer:
-          "Whether the restaurant revisits how it handles allergies, rather than setting it up once and leaving it.",
+          "A fryer kept separate from certain allergens. It does not mean the oil is free of every allergen — check which ones below.",
         options: [
           { value: "yes", label: "Yes" },
-          { value: "occasionally", label: "Occasionally" },
           { value: "no", label: "No" },
+          { value: "no_fryer", label: "We don't use a fryer" },
+          { value: "depends", label: "Depends on the allergen" },
         ],
       },
       {
-        id: "family_notes",
-        type: "textarea",
-        label: "Anything families with food allergies should know before visiting?",
-        help: "Shown on your public profile in your own words.",
-        maxLength: 4000,
+        id: "dedicated_fryer_allergens",
+        type: "multi",
+        label: "Which allergens does that apply to?",
+        help: "Optional, but it is the detail families ask about most.",
+        showWhen: { question: "dedicated_fryer_detail", value: ["yes", "depends"] },
         publicFacet: true,
-        publicLabel: "From the restaurant",
+        publicLabel: "Fryer kept separate from",
+        explainer:
+          "The allergens the restaurant says its separate fryer is kept away from.",
+        options: ALLERGEN_OPTIONS,
+      },
+      {
+        id: "cross_contact_notes",
+        type: "textarea",
+        label: "Tell families anything else about how you reduce cross-contact risk.",
+        help: "A sentence or two is plenty.",
+        maxLength: 2000,
+        publicFacet: true,
+        publicLabel: "In their own words",
       },
     ],
   },
   {
     id: "allergens",
-    title: "Allergens",
+    title: "Allergens and your allergen menu",
     questions: [
       {
-        id: "allergens_accommodated",
+        id: "allergens_discussed",
         type: "multi",
-        label: "Which allergens can your restaurant typically accommodate?",
+        label:
+          "Which food allergies does your restaurant regularly receive requests for and feel prepared to discuss with guests?",
+        help: "Selecting an allergen does not mean the restaurant guarantees an allergen-free meal.",
         publicFacet: true,
-        publicLabel: "Allergens typically accommodated",
+        publicLabel: "Food allergies they regularly receive requests for",
         explainer:
-          "Allergens the restaurant says it can usually work around. Always confirm your own needs with staff before ordering.",
+          "Allergies this restaurant sees often and is ready to talk through. It is not a claim that a meal can be made free of them — always discuss your own needs with staff.",
         options: ALLERGEN_OPTIONS,
       },
       {
@@ -288,9 +322,26 @@ export const SURVEY_SECTIONS: SurveySection[] = [
         type: "text",
         label: "If other, please describe",
         maxLength: 200,
-        showWhen: { question: "allergens_accommodated", value: "other" },
+        showWhen: { question: "allergens_discussed", value: "other" },
         publicFacet: true,
-        publicLabel: "Other allergens",
+        publicLabel: "Other allergies",
+      },
+      {
+        /**
+         * Published deliberately. A restaurant being straight about what it
+         * cannot do is more useful to a family than a listing that only lists
+         * strengths — and the profile presents it as information, not as a
+         * mark against them.
+         */
+        id: "allergen_limitations",
+        type: "textarea",
+        label: "Are there allergy requests your restaurant generally cannot accommodate?",
+        help: "For example: “Because sesame is used throughout our kitchen, we may not be able to accommodate severe sesame allergies.” Being honest here helps families and never counts against you.",
+        maxLength: 2000,
+        publicFacet: true,
+        publicLabel: "Important limitations",
+        explainer:
+          "Requests the restaurant has told us it generally cannot take on. Shared so families can rule a visit in or out before travelling.",
       },
       {
         id: "allergy_menu",
@@ -302,10 +353,10 @@ export const SURVEY_SECTIONS: SurveySection[] = [
         explainer:
           "A menu or chart showing which dishes contain which allergens, so you can see what's suitable before you order.",
         options: [
-          { value: "yes_online", label: "Yes — it's published online" },
+          { value: "yes_online", label: "Yes — published online" },
           { value: "yes_in_house", label: "Yes — available in the restaurant" },
-          { value: "on_request", label: "We can put one together on request" },
-          { value: "no", label: "Not yet" },
+          { value: "on_request", label: "We can provide information on request" },
+          { value: "no", label: "Not currently" },
         ],
       },
       {
@@ -319,68 +370,28 @@ export const SURVEY_SECTIONS: SurveySection[] = [
         publicLabel: "Allergen menu link",
       },
       {
-        id: "allergens_asked_about",
+        id: "family_notes",
         type: "textarea",
-        label: "Which allergens are guests most likely to ask about?",
-        help: "Helps us build better resources. Not shown on your public profile.",
-        maxLength: 2000,
-      },
-    ],
-  },
-  {
-    id: "improvement",
-    title: "Continuous improvement",
-    intro:
-      "Optional, and never published. This section only tells us how we can support you.",
-    questions: [
-      {
-        id: "improvement_interest",
-        type: "single",
-        label: "Would your restaurant be interested in improving allergy accommodations?",
-        options: [
-          { value: "yes", label: "Yes" },
-          { value: "maybe", label: "Maybe" },
-          { value: "already_doing_so", label: "Already doing so" },
-          { value: "not_at_this_time", label: "Not at this time" },
-        ],
-      },
-      {
-        id: "wants_best_practices_guide",
-        type: "yesno",
-        label: "Would you like a free Allergy Voices Best Practices Guide?",
-        options: YES_NO,
-      },
-      {
-        /**
-         * The only mention of the paid menu service anywhere a restaurant is
-         * asked something. Deliberately never a public facet: it must not
-         * appear on a listing, and answering either way has no bearing on
-         * whether or how the restaurant is published.
-         */
-        id: "wants_menu_help",
-        type: "yesno",
-        label:
-          "Would you like help building an allergen menu for your restaurant?",
-        help: "We build these for a small fee that covers our time. It makes no difference to your listing either way — say no and nothing changes.",
-        options: YES_NO,
-      },
-      {
-        id: "wants_updates",
-        type: "yesno",
-        label: "Would you like to receive updates about allergy awareness resources?",
-        options: YES_NO,
+        label: "Anything else families with food allergies should know before visiting?",
+        help: "Shown on your public profile in your own words.",
+        maxLength: 4000,
+        publicFacet: true,
+        publicLabel: "What the restaurant wants families to know",
       },
     ],
   },
   {
     id: "listing",
     title: "Directory listing",
+    intro:
+      "Two different things: the restaurant and practice information above, which is what we would publish, and your contact details, which we never publish.",
     questions: [
       {
         id: "publish_consent",
         type: "single",
         label:
-          "Do you give Allergy Voices permission to publish your responses in our public restaurant directory?",
+          "Do you give Allergy Voices permission to publish the restaurant information and allergy practices you provided in the public restaurant directory?",
+        help: "Your contact name and email are never published either way.",
         required: true,
         options: [
           { value: "yes", label: "Yes" },
@@ -391,7 +402,9 @@ export const SURVEY_SECTIONS: SurveySection[] = [
       {
         id: "wants_website_badge",
         type: "yesno",
-        label: 'Would you like to display an "Allergy Voices Participant" badge on your website?',
+        label:
+          'Would you like a "Survey Participant" badge to display on your own website?',
+        help: "It links back to your listing and says you shared information with us — nothing more.",
         options: YES_NO,
       },
       {
@@ -430,4 +443,26 @@ export function cuisineLabel(value: string): string {
 
 export function allergenLabel(value: string): string {
   return ALLERGEN_OPTIONS.find((a) => a.value === value)?.label ?? value;
+}
+
+/**
+ * Whether a conditional question should currently render.
+ *
+ * Shared by the form (what to show), the submit path (what to keep), and the
+ * tests. Keeping one implementation is what stops a question being submitted
+ * that the restaurant never actually saw.
+ */
+export function isQuestionVisible(
+  question: Question,
+  answers: Record<string, string | string[]>,
+): boolean {
+  if (!question.showWhen) return true;
+  const target = answers[question.showWhen.question];
+  if (target == null) return false;
+  const wanted = Array.isArray(question.showWhen.value)
+    ? question.showWhen.value
+    : [question.showWhen.value];
+  return Array.isArray(target)
+    ? target.some((v) => wanted.includes(v))
+    : wanted.includes(target);
 }

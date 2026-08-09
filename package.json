@@ -12,7 +12,9 @@
     "sitemap": "tsx scripts/generate-sitemap.ts",
     "preview": "vite preview",
     "deploy": "bash scripts/deploy-hostinger.sh",
-    "deploy:upload": "bash scripts/deploy-hostinger.sh --upload"
+    "deploy:upload": "bash scripts/deploy-hostinger.sh --upload",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -94,6 +96,7 @@
     "typescript-eslint": "^8.38.0",
     "vite": "^5.4.19",
     "vite-plugin-image-optimizer": "^2.0.3",
-    "vite-plugin-pwa": "^0.21.2"
+    "vite-plugin-pwa": "^0.21.2",
+    "vitest": "^2.1.9"
   }
 }

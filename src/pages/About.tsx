@@ -110,6 +110,88 @@ const About = () => (
       </Container>
     </Section>
 
+    {/* The trust section. Someone deciding whether to believe the restaurant
+        directory needs to know who is behind it and what we do not claim to
+        be — stated plainly, and claiming no status the project does not
+        actually hold. */}
+    <Section tone="subtle">
+      <Container width="narrow">
+        <h2 className="font-poppins text-2xl font-bold text-foreground md:text-3xl">
+          Who we are
+        </h2>
+        <div className="mt-5 space-y-6 font-inter text-lg leading-relaxed text-foreground">
+          <p>
+            Allergy Voices is a family-led food allergy advocacy initiative
+            based in the Triangle, North Carolina. We&rsquo;re building a free
+            restaurant transparency directory to help families ask better
+            questions, and to help restaurants explain the allergy practices
+            they already have.
+          </p>
+          <div className="rounded-2xl border border-border bg-background p-6">
+            <h3 className="font-poppins font-semibold text-foreground">
+              What we are not
+            </h3>
+            <ul className="mt-3 space-y-2 font-inter text-base leading-relaxed text-muted-foreground">
+              <li>
+                We are not a medical organization, and nothing here is medical
+                advice.
+              </li>
+              <li>
+                We do not certify, inspect, grade, rate, or approve
+                restaurants, and we never call a restaurant &ldquo;safe.&rdquo;
+              </li>
+              <li>
+                We are not a government agency and have no regulatory
+                authority.
+              </li>
+              <li>
+                Restaurants are never charged to take part or to be listed.
+              </li>
+            </ul>
+          </div>
+          <p>
+            Questions, corrections, or something we got wrong?{" "}
+            <a
+              href="mailto:info@allergyvoices.com"
+              className="text-primary underline-offset-2 hover:underline"
+            >
+              info@allergyvoices.com
+            </a>
+            . We answer every message.
+          </p>
+        </div>
+      </Container>
+    </Section>
+
+    {/* Linked from the footer as "Editorial Policy". The anchor has to exist
+        here or that link lands at the top of the page with nothing to show. */}
+    <Section id="editorial">
+      <Container width="narrow">
+        <h2 className="font-poppins text-2xl font-bold text-foreground md:text-3xl">
+          Editorial policy
+        </h2>
+        <div className="mt-5 space-y-6 font-inter text-lg leading-relaxed text-foreground">
+          <p>
+            Medical findings and recall alerts are summarised from published
+            sources, and every item links back to the original so you can read
+            it yourself. We summarise; we do not interpret results or offer
+            clinical guidance.
+          </p>
+          <p>
+            Statistics carry their source and the year the data was collected.
+            If we cannot attribute a figure to a named source, we remove it
+            rather than publish it.
+          </p>
+          <p>
+            Restaurant listings are written by the restaurants themselves. We
+            check submissions for clarity and completeness before publishing,
+            with permission, and we do not edit a restaurant&rsquo;s
+            description of its own practices to make it sound better or worse.
+          </p>
+        </div>
+      </Container>
+    </Section>
+
     <Section tone="primary-soft">
       <Container width="narrow">
         <div className="space-y-6 text-center">

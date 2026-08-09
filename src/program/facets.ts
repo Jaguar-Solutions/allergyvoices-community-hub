@@ -5,6 +5,10 @@
  * `restaurant_submissions` is never exposed. Anything not marked
  * `publicFacet` in the survey definition therefore stays private by
  * construction rather than by remembering to filter it at render time.
+ *
+ * Every accessor here returns `undefined` for an unanswered question rather
+ * than a falsy default. A restaurant that was never asked something must not
+ * be rendered as having answered "No" — see `docs/RESTAURANT_PROGRAM.md`.
  */
 
 import { ALL_QUESTIONS, getQuestion, optionLabel, optionLabels } from "./survey";
@@ -29,6 +33,36 @@ export function deriveFacets(answers: Answers): Facets {
   return facets;
 }
 
+function single(facets: Facets, id: string): string | undefined {
+  const v = facets[id];
+  return typeof v === "string" && v.trim() !== "" ? v : undefined;
+}
+
+/**
+ * The display label for a stored value, or undefined if we don't recognise it.
+ *
+ * `optionLabel` passes unknown values through unchanged, which is right for
+ * free text but wrong for a choice question: a listing stored before the
+ * question was rewritten holds values like "yes" that no longer map to an
+ * option, and passing it through renders a raw internal token — a bare
+ * lowercase "yes" — as though it were the restaurant's answer.
+ *
+ * Rather than guess what an old value meant, we decline to display it. The
+ * row disappears, which reads as "not provided" and is true, instead of
+ * asserting something the restaurant never said in these terms.
+ */
+function knownLabel(questionId: string, value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  const options = getQuestion(questionId)?.options;
+  if (!options) return value;
+  return options.find((o) => o.value === value)?.label;
+}
+
+function multi(facets: Facets, id: string): string[] {
+  const v = facets[id];
+  return Array.isArray(v) ? v : [];
+}
+
 export interface DisplayFacet {
   questionId: string;
   label: string;
@@ -41,15 +75,37 @@ export interface DisplayFacet {
 }
 
 /**
- * The profile page's ordered list of what this restaurant shared. Order
- * follows the survey, so the page reads the way the form was filled in.
+ * Questions the profile page lays out itself, in its own order and its own
+ * components. Excluded from the generic list so they can't render twice.
+ */
+const HANDLED_BY_PROFILE = new Set([
+  "allergy_menu",
+  "allergy_menu_url",
+  "allergens_discussed",
+  "allergens_other",
+  "allergen_limitations",
+  "family_notes",
+  "cross_contact_steps",
+  "cross_contact_notes",
+  "dedicated_fryer_detail",
+  "dedicated_fryer_allergens",
+  "allergy_process",
+  "staff_training",
+  "who_to_ask",
+  "ingredient_info",
+  "menu_modification",
+]);
+
+/**
+ * Anything published that the profile does not lay out explicitly. Keeps new
+ * survey questions visible on profiles without anyone having to remember to
+ * add a block for them.
  */
 export function displayFacets(facets: Facets): DisplayFacet[] {
   const out: DisplayFacet[] = [];
   for (const question of ALL_QUESTIONS) {
     if (!question.publicFacet) continue;
-    // Rendered separately and prominently by the profile page.
-    if (question.id === "allergy_menu" || question.id === "allergy_menu_url") continue;
+    if (HANDLED_BY_PROFILE.has(question.id)) continue;
     const value = facets[question.id];
     if (isEmpty(value)) continue;
 
@@ -69,14 +125,60 @@ export function displayFacets(facets: Facets): DisplayFacet[] {
   return out;
 }
 
-function single(facets: Facets, id: string): string | undefined {
-  const v = facets[id];
-  return typeof v === "string" && v.trim() !== "" ? v : undefined;
+export interface SummaryRow {
+  questionId: string;
+  label: string;
+  value: string;
+  explainer?: string;
 }
 
-function multi(facets: Facets, id: string): string[] {
-  const v = facets[id];
-  return Array.isArray(v) ? v : [];
+/**
+ * Whether a guest can reach someone responsible for the food.
+ *
+ * Derived rather than asked: "who can they speak with" is a multi-select, and
+ * a family scanning the page wants the one-line version. Absent when the
+ * question went unanswered — not "No".
+ */
+export function managerOrChefAvailable(facets: Facets): string | undefined {
+  const people = multi(facets, "who_to_ask");
+  if (people.length === 0) return undefined;
+  const manager = people.includes("manager");
+  const chef = people.includes("chef");
+  if (manager && chef) return "Manager or chef";
+  if (manager) return "Manager";
+  if (chef) return "Chef/kitchen manager";
+  return "Server or other trained staff";
+}
+
+/**
+ * The scannable block at the top of a profile: the handful of answers a
+ * family checks before deciding whether to read the rest.
+ *
+ * Rows for unanswered questions are omitted entirely. Showing "Ingredient
+ * information — No" for a restaurant that was never asked would be a
+ * fabrication, and it is the exact failure this program exists to avoid.
+ */
+export function quickSummary(facets: Facets): SummaryRow[] {
+  const rows: SummaryRow[] = [];
+
+  const add = (questionId: string, label: string, value: string | undefined) => {
+    if (!value) return;
+    rows.push({
+      questionId,
+      label,
+      value,
+      explainer: getQuestion(questionId)?.explainer,
+    });
+  };
+
+  add("allergy_process", "Allergy process", knownLabel("allergy_process", single(facets, "allergy_process")));
+  add("staff_training", "Staff allergy training", knownLabel("staff_training", single(facets, "staff_training")));
+  add("who_to_ask", "Manager/chef available", managerOrChefAvailable(facets));
+  add("ingredient_info", "Ingredient information", knownLabel("ingredient_info", single(facets, "ingredient_info")));
+  add("menu_modification", "Menu changes", knownLabel("menu_modification", single(facets, "menu_modification")));
+  add("allergy_menu", "Allergen menu", knownLabel("allergy_menu", single(facets, "allergy_menu")));
+
+  return rows;
 }
 
 export interface CardHighlight {
@@ -85,57 +187,33 @@ export interface CardHighlight {
 }
 
 /**
- * The four things a directory card shows about a restaurant's practices.
+ * The three practice answers a directory card shows.
  *
- * These deliberately show the restaurant's own answer ("Menu modifications:
- * Some items") rather than a checkmark or a pass/fail. A checkmark implies a
- * threshold someone decided on; the answer itself just reports what was
- * shared, which is the whole point of the program.
+ * Deliberately the restaurant's own answer ("Menu changes: Some items")
+ * rather than a checkmark or a pass/fail. A checkmark implies a threshold
+ * someone decided on; the answer itself just reports what was shared, which
+ * is the whole point of the program. Detailed cross-contact steps belong on
+ * the profile, not here.
  */
 export function cardHighlights(facets: Facets): CardHighlight[] {
   const highlights: CardHighlight[] = [];
 
-  // Short topic labels, sized to fit one line in a card column. Truncated
-  // text loses meaning, and a wrapped "Talk to a manager or / chef" reads as
-  // a layout bug. The full statements and their plain-language explainers
-  // live on the profile page, where there's room for them.
-  const process = single(facets, "allergy_process");
-  if (process) {
-    highlights.push({
-      label: "Allergy process",
-      value: optionLabel("allergy_process", process),
-    });
-  }
+  const process = knownLabel("allergy_process", single(facets, "allergy_process"));
+  if (process) highlights.push({ label: "Allergy process", value: process });
 
-  const manager = single(facets, "manager_chef_access");
+  const training = knownLabel("staff_training", single(facets, "staff_training"));
+  if (training) highlights.push({ label: "Staff training", value: training });
+
+  const manager = managerOrChefAvailable(facets);
   if (manager) {
-    highlights.push({
-      label: "Manager or chef",
-      value: optionLabel("manager_chef_access", manager),
-    });
-  }
-
-  const menu = single(facets, "menu_modification");
-  if (menu) {
-    highlights.push({
-      label: "Menu changes",
-      value: optionLabel("menu_modification", menu),
-    });
-  }
-
-  const ingredients = single(facets, "ingredient_info");
-  if (ingredients) {
-    highlights.push({
-      label: "Ingredient info",
-      value: optionLabel("ingredient_info", ingredients),
-    });
+    highlights.push({ label: "Can speak with", value: manager });
   }
 
   return highlights;
 }
 
 export interface AllergenMenuInfo {
-  /** The restaurant's answer, e.g. "Yes — it's published online". */
+  /** The restaurant's answer, e.g. "Yes — published online". */
   label: string;
   /** Present only when they published one we can link to. */
   url?: string;
@@ -155,26 +233,57 @@ export function allergenMenu(facets: Facets): AllergenMenuInfo | undefined {
   const answer = single(facets, "allergy_menu");
   if (!answer || answer === "no") return undefined;
 
+  const label = knownLabel("allergy_menu", answer);
+  if (!label) return undefined;
+
   const url = single(facets, "allergy_menu_url");
-  return {
-    label: optionLabel("allergy_menu", answer),
-    url,
-    available: true,
-  };
+  return { label, url, available: true };
 }
 
-/** Allergens this restaurant said it can typically accommodate. */
-export function accommodatedAllergens(facets: Facets): string[] {
-  return multi(facets, "allergens_accommodated").filter((a) => a !== "other");
+/**
+ * Allergies this restaurant said it regularly gets asked about.
+ *
+ * Named for what it is. The old name ("accommodated") invited exactly the
+ * reading the program forbids — that selecting an allergen is a promise
+ * about a meal.
+ */
+export function allergensDiscussed(facets: Facets): string[] {
+  return multi(facets, "allergens_discussed").filter((a) => a !== "other");
 }
 
-/** Kitchen practices, excluding the "none of the above" sentinel. */
-export function kitchenPractices(facets: Facets): string[] {
-  return multi(facets, "kitchen_practices").filter((p) => p !== "none");
+export function otherAllergens(facets: Facets): string | undefined {
+  return single(facets, "allergens_other");
 }
 
-export function hasKitchenPractice(facets: Facets, practice: string): boolean {
-  return multi(facets, "kitchen_practices").includes(practice);
+/** Cross-contact steps, excluding the "no specific procedure" sentinel. */
+export function crossContactSteps(facets: Facets): string[] {
+  return multi(facets, "cross_contact_steps").filter((p) => p !== "none");
+}
+
+/**
+ * True only when the restaurant explicitly said it has no specific procedure
+ * — which is a real, publishable answer, and different from not answering.
+ */
+export function saysNoCrossContactProcedure(facets: Facets): boolean {
+  return multi(facets, "cross_contact_steps").includes("none");
+}
+
+export interface FryerDetail {
+  label: string;
+  allergens: string[];
+}
+
+/**
+ * The dedicated-fryer follow-up. Returns undefined unless the restaurant both
+ * claimed a dedicated fryer and told us what it means, so the bare phrase can
+ * never reach a profile on its own.
+ */
+export function dedicatedFryer(facets: Facets): FryerDetail | undefined {
+  const answer = single(facets, "dedicated_fryer_detail");
+  if (!answer || answer === "no" || answer === "no_fryer") return undefined;
+  const label = knownLabel("dedicated_fryer_detail", answer);
+  if (!label) return undefined;
+  return { label, allergens: multi(facets, "dedicated_fryer_allergens") };
 }
 
 /** Free-text notes the restaurant wrote for families, if any. */
@@ -183,7 +292,12 @@ export function familyNotes(facets: Facets): string | undefined {
 }
 
 export function crossContactNotes(facets: Facets): string | undefined {
-  return single(facets, "cross_contact_practices");
+  return single(facets, "cross_contact_notes");
+}
+
+/** What the restaurant told us it generally cannot accommodate. */
+export function allergenLimitations(facets: Facets): string | undefined {
+  return single(facets, "allergen_limitations");
 }
 
 /** Label lookup used by the profile's short summary rows. */

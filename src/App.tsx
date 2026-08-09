@@ -80,7 +80,10 @@ const App = () => (
             <Route path="/schools-teens" element={<SchoolTeens />} />
             <Route path="/school-teens" element={<Navigate to="/schools-teens" replace />} />
 
-            {/* Local Directory */}
+            {/* Local Resources — allergists, dietitians, camps. The URL stays
+                /directory to avoid breaking existing links; only the label
+                changed, to stop it being confused with the restaurant
+                directory at /restaurants/directory. */}
             <Route path="/directory" element={<Directory />} />
 
             {/* Restaurant transparency program.

@@ -11,9 +11,15 @@ identifiers, and column names:
 
 | Never use | Use instead |
 | --- | --- |
-| Grade, score, rating | Participant, shared information |
+| Grade, score, rating | Survey participant, shared information |
 | Inspection, certification | Transparency, allergy-aware practices |
 | Approved / rejected (publicly) | Published / not publishing |
+| Allergens accommodated | Allergies regularly asked about |
+| Allergy safe, verified safe | Restaurant-reported practices |
+
+"Allergy Voices Participant" became "Allergy Voices **Survey** Participant"
+for the same reason: the shorter form could be read as a status we conferred
+rather than a description of what the restaurant did.
 
 The old `restaurant_ratings` table was dropped for exactly this reason.
 
@@ -251,6 +257,40 @@ public profile, and the CSV export are all generated from it.
 - Add `publicFacet: true` to show an answer on public profiles.
 - Add `publicLabel` when the question phrasing is too long for a profile.
 - No migration is needed — answers and facets are `jsonb`.
+- `npm test` enforces the invariants: unique ids, `showWhen` targets that
+  exist, a `publicLabel` on every public facet, no certification language, and
+  that nothing without `publicFacet` can reach `restaurants.facets`.
+
+### Survey schema versions
+
+`SURVEY_SCHEMA_VERSION` in `survey.ts` is stamped onto every stored
+submission, and `supabase/functions/restaurant-submit` carries a duplicate of
+the number because edge functions cannot import from `src/`. A test asserts
+the two match — update both together.
+
+Version 2 (August 2026) cut the survey from six sections to four, replaced
+`allergens_accommodated` with `allergens_discussed`, `kitchen_practices` with
+`cross_contact_steps`, `server_training`/`manager_chef_access` with
+`staff_training`/`who_to_ask`, and moved the resource opt-ins out of the
+survey entirely (see below).
+
+**Values from a retired option set are never displayed.** `knownLabel()` in
+`facets.ts` returns `undefined` when a stored value no longer matches any
+option, so a pre-v2 `allergy_process: "yes"` renders as a missing row rather
+than a raw lowercase token or a guess at what it once meant.
+
+## Resource opt-ins are not survey answers
+
+"Send me the Best Practices Guide", "help me build an allergen menu", and
+"send me updates" live in `restaurant_interests`, written by the
+`restaurant-interests` edge function from the confirmation page — never inside
+the survey.
+
+The allergen-menu build carries a fee. Mentioning it while a restaurant is
+still deciding whether to participate makes a free program feel like a sales
+funnel, so the fee is disclosed only after the restaurant ticks that box, and
+only once its free listing is already secured. A test fails the build if the
+word "fee" reappears anywhere in `SURVEY_SECTIONS`.
 
 Already-published listings keep the facets captured at publish time. Republish
 a listing from the admin detail page to pick up newly public questions.

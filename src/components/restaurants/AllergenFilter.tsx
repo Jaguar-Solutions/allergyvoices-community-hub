@@ -22,7 +22,12 @@ const FILTERABLE = ALLERGEN_OPTIONS.filter((a) => a.value !== "other");
  * Multi-select allergen filter.
  *
  * Families routinely manage more than one allergy, so this selects a set and
- * the directory requires a restaurant to accommodate all of them.
+ * the directory requires a restaurant to have named all of them.
+ *
+ * The wording throughout is deliberately about what a restaurant is *asked*
+ * about, never what it is safe for. Filtering to "Peanut" and getting results
+ * must not read as "these restaurants are peanut-safe" — hence the note in
+ * the popover rather than a bare checkbox list.
  */
 export function AllergenFilter({ selected, onChange, id = "allergen-filter" }: AllergenFilterProps) {
   const toggle = (value: string, checked: boolean) =>
@@ -32,7 +37,7 @@ export function AllergenFilter({ selected, onChange, id = "allergen-filter" }: A
 
   const summary =
     selected.length === 0
-      ? "Any allergen"
+      ? "Any allergy"
       : selected.length <= 2
         ? selected.map(allergenLabel).join(", ")
         : `${selected.length} allergens`;
@@ -40,7 +45,7 @@ export function AllergenFilter({ selected, onChange, id = "allergen-filter" }: A
   return (
     <div className="space-y-2">
       <Label htmlFor={id} className="font-inter text-sm font-medium">
-        Allergens
+        Allergy experience
       </Label>
       <Popover>
         <PopoverTrigger asChild>
@@ -49,9 +54,10 @@ export function AllergenFilter({ selected, onChange, id = "allergen-filter" }: A
             type="button"
             variant="outline"
             className="w-full justify-between font-inter font-normal"
+            aria-describedby={`${id}-help`}
             aria-label={
               selected.length === 0
-                ? "Filter by allergen"
+                ? "Filter by allergy experience"
                 : `Filter by allergen. ${selected.length} selected: ${selected.map(allergenLabel).join(", ")}`
             }
           >
@@ -65,7 +71,7 @@ export function AllergenFilter({ selected, onChange, id = "allergen-filter" }: A
         <PopoverContent className="w-64 p-3" align="start">
           <fieldset>
             <legend className="mb-2 font-inter text-sm text-muted-foreground">
-              Show restaurants that accommodate all of:
+              Show restaurants that regularly get asked about all of:
             </legend>
             <div className="space-y-2.5">
               {FILTERABLE.map((option) => {
@@ -86,6 +92,12 @@ export function AllergenFilter({ selected, onChange, id = "allergen-filter" }: A
             </div>
           </fieldset>
 
+          <p className="mt-3 border-t border-border pt-3 font-inter text-xs leading-relaxed text-muted-foreground">
+            This finds restaurants that told us they regularly receive these
+            requests. It does not mean they are safe for that allergy — always
+            discuss your needs with staff.
+          </p>
+
           {selected.length > 0 && (
             <Button
               type="button"
@@ -100,6 +112,12 @@ export function AllergenFilter({ selected, onChange, id = "allergen-filter" }: A
         </PopoverContent>
       </Popover>
 
+      <p
+        id={`${id}-help`}
+        className="font-inter text-xs leading-relaxed text-muted-foreground"
+      >
+        Filter by allergies restaurants report regularly receiving requests for.
+      </p>
     </div>
   );
 }
@@ -120,7 +138,7 @@ export function SelectedAllergens({
 
   return (
     <ul className="flex flex-wrap items-center gap-1.5">
-      <li className="font-inter text-sm text-muted-foreground">Must accommodate:</li>
+      <li className="font-inter text-sm text-muted-foreground">Regularly asked about:</li>
       {selected.map((value) => (
         <li key={value}>
           <button

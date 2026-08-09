@@ -36,16 +36,16 @@ import { cn } from "@/lib/utils";
 const REASSURANCES = [
   { Icon: Sparkles, label: "Completely free" },
   { Icon: ShieldOff, label: "Not a certification" },
-  { Icon: Clock, label: "About 10 minutes" },
+  { Icon: Clock, label: "About 5–7 minutes" },
 ];
 
 // Labels read as statements, matching the real directory cards. A bare
 // "Allergy discussions: Yes" doesn't tell a parent anything.
 const PREVIEW_ROWS = [
-  { Icon: MessagesSquare, label: "Has an allergy process", value: "Yes" },
-  { Icon: ChefHat, label: "Talk to a manager or chef", value: "Yes" },
-  { Icon: UtensilsCrossed, label: "Can change dishes", value: "Most items" },
-  { Icon: ClipboardList, label: "Shares ingredient info", value: "Yes" },
+  { Icon: MessagesSquare, label: "Allergy process", value: "Documented" },
+  { Icon: ChefHat, label: "Staff training", value: "Servers & kitchen" },
+  { Icon: UtensilsCrossed, label: "Menu changes", value: "Most items" },
+  { Icon: ClipboardList, label: "Ingredient info", value: "Documented" },
 ];
 
 /**
@@ -215,7 +215,7 @@ export function SurveyInvitation({ className }: { className?: string }) {
                       </div>
                       <span className="inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full border border-secondary/25 bg-secondary/10 px-2.5 py-1 font-inter text-xs font-semibold text-secondary-strong">
                         <HeartHandshake className="h-3.5 w-3.5" aria-hidden="true" />
-                        Participant
+                        Survey Participant
                       </span>
                     </div>
 
@@ -245,7 +245,7 @@ export function SurveyInvitation({ className }: { className?: string }) {
 
                     <div className="mt-5 border-t border-border pt-4">
                       <p className="font-inter text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground">
-                        Allergens typically accommodated
+                        Allergies they regularly receive requests for
                       </p>
                       <ul className="mt-2 flex flex-wrap gap-1.5">
                         {PREVIEW_ALLERGENS.map((allergen) => (

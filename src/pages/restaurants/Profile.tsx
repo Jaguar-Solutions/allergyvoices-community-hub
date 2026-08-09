@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -5,9 +6,11 @@ import {
   BookOpenCheck,
   ExternalLink,
   Globe,
+  Info,
   MapPin,
   Navigation2,
   Phone,
+  Quote,
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import {
@@ -23,10 +26,35 @@ import { ParticipantBadge } from "@/components/restaurants/ParticipantBadge";
 import { ProgramDisclaimer } from "@/components/restaurants/ProgramDisclaimer";
 import { fetchRestaurantBySlug, type DirectoryListing } from "@/program/api";
 import { displayWebsite, normalizeWebsite } from "@/program/url";
-import { allergenMenu, displayFacets } from "@/program/facets";
+import {
+  allergenLimitations,
+  allergenMenu,
+  allergensDiscussed,
+  crossContactNotes,
+  crossContactSteps,
+  dedicatedFryer,
+  displayFacets,
+  familyNotes,
+  otherAllergens,
+  quickSummary,
+  saysNoCrossContactProcedure,
+} from "@/program/facets";
 import { FacetExplainer } from "@/components/restaurants/FacetExplainer";
-import { cuisineLabel } from "@/program/survey";
+import { allergenLabel, cuisineLabel, optionLabel } from "@/program/survey";
 import { stateName } from "@/program/us-states";
+
+/** The allergen tints already used across the site, keyed by survey value. */
+const ALLERGEN_TINT: Record<string, string> = {
+  milk: "bg-allergen-milk",
+  egg: "bg-allergen-egg",
+  peanut: "bg-allergen-peanut",
+  tree_nut: "bg-allergen-tree-nuts",
+  sesame: "bg-allergen-sesame",
+  soy: "bg-allergen-soy",
+  wheat: "bg-allergen-wheat",
+  fish: "bg-allergen-fish",
+  shellfish: "bg-allergen-shellfish",
+};
 
 function formatAddress(listing: DirectoryListing): string {
   return [
@@ -66,8 +94,37 @@ function structuredData(listing: DirectoryListing) {
   };
 }
 
+/** A titled block on the profile. Keeps the page's rhythm consistent. */
+function ProfileSection({
+  title,
+  note,
+  children,
+}: {
+  title: string;
+  note?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="min-w-0">
+      <h2 className="font-poppins text-xl font-bold text-foreground md:text-2xl">
+        {title}
+      </h2>
+      {note && (
+        <p className="mt-1.5 font-inter text-sm leading-relaxed text-muted-foreground">
+          {note}
+        </p>
+      )}
+      <div className="mt-4">{children}</div>
+    </section>
+  );
+}
+
 const RestaurantProfile = () => {
   const { slug = "" } = useParams();
+  // An embedded map is the one part of this page that depends on a third
+  // party rendering correctly. If it doesn't, the profile still has to look
+  // finished rather than broken, so a failure swaps in a directions panel.
+  const [mapFailed, setMapFailed] = useState(false);
 
   const { data: listing, isLoading, isError } = useQuery({
     queryKey: ["restaurant", slug],
@@ -110,10 +167,22 @@ const RestaurantProfile = () => {
   // Older rows may hold a bare "example.com", which would resolve as a path
   // on our own domain if used as an href directly.
   const website = normalizeWebsite(listing.website);
-  const facets = displayFacets(listing.facets);
+  const summary = quickSummary(listing.facets);
+  const allergens = allergensDiscussed(listing.facets);
+  const allergensOther = otherAllergens(listing.facets);
+  const steps = crossContactSteps(listing.facets);
+  const noProcedure = saysNoCrossContactProcedure(listing.facets);
+  const fryer = dedicatedFryer(listing.facets);
+  const ccNotes = crossContactNotes(listing.facets);
+  const limitations = allergenLimitations(listing.facets);
+  const notes = familyNotes(listing.facets);
+  const extraFacets = displayFacets(listing.facets);
   const menu = allergenMenu(listing.facets);
   const menuUrl = normalizeWebsite(menu?.url);
   const lastUpdated = listing.information_current_as_of ?? listing.published_at;
+  const updatedLabel = lastUpdated
+    ? format(new Date(lastUpdated), "MMMM d, yyyy")
+    : null;
   const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     `${listing.name} ${address}`,
   )}`;
@@ -140,40 +209,81 @@ const RestaurantProfile = () => {
             ]}
           />
           <div className="space-y-4">
-            <ParticipantBadge />
             <h1 className="break-words font-poppins text-3xl font-bold leading-tight text-foreground md:text-4xl lg:text-5xl">
               {listing.name}
             </h1>
-            <p className="flex items-start gap-2 font-inter text-muted-foreground">
-              <MapPin className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
-              <span>{address}</span>
+            <p className="font-inter text-muted-foreground">
+              {listing.city}, {listing.state}
+              {listing.cuisine.length > 0 && (
+                <> · {listing.cuisine.map(cuisineLabel).join(", ")}</>
+              )}
             </p>
-            {listing.cuisine.length > 0 && (
-              <p className="font-inter text-muted-foreground">
-                {listing.cuisine.map(cuisineLabel).join(" · ")}
+            {/* The framing line. Everything below is the restaurant's account
+                of itself, and saying so before the first answer is what stops
+                the page reading as an assessment by us. */}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 pt-1">
+              <p className="font-inter font-medium text-foreground">
+                Restaurant-reported allergy practices
               </p>
-            )}
+              {updatedLabel && (
+                <p className="font-inter text-sm text-muted-foreground">
+                  Updated {updatedLabel}
+                </p>
+              )}
+            </div>
+            <ParticipantBadge withExplanation />
           </div>
         </Container>
       </header>
 
       <Section spacing="sm">
         <Container>
-          <div className="grid gap-8 lg:grid-cols-[1fr_20rem]">
+          <div className="grid gap-10 lg:grid-cols-[1fr_20rem]">
             {/* min-w-0: grid items default to min-width:auto, so without this
                 a single unbreakable word (a pasted URL, a run-on string) in a
                 restaurant's answer stretches the whole column past the
                 viewport and the page scrolls sideways. */}
-            <div className="min-w-0 space-y-8">
-              <div>
-                <h2 className="font-poppins text-2xl font-bold text-foreground">
-                  What this restaurant shared
-                </h2>
-                <p className="mt-2 font-inter text-muted-foreground">
-                  Answers below are in the restaurant's own words, as submitted
-                  to Allergy Voices.
-                </p>
-              </div>
+            <div className="min-w-0 space-y-10">
+              {summary.length > 0 && (
+                <section className="min-w-0 rounded-2xl border border-border bg-background-subtle p-5 md:p-6">
+                  <h2 className="font-poppins text-lg font-bold text-foreground">
+                    At a glance
+                  </h2>
+                  <dl className="mt-4 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+                    {summary.map((row) => (
+                      <div key={row.questionId} className="min-w-0">
+                        <dt className="flex items-center gap-1.5 font-inter text-xs uppercase tracking-wide text-muted-foreground">
+                          {row.label}
+                          {row.explainer && (
+                            <FacetExplainer
+                              label={row.label}
+                              explainer={row.explainer}
+                            />
+                          )}
+                        </dt>
+                        <dd className="mt-1 break-words font-inter font-medium text-foreground">
+                          {row.value}
+                        </dd>
+                      </div>
+                    ))}
+                    {(steps.length > 0 || noProcedure || ccNotes) && (
+                      <div className="min-w-0">
+                        <dt className="font-inter text-xs uppercase tracking-wide text-muted-foreground">
+                          Cross-contact procedures
+                        </dt>
+                        <dd className="mt-1">
+                          <a
+                            href="#cross-contact"
+                            className="font-inter font-medium text-primary hover:underline"
+                          >
+                            View details
+                          </a>
+                        </dd>
+                      </div>
+                    )}
+                  </dl>
+                </section>
+              )}
 
               {menu && (
                 <div className="rounded-2xl border border-secondary/30 bg-secondary/5 p-5 md:p-6">
@@ -183,9 +293,9 @@ const RestaurantProfile = () => {
                       aria-hidden="true"
                     />
                     <div className="min-w-0">
-                      <h3 className="font-poppins text-lg font-semibold text-foreground">
+                      <h2 className="font-poppins text-lg font-semibold text-foreground">
                         Allergen menu
-                      </h3>
+                      </h2>
                       <p className="mt-1 font-inter text-sm leading-relaxed text-muted-foreground">
                         {menu.label}. An allergen menu shows which dishes
                         contain which allergens, so you can check before you go.
@@ -203,47 +313,185 @@ const RestaurantProfile = () => {
                 </div>
               )}
 
-              {facets.length === 0 ? (
-                <p className="font-inter text-muted-foreground">
-                  This restaurant hasn't shared detailed allergy information yet.
-                </p>
-              ) : (
-                <dl className="space-y-6">
-                  {facets.map((facet) => (
-                    <div
-                      key={facet.questionId}
-                      className="border-b border-border/60 pb-6 last:border-0 last:pb-0"
-                    >
-                      <dt className="flex items-center gap-1.5 font-poppins font-semibold text-foreground">
-                        {facet.label}
-                        {facet.explainer && (
-                          <FacetExplainer label={facet.label} explainer={facet.explainer} />
-                        )}
-                      </dt>
-                      <dd className="mt-2">
-                        {facet.isProse ? (
-                          <p className="whitespace-pre-line break-words font-inter leading-relaxed text-muted-foreground">
-                            {facet.values[0]}
-                          </p>
-                        ) : facet.values.length > 1 ? (
-                          <ul className="flex flex-wrap gap-2">
-                            {facet.values.map((value) => (
-                              <li
-                                key={value}
-                                className="break-words rounded-full bg-muted px-3 py-1 font-inter text-sm text-foreground"
-                              >
-                                {value}
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="break-words font-inter text-foreground">{facet.values[0]}</p>
-                        )}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
+              {allergens.length > 0 && (
+                <ProfileSection
+                  title="Food allergies they regularly receive requests for"
+                  note="These are allergies this restaurant sees often and is prepared to discuss. Naming an allergy is not a promise that a meal can be made free of it."
+                >
+                  <ul className="flex flex-wrap gap-2">
+                    {allergens.map((allergen) => (
+                      <li
+                        key={allergen}
+                        className={`rounded-full px-3 py-1 font-inter text-sm font-medium text-foreground/80 ${
+                          ALLERGEN_TINT[allergen] ?? "bg-muted"
+                        }`}
+                      >
+                        {allergenLabel(allergen)}
+                      </li>
+                    ))}
+                  </ul>
+                  {allergensOther && (
+                    <p className="mt-3 break-words font-inter text-sm text-muted-foreground">
+                      Also mentioned: {allergensOther}
+                    </p>
+                  )}
+                </ProfileSection>
               )}
+
+              {(steps.length > 0 || noProcedure || ccNotes || fryer) && (
+                <div id="cross-contact" className="scroll-mt-24">
+                  <ProfileSection
+                    title="How they reduce cross-contact"
+                    note="Cross-contact is when a trace of an allergen moves from one food to another — on a shared fryer, board, or utensil."
+                  >
+                    {steps.length > 0 && (
+                      <ul className="space-y-2">
+                        {steps.map((step) => (
+                          <li
+                            key={step}
+                            className="flex items-start gap-2.5 font-inter text-foreground"
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+                            />
+                            <span className="min-w-0 break-words">
+                              {optionLabel("cross_contact_steps", step)}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {/* Never publish "dedicated fryer" as a bare chip. On its
+                        own it is routinely read as "safe for my allergy"; the
+                        follow-up says which allergens it actually covers. */}
+                    {fryer && (
+                      <div className="mt-4 rounded-xl border border-border bg-background-subtle p-4">
+                        <p className="font-inter font-medium text-foreground">
+                          Fryer not shared with certain allergens: {fryer.label}
+                        </p>
+                        {fryer.allergens.length > 0 ? (
+                          <p className="mt-1 font-inter text-sm text-muted-foreground">
+                            They told us this applies to:{" "}
+                            {fryer.allergens.map(allergenLabel).join(", ")}.
+                          </p>
+                        ) : (
+                          <p className="mt-1 font-inter text-sm text-muted-foreground">
+                            They didn't tell us which allergens this applies to —
+                            worth asking when you call.
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {noProcedure && steps.length === 0 && (
+                      <p className="font-inter leading-relaxed text-foreground">
+                        This restaurant told us it does not have a specific
+                        cross-contact procedure.
+                      </p>
+                    )}
+
+                    {ccNotes && (
+                      <p className="mt-4 whitespace-pre-line break-words font-inter leading-relaxed text-muted-foreground">
+                        {ccNotes}
+                      </p>
+                    )}
+                  </ProfileSection>
+                </div>
+              )}
+
+              {/* Hidden entirely when blank — an empty "Important limitations"
+                  heading reads as though we removed something. */}
+              {limitations && (
+                <ProfileSection
+                  title="Important limitations"
+                  note="Shared by the restaurant so you can decide before you travel."
+                >
+                  <div className="flex gap-3 rounded-xl border border-brand-sun/40 bg-brand-sun/5 p-4 md:p-5">
+                    <Info
+                      className="mt-0.5 h-5 w-5 shrink-0 text-foreground/70"
+                      aria-hidden="true"
+                    />
+                    <p className="min-w-0 whitespace-pre-line break-words font-inter leading-relaxed text-foreground">
+                      {limitations}
+                    </p>
+                  </div>
+                </ProfileSection>
+              )}
+
+              {notes && (
+                <ProfileSection title="What the restaurant wants families to know">
+                  <figure className="flex gap-3 rounded-xl bg-background-subtle p-4 md:p-5">
+                    <Quote
+                      className="h-5 w-5 shrink-0 text-muted-foreground"
+                      aria-hidden="true"
+                    />
+                    <figcaption className="min-w-0">
+                      <p className="whitespace-pre-line break-words font-inter leading-relaxed text-foreground">
+                        {notes}
+                      </p>
+                      <span className="mt-2 block font-inter text-sm text-muted-foreground">
+                        {listing.name}, in their own words
+                      </span>
+                    </figcaption>
+                  </figure>
+                </ProfileSection>
+              )}
+
+              {/* Anything published that this page doesn't lay out explicitly,
+                  so a newly added survey question still appears without
+                  someone remembering to write a block for it. */}
+              {extraFacets.length > 0 && (
+                <ProfileSection title="Also shared">
+                  <dl className="space-y-5">
+                    {extraFacets.map((facet) => (
+                      <div key={facet.questionId} className="min-w-0">
+                        <dt className="flex items-center gap-1.5 font-poppins font-semibold text-foreground">
+                          {facet.label}
+                          {facet.explainer && (
+                            <FacetExplainer
+                              label={facet.label}
+                              explainer={facet.explainer}
+                            />
+                          )}
+                        </dt>
+                        <dd className="mt-1.5">
+                          {facet.isProse ? (
+                            <p className="whitespace-pre-line break-words font-inter leading-relaxed text-muted-foreground">
+                              {facet.values[0]}
+                            </p>
+                          ) : facet.values.length > 1 ? (
+                            <ul className="flex flex-wrap gap-2">
+                              {facet.values.map((value) => (
+                                <li
+                                  key={value}
+                                  className="break-words rounded-full bg-muted px-3 py-1 font-inter text-sm text-foreground"
+                                >
+                                  {value}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="break-words font-inter text-foreground">
+                              {facet.values[0]}
+                            </p>
+                          )}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </ProfileSection>
+              )}
+
+              {summary.length === 0 &&
+                allergens.length === 0 &&
+                steps.length === 0 &&
+                !notes && (
+                  <p className="font-inter text-muted-foreground">
+                    This restaurant hasn't shared detailed allergy information yet.
+                  </p>
+                )}
 
               <ProgramDisclaimer />
             </div>
@@ -254,6 +502,10 @@ const RestaurantProfile = () => {
                   <h2 className="font-poppins font-semibold text-foreground">
                     Contact
                   </h2>
+                  <p className="flex items-start gap-2 font-inter text-sm text-muted-foreground">
+                    <MapPin className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                    <span className="min-w-0 break-words">{address}</span>
+                  </p>
                   {listing.phone && (
                     <p className="flex items-center gap-2 font-inter text-sm">
                       <Phone className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -286,13 +538,14 @@ const RestaurantProfile = () => {
                 </CardContent>
               </Card>
 
-              {hasCoordinates && (
+              {hasCoordinates && !mapFailed && (
                 <Card className="overflow-hidden">
                   <iframe
                     title={`Map showing the location of ${listing.name}`}
                     className="h-56 w-full border-0 bg-muted"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
+                    onError={() => setMapFailed(true)}
                     src={`https://www.openstreetmap.org/export/embed.html?bbox=${
                       listing.longitude! - 0.008
                     }%2C${listing.latitude! - 0.006}%2C${
@@ -318,14 +571,14 @@ const RestaurantProfile = () => {
                 </Card>
               )}
 
-              {lastUpdated && (
+              {updatedLabel && (
                 <Card>
                   <CardContent className="p-5">
                     <h2 className="font-poppins font-semibold text-foreground">
                       Information current as of
                     </h2>
                     <p className="mt-1 font-inter text-sm text-muted-foreground">
-                      {format(new Date(lastUpdated), "MMMM d, yyyy")}
+                      {updatedLabel}
                     </p>
                     <p className="mt-3 font-inter text-sm text-muted-foreground">
                       Practices change. Confirm your needs with staff when you

@@ -21,11 +21,23 @@ import { submitRestaurant } from "@/program/api";
 import { normalizeWebsite } from "@/program/url";
 import { enqueue } from "@/program/offline-queue";
 import { OfflineBanner } from "@/components/restaurants/OfflineBanner";
-import { CUISINE_OPTIONS, SURVEY_SECTIONS, type Question } from "@/program/survey";
+import {
+  CUISINE_OPTIONS,
+  SURVEY_SECTIONS,
+  isQuestionVisible,
+} from "@/program/survey";
 import { US_STATES } from "@/program/us-states";
 import type { Answers, AnswerValue } from "@/program/types";
 
-const DRAFT_KEY = "av-restaurant-survey-draft-v1";
+/**
+ * Bumped with the survey schema. A draft saved against the old question set
+ * would otherwise be restored into a form that no longer has those questions,
+ * quietly resubmitting answers to things we stopped asking.
+ */
+const DRAFT_KEY = "av-restaurant-survey-draft-v2";
+
+/** Shared with the confirmation page. See the write site in `handleSubmit`. */
+export const SUBMITTED_ID_KEY = "av-restaurant-submitted-id";
 
 interface RestaurantFields {
   name: string;
@@ -100,15 +112,6 @@ function focusField(field: string) {
   if (!target) return;
   target.scrollIntoView({ block: "center", behavior: "smooth" });
   target.focus({ preventScroll: true });
-}
-
-/** A question only renders when its `showWhen` condition is currently met. */
-function isVisible(question: Question, answers: Answers): boolean {
-  if (!question.showWhen) return true;
-  const target = answers[question.showWhen.question];
-  return Array.isArray(target)
-    ? target.includes(question.showWhen.value)
-    : target === question.showWhen.value;
 }
 
 const Survey = () => {
@@ -214,7 +217,7 @@ const Survey = () => {
 
     for (const section of SURVEY_SECTIONS) {
       for (const question of section.questions) {
-        if (!question.required || !isVisible(question, answers)) continue;
+        if (!question.required || !isQuestionVisible(question, answers)) continue;
         const value = answers[question.id];
         const empty =
           value == null ||
@@ -246,7 +249,7 @@ const Survey = () => {
     // that orphaned text published on their profile.
     const visibleAnswers: Answers = {};
     for (const question of SURVEY_SECTIONS.flatMap((s) => s.questions)) {
-      if (!isVisible(question, draft.answers)) continue;
+      if (!isQuestionVisible(question, draft.answers)) continue;
       const value = draft.answers[question.id];
       if (value !== undefined) visibleAnswers[question.id] = value;
     }
@@ -298,6 +301,20 @@ const Survey = () => {
     }
 
     localStorage.removeItem(DRAFT_KEY);
+
+    // Hand the new listing's id to the confirmation page so it can offer the
+    // follow-up resources against a real restaurant. sessionStorage, not the
+    // URL: an id in the query string ends up in analytics and referrers, and
+    // it would survive a shared link into someone else's submission.
+    if (result.restaurantId) {
+      try {
+        sessionStorage.setItem(SUBMITTED_ID_KEY, result.restaurantId);
+      } catch {
+        // Private browsing with storage disabled — the opt-in simply won't
+        // be offered, which is a fine thing to lose.
+      }
+    }
+
     // The confirmation page promises a public listing, which would be wrong
     // to say to a restaurant that just declined publication.
     const consent = draft.answers.publish_consent;
@@ -536,10 +553,12 @@ const Survey = () => {
             </fieldset>
 
             <fieldset className="space-y-6">
-              <SectionHeading step={2} title="Who we should talk to" />
+              <legend className="font-poppins text-lg font-bold text-foreground">
+                Who we should talk to
+              </legend>
               <p className="font-inter text-sm text-muted-foreground">
-                Contact details stay private. They are never shown in the public
-                directory.
+                Your contact information is used by Allergy Voices for follow-up
+                only and is never displayed publicly.
               </p>
 
               <div className="grid gap-6 sm:grid-cols-2">
@@ -574,14 +593,14 @@ const Survey = () => {
 
             {SURVEY_SECTIONS.map((section, index) => (
               <fieldset key={section.id} className="space-y-8">
-                <SectionHeading step={index + 3} title={section.title} />
+                <SectionHeading step={index + 2} title={section.title} />
                 {section.intro && (
                   <p className="font-inter leading-relaxed text-muted-foreground">
                     {section.intro}
                   </p>
                 )}
                 {section.questions
-                  .filter((question) => isVisible(question, draft.answers))
+                  .filter((question) => isQuestionVisible(question, draft.answers))
                   .map((question) => (
                     <QuestionField
                       key={question.id}
@@ -620,8 +639,14 @@ const Survey = () => {
   );
 };
 
-/** Total form groups: the two identity fieldsets plus the survey sections. */
-const TOTAL_STEPS = 2 + SURVEY_SECTIONS.length;
+/**
+ * The restaurant-information step plus the survey's own sections.
+ *
+ * Contact details are part of step 1, not a step of their own — they are two
+ * halves of "who you are", and splitting them made a four-section survey
+ * announce itself as six.
+ */
+const TOTAL_STEPS = 1 + SURVEY_SECTIONS.length;
 
 /**
  * A "Step 3 of 6" label above each group. The form is long, and without any

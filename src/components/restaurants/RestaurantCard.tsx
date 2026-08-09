@@ -10,11 +10,10 @@ import {
 import {
   allergenMenu,
   cardHighlights,
-  accommodatedAllergens,
+  allergensDiscussed,
   familyNotes,
-  kitchenPractices,
 } from "@/program/facets";
-import { allergenLabel, cuisineLabel, optionLabel } from "@/program/survey";
+import { allergenLabel, cuisineLabel } from "@/program/survey";
 import type { DirectoryListing } from "@/program/api";
 import { displayWebsite, normalizeWebsite } from "@/program/url";
 import { cn } from "@/lib/utils";
@@ -58,8 +57,7 @@ export function RestaurantCard({
   variant?: CardVariant;
 }) {
   const highlights = cardHighlights(listing.facets);
-  const allergens = accommodatedAllergens(listing.facets);
-  const practices = kitchenPractices(listing.facets);
+  const allergens = allergensDiscussed(listing.facets);
   const note = familyNotes(listing.facets);
   const menu = allergenMenu(listing.facets);
   const updated = listing.information_current_as_of ?? listing.published_at;
@@ -114,8 +112,12 @@ export function RestaurantCard({
 
   const allergenList = allergens.length > 0 && (
     <div>
+      {/* Not "accommodates". The restaurant told us these are allergies it
+          gets asked about often enough to be ready to discuss — that is a
+          different claim from being able to serve a safe meal, and the card
+          must not quietly upgrade one into the other. */}
       <p className="font-inter text-xs text-muted-foreground">
-        Usually accommodates
+        Regularly asked about
       </p>
       <ul className="mt-1.5 flex flex-wrap gap-1.5">
         {allergens.map((allergen) => (
@@ -236,23 +238,11 @@ export function RestaurantCard({
           {allergenList}
           {answers}
 
-          {practices.length > 0 && (
-            <div>
-              <p className="font-inter text-xs text-muted-foreground">
-                Kitchen practices they told us about
-              </p>
-              <ul className="mt-1.5 flex flex-wrap gap-1.5">
-                {practices.map((practice) => (
-                  <li
-                    key={practice}
-                    className="rounded-full border border-border bg-background px-2.5 py-1 font-inter text-xs text-foreground/80"
-                  >
-                    {optionLabel("kitchen_practices", practice)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {/* Cross-contact steps deliberately do not appear on cards, in
+              either shape. They are the detail families read most carefully,
+              and a row of chips invites comparing restaurants on chip count
+              rather than reading what was actually said. They live on the
+              profile, with the fryer follow-up attached. */}
 
           {note && (
             <figure className="flex gap-2.5 rounded-xl bg-background-subtle p-4">

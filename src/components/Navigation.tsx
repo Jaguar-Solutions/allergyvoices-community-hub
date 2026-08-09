@@ -27,7 +27,7 @@ const NAV: NavGroup[] = [
       { name: "Allergen Hubs", href: "/allergens", description: "Quick references for each major allergen" },
       { name: "Dining Out", href: "/dining", description: "Scripts, checklists, and red flags" },
       { name: "Schools & Teens", href: "/schools-teens", description: "Plans, forms, and independence tools" },
-      { name: "Local Directory", href: "/directory", description: "Allergists, dietitians, support groups" },
+      { name: "Local Resources", href: "/directory", description: "Allergists, dietitians, support groups" },
     ],
   },
   {

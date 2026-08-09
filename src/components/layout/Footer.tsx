@@ -13,16 +13,22 @@ const QUICK_LINKS = [
 const ABOUT_LINKS = [
   { label: "About AllergyVoices", href: "/about" },
   { label: "Editorial Policy", href: "/about#editorial" },
-  { label: "Local Directory", href: "/directory" },
+  { label: "Local Resources", href: "/directory" },
   { label: "Contact", href: "mailto:info@allergyvoices.com" },
 ];
 
 const SOCIAL_LINKS = [
-  { label: "Instagram", href: "#", Icon: Instagram },
-  { label: "YouTube", href: "#", Icon: Youtube },
-  { label: "Facebook", href: "#", Icon: Facebook },
-  { label: "LinkedIn", href: "#", Icon: Linkedin },
+  // An icon linking to "#" looks like a working account until someone taps it
+  // and the page jumps to the top. Set the real URL to bring one back; until
+  // then it is filtered out below rather than shown as a dead link.
+  { label: "Instagram", href: "", Icon: Instagram },
+  { label: "YouTube", href: "", Icon: Youtube },
+  { label: "Facebook", href: "", Icon: Facebook },
+  { label: "LinkedIn", href: "", Icon: Linkedin },
 ];
+
+/** Only accounts that actually exist get an icon. */
+const CONFIGURED_SOCIAL_LINKS = SOCIAL_LINKS.filter((link) => link.href !== "");
 
 export function Footer() {
   return (
@@ -85,18 +91,22 @@ export function Footer() {
                 ),
               )}
             </ul>
-            <div className="-ml-2.5 mt-3 flex gap-1">
-              {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded text-background/70 transition-colors hover:bg-background/10 hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/40"
-                >
-                  <Icon className="h-5 w-5" />
-                </a>
-              ))}
-            </div>
+            {CONFIGURED_SOCIAL_LINKS.length > 0 && (
+              <div className="-ml-2.5 mt-3 flex gap-1">
+                {CONFIGURED_SOCIAL_LINKS.map(({ label, href, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="inline-flex h-11 w-11 items-center justify-center rounded text-background/70 transition-colors hover:bg-background/10 hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/40"
+                  >
+                    <Icon className="h-5 w-5" />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

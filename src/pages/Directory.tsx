@@ -87,7 +87,7 @@ const Directory = () => (
       eyebrow="Local resources"
       title="Allergists, dietitians, camps, and support"
       intro="We start with the best national directories, then add curated local listings as the community grows. Honest about what we cover and what we don't."
-      breadcrumbs={[{ label: "Local Directory" }]}
+      breadcrumbs={[{ label: "Local Resources" }]}
     />
 
     {/* National resources, grouped by category */}

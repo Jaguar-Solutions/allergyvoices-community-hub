@@ -33,25 +33,30 @@ const BENEFITS = [
   {
     icon: Users,
     title: "Reach allergy families",
-    body: "Thousands of families look for dining options they can trust enough to try.",
+    body: "Food allergy families are actively looking for restaurants willing to clearly explain their practices.",
   },
 ];
 
 const HOW_IT_WORKS = [
   {
     step: "1",
-    title: "Share what you do",
-    body: "Fill out a short survey about how your restaurant handles allergy requests. Every question is optional except the basics, and there are no wrong answers.",
+    title: "Complete the survey",
+    body: "About 5–7 minutes on how your restaurant handles allergy requests today. Every question is optional except the basics, and there are no wrong answers.",
   },
   {
     step: "2",
-    title: "We review it with you",
-    body: "We read every submission before it goes live. If you asked us to check with you first, we will. Nothing is published without your permission.",
+    title: "We review your submission",
+    body: "A person reads every submission before anything goes live. We are checking that it is clear and complete — not grading it, and not inspecting you.",
   },
   {
     step: "3",
-    title: "Families find you",
-    body: "Your profile appears in our public directory with the information you shared and the date you last updated it.",
+    title: "We publish it with your permission",
+    body: "Nothing appears publicly unless you said we could. If you asked us to check with you first, we will. Your contact details are never published.",
+  },
+  {
+    step: "4",
+    title: "Update it any time",
+    body: "Practices change. Use the update link on your own listing whenever something is different, and the date on your profile moves with it.",
   },
 ];
 
@@ -88,9 +93,10 @@ const ProgramLanding = () => (
           </p>
           <p className="font-medium">Participation is completely free.</p>
           <p>
-            This is <strong>not</strong> a certification or inspection. We
-            simply provide transparency so families can make informed
-            decisions.
+            This is <strong>not</strong> a certification, an inspection, or a
+            grade. We do not visit, test, score, or approve restaurants. We
+            publish what a restaurant tells us about its own practices, in its
+            own words, so families can ask better questions.
           </p>
         </div>
       </Container>
@@ -131,7 +137,7 @@ const ProgramLanding = () => (
         <h2 className="font-poppins text-2xl font-bold text-foreground md:text-3xl">
           How it works
         </h2>
-        <ol className="mt-8 grid gap-6 md:grid-cols-3">
+        <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {HOW_IT_WORKS.map((item) => (
             <li key={item.step} className="space-y-3">
               <span
@@ -170,8 +176,8 @@ const ProgramLanding = () => (
                 An allergen menu lists which of your dishes contain which
                 allergens, so families can check before they arrive and your
                 staff have something to point to. We build them for a small fee
-                that covers our time, and you can say yes on the survey or ask
-                us any time.
+                that covers our time — ask us any time, or tick the box on the
+                thank-you page after you submit.
               </p>
               <p className="mt-3 max-w-2xl font-inter text-sm leading-relaxed text-muted-foreground">
                 <strong className="font-semibold text-foreground">
@@ -196,8 +202,9 @@ const ProgramLanding = () => (
             Ready to share what you do?
           </h2>
           <p className="font-inter leading-relaxed text-muted-foreground">
-            The survey takes about ten minutes. Your answers save as you go, so
-            you can stop and come back.
+            The survey takes about 5–7 minutes. Participation and your public
+            listing are completely free. Your answers save as you go, so you
+            can stop and come back.
           </p>
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg">

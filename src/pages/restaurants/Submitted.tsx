@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle2, CloudOff } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
@@ -5,11 +6,28 @@ import { Container, PageLayout, Section } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { ProgramDisclaimer } from "@/components/restaurants/ProgramDisclaimer";
 import { OfflineBanner } from "@/components/restaurants/OfflineBanner";
+import { ResourceOptIn } from "@/components/restaurants/ResourceOptIn";
+import { SUBMITTED_ID_KEY } from "./Survey";
 
 const Submitted = () => {
   const [params] = useSearchParams();
   const savedOffline = params.get("saved") === "offline";
   const declinedPublication = params.get("consent") === "no";
+
+  // Read once on mount, then cleared: the opt-in belongs to the submission
+  // that just happened, not to whoever lands on this URL next.
+  const [restaurantId, setRestaurantId] = useState<string | null>(null);
+  useEffect(() => {
+    try {
+      const id = sessionStorage.getItem(SUBMITTED_ID_KEY);
+      if (id) {
+        setRestaurantId(id);
+        sessionStorage.removeItem(SUBMITTED_ID_KEY);
+      }
+    } catch {
+      // Storage unavailable; the opt-in is simply not offered.
+    }
+  }, []);
 
   return (
     <PageLayout>
@@ -73,6 +91,14 @@ const Submitted = () => {
               </Button>
             </div>
           </div>
+
+          {/* An offline submission has no server id yet, so there is nothing
+              to attach an opt-in to. It syncs later from the field queue. */}
+          {restaurantId && !savedOffline && (
+            <div className="mt-10">
+              <ResourceOptIn restaurantId={restaurantId} />
+            </div>
+          )}
 
           <OfflineBanner className="mt-10" />
           <ProgramDisclaimer className="mt-6 text-left" />

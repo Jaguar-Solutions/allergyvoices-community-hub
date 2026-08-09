@@ -295,7 +295,10 @@ Deno.serve(async (req) => {
       restaurant_id: restaurantId,
       version,
       answers,
-      schema_version: 1,
+      // Keep in step with SURVEY_SCHEMA_VERSION in src/program/survey.ts. Edge
+      // functions can't import from src/, so this is a deliberate duplicate —
+      // there is a test asserting the two stay equal.
+      schema_version: 2,
       source: "web_form",
       client_submission_id: clientSubmissionId,
     });
