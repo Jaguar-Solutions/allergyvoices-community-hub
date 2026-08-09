@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 import { Container, Section } from "@/components/layout";
 import { LAUNCH_REGION, ROLLOUT } from "@/config/launch";
 import { CityRequestForm } from "./CityRequestForm";
@@ -15,6 +17,19 @@ import { CityRequestForm } from "./CityRequestForm";
  * edit rather than a hunt through page copy.
  */
 export function LaunchRollout({ className }: { className?: string }) {
+  const details = useRef<HTMLDetailsElement>(null);
+
+  // Arriving from "Request your city" or "Join the launch" elsewhere on the
+  // site should land on an open form, not a closed summary the visitor has to
+  // realise is clickable.
+  useEffect(() => {
+    if (window.location.hash !== "#help-your-city") return;
+    const el = details.current;
+    if (!el) return;
+    el.open = true;
+    el.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, []);
+
   return (
     <Section tone="subtle" className={className}>
       <Container width="default">
@@ -46,9 +61,21 @@ export function LaunchRollout({ className }: { className?: string }) {
           ))}
         </ol>
 
-        <div id="help-your-city" className="mt-8 scroll-mt-24">
-          <CityRequestForm />
-        </div>
+        {/* Collapsed by default. This sits on the page whose one job is
+            getting a restaurant through the survey, and an open form for a
+            different audience competes with that. Anyone who came here for it
+            has followed a link to #help-your-city, which opens it. */}
+        <details ref={details} id="help-your-city" className="group mt-8 scroll-mt-24">
+          <summary className="cursor-pointer rounded-2xl border border-border bg-background p-5 font-poppins font-semibold text-foreground marker:content-none hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            Want to help bring AllergyVoices to your city?
+            <span className="ml-2 font-inter text-sm font-normal text-muted-foreground group-open:hidden">
+              Become an ambassador, recommend a restaurant, or request your city
+            </span>
+          </summary>
+          <div className="mt-3">
+            <CityRequestForm />
+          </div>
+        </details>
 
         <p className="mt-4 font-inter text-sm text-muted-foreground">
           Currently enrolling in {LAUNCH_REGION.cities.join(", ")} and

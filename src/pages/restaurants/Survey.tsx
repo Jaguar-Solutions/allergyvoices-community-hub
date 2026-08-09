@@ -123,7 +123,7 @@ const Survey = () => {
 
   // A restaurant arriving from "Update this listing" on its own profile gets
   // the identity fields filled in. Matching those three fields is also how
-  // the server recognises an update rather than a new listing, so a saved
+  // the server recognizes an update rather than a new listing, so a saved
   // draft must not silently override them.
   const initial = useMemo(() => {
     const loaded = loadDraft();
@@ -566,7 +566,7 @@ const Survey = () => {
                 Who we should talk to
               </legend>
               <p className="font-inter text-sm text-muted-foreground">
-                Your contact information is used by Allergy Voices for follow-up
+                Your contact information is used by AllergyVoices for follow-up
                 only and is never displayed publicly.
               </p>
 

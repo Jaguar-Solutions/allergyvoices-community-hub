@@ -15,7 +15,7 @@ interface ParticipantBadgeProps {
 /**
  * Marks a listing as having taken part in the transparency survey.
  *
- * The wording is load-bearing. "Allergy Voices Participant" was ambiguous
+ * The wording is load-bearing. "AllergyVoices Participant" was ambiguous
  * enough to be read as a status we conferred — a membership, an approval, a
  * standard met. "Survey Participant" can only be read as a description of
  * what the restaurant did: it answered our questions.
@@ -41,7 +41,7 @@ export function ParticipantBadge({
         className={cn("shrink-0", size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4")}
         aria-hidden="true"
       />
-      Allergy Voices Survey Participant
+      AllergyVoices Survey Participant
     </span>
   );
 
@@ -53,7 +53,7 @@ export function ParticipantBadge({
       <p className="max-w-2xl font-inter text-sm leading-relaxed text-muted-foreground">
         <span className="font-medium text-foreground">What this means: </span>
         This restaurant voluntarily provided information about its food allergy
-        practices. Allergy Voices does not inspect, certify, grade, or guarantee
+        practices. AllergyVoices does not inspect, certify, grade, or guarantee
         allergy safety.
       </p>
     </div>

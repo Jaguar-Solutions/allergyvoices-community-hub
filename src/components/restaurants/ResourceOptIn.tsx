@@ -12,7 +12,7 @@ interface ResourceOptInProps {
 const OPTIONS = [
   {
     key: "wants_best_practices_guide",
-    label: "Send me the free Allergy Voices Restaurant Best Practices Guide",
+    label: "Send me the free AllergyVoices Restaurant Best Practices Guide",
   },
   {
     key: "wants_menu_help",
@@ -27,7 +27,7 @@ const OPTIONS = [
   },
   {
     key: "wants_updates",
-    label: "Send me occasional Allergy Voices restaurant updates",
+    label: "Send me occasional AllergyVoices restaurant updates",
   },
 ] as const;
 

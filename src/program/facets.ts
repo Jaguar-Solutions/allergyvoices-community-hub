@@ -39,7 +39,7 @@ function single(facets: Facets, id: string): string | undefined {
 }
 
 /**
- * The display label for a stored value, or undefined if we don't recognise it.
+ * The display label for a stored value, or undefined if we don't recognize it.
  *
  * `optionLabel` passes unknown values through unchanged, which is right for
  * free text but wrong for a choice question: a listing stored before the

@@ -42,7 +42,7 @@ const EMAIL_STATUS_LABEL = {
   sent: "Sent",
   failed: "Failed",
   // Not a failure: the safety switch doing its job. Styled as ordinary
-  // information below rather than in the destructive colour.
+  // information below rather than in the destructive color.
   suppressed: "Not sent (sending switched off)",
 } as const;
 

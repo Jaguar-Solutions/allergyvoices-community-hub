@@ -31,7 +31,7 @@ const OPTIONS: { value: CityRequestKind; label: string; help: string }[] = [
   {
     value: "request_city",
     label: "Request your city",
-    help: "Tell us where you'd like the directory next. We prioritise by demand.",
+    help: "Tell us where you'd like the directory next. We prioritize by demand.",
   },
 ];
 
@@ -141,8 +141,8 @@ export function CityRequestForm() {
         Want to help bring AllergyVoices to your city?
       </h3>
       <p className="mt-1.5 font-inter text-sm leading-relaxed text-muted-foreground">
-        Cities launch with local families and community partners, not
-        advertising. Tell us how you&apos;d like to help.
+        Cities launch through local families, ambassadors, community partners
+        and restaurant outreach. Tell us how you&apos;d like to help.
       </p>
 
       {/* Honeypot: hidden from humans, irresistible to bots. */}

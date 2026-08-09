@@ -88,7 +88,7 @@ const ProgramLanding = () => (
       <Container width="default">
         <div className="max-w-2xl space-y-5 font-inter text-lg leading-relaxed text-foreground">
           <p>
-            Allergy Voices is creating a free public directory of restaurants
+            AllergyVoices is creating a free public directory of restaurants
             that voluntarily share information about how they handle food
             allergies.
           </p>

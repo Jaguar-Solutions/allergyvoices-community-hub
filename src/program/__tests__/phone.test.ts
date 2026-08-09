@@ -15,7 +15,7 @@ describe("formatPhone", () => {
     expect(formatPhone("9195550")).toBe("(919)555-0");
   });
 
-  it("normalises however a restaurant types it", () => {
+  it("normalizes however a restaurant types it", () => {
     for (const input of [
       "919.555.0100",
       "919-555-0100",

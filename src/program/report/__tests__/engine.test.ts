@@ -53,7 +53,7 @@ describe("1. restaurant with excellent practices", () => {
     expect(report.recommendations.length).toBeLessThanOrEqual(2);
   });
 
-  it("recognises the documented process, training and escalation", () => {
+  it("recognizes the documented process, training and escalation", () => {
     const { strengths } = ids(report);
     expect(strengths).toContain("process.documented");
     expect(strengths).toContain("training.full");

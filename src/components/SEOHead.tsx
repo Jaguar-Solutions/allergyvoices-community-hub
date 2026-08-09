@@ -11,7 +11,7 @@ interface SEOHeadProps {
 }
 
 const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "Allergy Voices - Community Hub for Food Allergy Advocacy",
+  title = "AllergyVoices - Community Hub for Food Allergy Advocacy",
   description = "Making life with food allergies safer, easier, and more inclusive. Join our community for resources, safe dining guides, and advocacy efforts.",
   keywords = "food allergies, allergy advocacy, safe dining, allergy-friendly restaurants, food allergy community, allergy resources, allergen management",
   canonical,
@@ -19,7 +19,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   ogType = "website",
   structuredData
 }) => {
-  const fullTitle = title.includes("Allergy Voices") ? title : `${title} | Allergy Voices`;
+  const fullTitle = title.includes("AllergyVoices") ? title : `${title} | AllergyVoices`;
   const canonicalUrl = canonical || window.location.href;
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     updateMetaTag('og:description', description, true);
     updateMetaTag('og:image', ogImage, true);
     updateMetaTag('og:url', canonicalUrl, true);
-    updateMetaTag('og:site_name', 'Allergy Voices', true);
+    updateMetaTag('og:site_name', 'AllergyVoices', true);
     
     // Twitter tags
     updateMetaTag('twitter:card', 'summary_large_image');
@@ -59,7 +59,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     
     // Additional SEO tags
     updateMetaTag('robots', 'index, follow');
-    updateMetaTag('author', 'Allergy Voices');
+    updateMetaTag('author', 'AllergyVoices');
 
     // Update canonical link
     let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;

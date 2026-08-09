@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
  * The recruitment moment for the transparency program.
  *
  * Deliberately the one dark panel on a light, airy page: on a site this calm,
- * inverting the surface does more to draw the eye than any amount of colour
+ * inverting the surface does more to draw the eye than any amount of color
  * would, and it separates a message aimed at restaurant owners from a page
  * otherwise written for families.
  *

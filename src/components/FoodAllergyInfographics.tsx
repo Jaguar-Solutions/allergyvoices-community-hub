@@ -29,6 +29,7 @@ interface Stat {
   suffix: string;
   label: string;
   detail: string;
+  /** Publication year and data year — they differ, and conflating them misleads. */
   year: string;
   source: string;
   sourceLabel: string;
@@ -42,7 +43,7 @@ const STATS: Stat[] = [
     suffix: '%',
     label: 'of adults',
     detail: 'have a diagnosed food allergy',
-    year: '2024',
+    year: 'published 2026; 2024 data',
     source: 'https://www.cdc.gov/nchs/products/databriefs/db545.htm',
     sourceLabel: 'CDC NCHS Data Brief No. 545',
     Icon: Users,
@@ -53,7 +54,7 @@ const STATS: Stat[] = [
     suffix: '%',
     label: 'of children',
     detail: 'about 1 in 20, ages 0–17',
-    year: '2024',
+    year: 'published 2026; 2024 data',
     source: 'https://www.cdc.gov/nchs/products/databriefs/db546.htm',
     sourceLabel: 'CDC NCHS Data Brief No. 546',
     Icon: Heart,
@@ -72,6 +73,7 @@ const TREND = {
   change: '+50%',
   source: 'https://www.cdc.gov/nchs/products/databriefs/db121.htm',
   sourceLabel: 'CDC NCHS Data Brief No. 121',
+  sourceYear: 'published 2013; 1997-2011 data',
 };
 
 function useCountUp(target: number) {
@@ -152,7 +154,7 @@ const FoodAllergyInfographics = () => {
         ))}
         <li className="col-span-2 text-center">
           <span className="font-inter text-[11px] text-muted-foreground">
-            CDC National Health Interview Survey, 2024
+            CDC National Health Interview Survey, 2024 data
           </span>
         </li>
       </ul>
@@ -229,7 +231,7 @@ const FoodAllergyInfographics = () => {
                 </span>
               </p>
               <p className="mt-1">
-                <SourceLink href={TREND.source} label={TREND.sourceLabel} year="2013" />
+                <SourceLink href={TREND.source} label={TREND.sourceLabel} year={TREND.sourceYear} />
               </p>
             </div>
           </CardContent>

@@ -33,7 +33,7 @@ const Submitted = () => {
     <PageLayout>
       <SEOHead
         title="Thank you for participating"
-        description="Your restaurant's information has been received and will be reviewed before appearing in the Allergy Voices directory."
+        description="Your restaurant's information has been received and will be reviewed before appearing in the AllergyVoices directory."
       />
 
       <Section className="pt-28 md:pt-32">

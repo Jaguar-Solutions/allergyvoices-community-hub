@@ -9,7 +9,7 @@ export function ProgramDisclaimer({ className }: { className?: string }) {
   return (
     <Disclaimer kind="info" title="About this information" className={className}>
       The information on this page is provided voluntarily by the restaurant.
-      Allergy Voices does not inspect, certify, or guarantee allergy safety.
+      AllergyVoices does not inspect, certify, or guarantee allergy safety.
       Guests should always discuss their specific allergy needs directly with
       restaurant staff before ordering.
     </Disclaimer>

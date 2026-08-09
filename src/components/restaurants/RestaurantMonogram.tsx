@@ -32,7 +32,7 @@ function initials(name: string): string {
   return (words[0][0] + words[1][0]).toUpperCase();
 }
 
-/** Stable per-name tile colour, so a restaurant looks the same on every visit. */
+/** Stable per-name tile color, so a restaurant looks the same on every visit. */
 function tileFor(name: string): string {
   let hash = 0;
   for (let i = 0; i < name.length; i += 1) {

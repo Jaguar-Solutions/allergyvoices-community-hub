@@ -187,7 +187,7 @@ const Index = () => {
 
               {/* The other audience that lands here. Given its own bordered
                   card so it survives a glance, but kept visually secondary to
-                  the family message above: no fill, no brand colour, and it
+                  the family message above: no fill, no brand color, and it
                   sits below the primary actions. */}
               <Link
                 to="/restaurants/participate"

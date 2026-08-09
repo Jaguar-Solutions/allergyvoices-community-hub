@@ -5,7 +5,7 @@ import { Container, PageHeader, PageLayout, Section } from "@/components/layout"
 import { Button } from "@/components/ui/button";
 
 /**
- * The page people read before deciding whether to trust the organisation, so
+ * The page people read before deciding whether to trust the organization, so
  * it should look like the rest of the site rather than a stray document. It
  * previously rendered its own <main> without PageLayout, which meant no
  * footer, no skip link, and no SEO metadata, and set every paragraph in muted
@@ -38,13 +38,13 @@ const COMMITMENTS = [
 const About = () => (
   <PageLayout>
     <SEOHead
-      title="About Allergy Voices"
-      description="Allergy Voices began with one family's search for safe places to eat. It is now a community effort to make dining, shopping, and living with food allergies safer and more inclusive."
+      title="About AllergyVoices"
+      description="AllergyVoices began with one family's search for safe places to eat. It is now a community effort to make dining, shopping, and living with food allergies safer and more inclusive."
     />
     <PageHeader
       eyebrow="About"
       title="Raising our voices so every menu considers food allergies"
-      intro="Allergy Voices began with one family's struggle to find safe places to eat with their child who has food allergies."
+      intro="AllergyVoices began with one family's struggle to find safe places to eat with their child who has food allergies."
       breadcrumbs={[{ label: "About" }]}
     />
 
@@ -104,7 +104,7 @@ const About = () => (
             This initiative belongs to the community. Every caregiver, teen,
             adult, and ally has a voice that can drive change. Your stories,
             suggestions, and participation are not just welcome. They are what
-            make Allergy Voices possible.
+            make AllergyVoices possible.
           </p>
         </div>
       </Container>
@@ -121,8 +121,8 @@ const About = () => (
         </h2>
         <div className="mt-5 space-y-6 font-inter text-lg leading-relaxed text-foreground">
           <p>
-            Allergy Voices is a family-led food allergy advocacy initiative
-            based in the Triangle, North Carolina. We’re building a free
+            AllergyVoices is a family-led food allergy advocacy initiative
+            building a nationwide restaurant transparency directory, launching first in the Triangle region of North Carolina. We’re building a free
             restaurant transparency directory to help families ask better
             questions, and to help restaurants explain the allergy practices
             they already have.
@@ -172,20 +172,35 @@ const About = () => (
         </h2>
         <div className="mt-5 space-y-6 font-inter text-lg leading-relaxed text-foreground">
           <p>
-            Medical findings and recall alerts are summarised from published
-            sources, and every item links back to the original so you can read
-            it yourself. We summarise; we do not interpret results or offer
-            clinical guidance.
+            Medical findings are source-based summaries of published research,
+            regulatory decisions and clinical guidance. Every article links to
+            the original so you can read it yourself, and states its
+            publication and last-reviewed dates.
           </p>
           <p>
-            Statistics carry their source and the year the data was collected.
-            If we cannot attribute a figure to a named source, we remove it
-            rather than publish it.
+            We do more than restate a study. Articles explain what a finding
+            means in practice and suggest questions worth raising with your
+            allergist — that explanation is editorial, and it is kept visibly
+            separate from the source material rather than blended into it. What
+            we do not do is tell any individual reader what to do about their
+            own allergy; that conversation belongs with your clinician.
+          </p>
+          <p>
+            Articles are prepared by the AllergyVoices editorial team and are
+            not independently medically reviewed. We do not employ a clinical
+            reviewer, and we will not imply one by naming a team as though it
+            were a person. If that changes, the reviewer will be named.
+          </p>
+          <p>
+            Statistics carry their source and the year the data was collected,
+            which is not always the year it was published. If we cannot
+            attribute a figure to a named source, we remove it rather than
+            publish it.
           </p>
           <p>
             Restaurant listings are written by the restaurants themselves. We
             check submissions for clarity and completeness before publishing,
-            with permission, and we do not edit a restaurant’s
+            with permission, and we do not edit a restaurant&rsquo;s
             description of its own practices to make it sound better or worse.
           </p>
         </div>

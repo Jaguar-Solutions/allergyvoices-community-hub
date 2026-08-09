@@ -46,11 +46,20 @@ export function ContentMeta({
           <dd>Reviewed {reviewed}</dd>
         </div>
       )}
+      {/* Deliberately not "Reviewer: AllergyVoices editorial". Naming an
+          unnamed team as a reviewer implies a clinical review that has not
+          happened. Until a qualified named reviewer exists, the honest
+          statement is who wrote it — and, alongside, that it was not
+          independently medically reviewed. */}
       {reviewedBy && (
         <div className="flex items-center gap-1.5">
           <UserCheck className="h-4 w-4" aria-hidden="true" />
-          <dt className="sr-only">Reviewer</dt>
-          <dd>{reviewedBy}</dd>
+          <dt className="sr-only">Prepared by</dt>
+          <dd>
+            {/^allergyvoices editorial$/i.test(reviewedBy.trim())
+              ? "Prepared by the AllergyVoices editorial team"
+              : `Prepared by ${reviewedBy}`}
+          </dd>
         </div>
       )}
     </dl>

@@ -14,6 +14,20 @@ import { SourceList } from "@/components/content/SourceList";
 import { getArticleBySlug } from "@/content";
 import { EVIDENCE_LABELS } from "@/content/schemas";
 
+/**
+ * Whether the rendered article already contains a heading with this text.
+ *
+ * Compares on letters only, so "What families should know" still matches
+ * "What Families Should Know" or a heading carrying an id attribute.
+ */
+function bodyHasHeading(html: string, heading: string): boolean {
+  const normalize = (v: string) => v.toLowerCase().replace(/[^a-z]+/g, "");
+  const target = normalize(heading);
+  return [...html.matchAll(/<h[1-6][^>]*>(.*?)<\/h[1-6]>/gis)].some(
+    (m) => normalize(m[1]) === target,
+  );
+}
+
 const FindingDetail = () => {
   const { slug = "" } = useParams<{ slug: string }>();
   const article = getArticleBySlug(slug);
@@ -60,7 +74,13 @@ const FindingDetail = () => {
 
           <Prose html={article.body_html} />
 
-          {article.who_affected && (
+          {/* The structured frontmatter fields and the article body can carry
+              the same section. Where both exist the body is the fuller
+              treatment — several paragraphs against a single summary line — so
+              the panel is the duplicate and is withheld. Articles whose body
+              omits the section still get the highlighted panel, and a new
+              article needs no coordination between the two. */}
+          {article.who_affected && !bodyHasHeading(article.body_html, "Who this affects") && (
             <section className="mt-10 rounded-xl border border-border bg-background-subtle p-6">
               <h2 className="font-poppins font-semibold text-base text-foreground mb-2">
                 Who this affects
@@ -69,7 +89,7 @@ const FindingDetail = () => {
             </section>
           )}
 
-          {article.family_takeaway && (
+          {article.family_takeaway && !bodyHasHeading(article.body_html, "What families should know") && (
             <section className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-6">
               <h2 className="font-poppins font-semibold text-base text-foreground mb-2">
                 What families should know
@@ -97,7 +117,15 @@ const FindingDetail = () => {
             </div>
           )}
 
-          <Disclaimer kind="medical" className="mt-10" />
+          {/* States what this article is, next to the medical disclaimer that
+              states what it is not. Without it, "Prepared by the AllergyVoices
+              editorial team" could still be read as a clinical review. */}
+          <p className="mt-10 font-inter text-sm leading-relaxed text-muted-foreground">
+            Source-based educational summary; not independently medically
+            reviewed. Every claim links to the original source below.
+          </p>
+
+          <Disclaimer kind="medical" className="mt-4" />
         </Container>
       </Section>
     </PageLayout>
