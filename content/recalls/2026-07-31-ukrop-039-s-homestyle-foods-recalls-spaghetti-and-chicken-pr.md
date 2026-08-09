@@ -5,7 +5,7 @@ undeclared_allergens:
 recall_reason: Product Contamination
 recall_date: '2026-07-31'
 region: us
-agency: fsis
+agency: "usda-fsis"
 agency_recall_id: 012-2026
 recall_class: class-i
 source_url: >-

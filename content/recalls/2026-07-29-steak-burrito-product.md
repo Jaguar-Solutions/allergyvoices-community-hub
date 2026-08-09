@@ -5,7 +5,7 @@ undeclared_allergens:
 recall_reason: Misbranding, Unreported Allergens
 recall_date: '2026-07-29'
 region: us
-agency: fsis
+agency: "usda-fsis"
 agency_recall_id: PHA-07292026-01
 recall_class: unspecified
 source_url: >-

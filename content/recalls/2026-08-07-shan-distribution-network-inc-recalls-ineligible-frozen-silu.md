@@ -6,7 +6,7 @@ undeclared_allergens:
 recall_reason: Import Violation
 recall_date: '2026-08-07'
 region: us
-agency: fsis
+agency: "usda-fsis"
 agency_recall_id: 014-2026
 recall_class: class-i
 source_url: >-

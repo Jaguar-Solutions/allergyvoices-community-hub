@@ -159,7 +159,7 @@ function toDraft(item: FsisRecall): RecallDraft | null {
     recall_reason: (reason || title).slice(0, 500),
     recall_date: recallDate,
     region: "us",
-    agency: "fsis",
+    agency: "usda-fsis",
     agency_recall_id: item.field_recall_number,
     recall_class: classify(item),
     source_url: item.field_recall_url ?? "https://www.fsis.usda.gov/recalls",
