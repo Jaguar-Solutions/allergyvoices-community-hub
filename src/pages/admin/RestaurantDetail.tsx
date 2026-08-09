@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import { Container, PageLayout, Section } from "@/components/layout";
+import { ImprovementReport } from "@/components/admin/ImprovementReport";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -330,6 +331,13 @@ function RestaurantDetailInner() {
             </div>
 
             <aside className="min-w-0 space-y-5">
+              <ImprovementReport
+                restaurantId={restaurant.id}
+                restaurantName={restaurant.name}
+                contact={contact}
+                hasSubmission={Boolean(latest)}
+              />
+
               <Card>
                 <CardContent className="space-y-3 p-5">
                   <h2 className="font-poppins font-semibold text-foreground">Actions</h2>

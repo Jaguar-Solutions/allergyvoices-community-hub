@@ -451,3 +451,100 @@ export function downloadCsv(filename: string, csv: string) {
   link.click();
   URL.revokeObjectURL(url);
 }
+
+// --- Improvement report ------------------------------------------------------
+
+export interface RestaurantReport {
+  id: string;
+  restaurant_id: string;
+  version: number;
+  engine_version: number;
+  strengths: { id: string; title: string; detail?: string }[];
+  recommendations: { id: string; title: string; priority: string }[];
+  next_steps: string[];
+  pdf_path: string | null;
+  pdf_bytes: number | null;
+  email_status: "not_sent" | "sent" | "failed";
+  email_to: string | null;
+  email_sent_at: string | null;
+  email_error: string | null;
+  generated_at: string;
+}
+
+/** The current report for a restaurant, or null if none has been generated. */
+export async function fetchLatestReport(
+  restaurantId: string,
+): Promise<RestaurantReport | null> {
+  const { data, error } = await supabase
+    .from("restaurant_reports")
+    .select("*")
+    .eq("restaurant_id", restaurantId)
+    .order("version", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) throw error;
+  return (data as RestaurantReport | null) ?? null;
+}
+
+async function invokeReport(
+  restaurantId: string,
+  action: "generate" | "email",
+): Promise<{ ok: boolean; error?: string; suppressed?: boolean; sentTo?: string }> {
+  try {
+    const { data, error } = await supabase.functions.invoke("restaurant-report", {
+      body: { restaurantId, action },
+    });
+
+    if (error) {
+      let detail = error.message;
+      if (error.name === "FunctionsHttpError") {
+        try {
+          const body = await (error as { context?: Response }).context?.json();
+          if (body && typeof body.error === "string") detail = body.error;
+        } catch {
+          // Non-JSON body; the original message stands.
+        }
+      }
+      return { ok: false, error: detail };
+    }
+
+    const result = data as { ok?: boolean; error?: string; suppressed?: boolean; sentTo?: string };
+    if (result?.ok === false) {
+      return { ok: false, error: result.error, suppressed: result.suppressed };
+    }
+    return { ok: true, sentTo: result?.sentTo };
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Could not reach the server.",
+    };
+  }
+}
+
+/** Render a new report version. Never overwrites an earlier one. */
+export const generateReport = (restaurantId: string) =>
+  invokeReport(restaurantId, "generate");
+
+/**
+ * Email the current report to the restaurant's private contact address.
+ *
+ * The recipient is resolved server-side from `restaurant_contacts`; nothing
+ * in this call can redirect it.
+ */
+export const emailReport = (restaurantId: string) =>
+  invokeReport(restaurantId, "email");
+
+/**
+ * A short-lived URL for previewing or downloading the stored PDF.
+ *
+ * The bucket is private, so this is the only way an admin browser can read
+ * the file, and the link stops working shortly after it is issued.
+ */
+export async function reportFileUrl(path: string): Promise<string | null> {
+  const { data, error } = await supabase.storage
+    .from("restaurant-reports")
+    .createSignedUrl(path, 300);
+  if (error) return null;
+  return data?.signedUrl ?? null;
+}

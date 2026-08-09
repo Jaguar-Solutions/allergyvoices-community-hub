@@ -17,3 +17,14 @@ verify_jwt = true
 # and re-checks the admin role inside the function.
 [functions.restaurant-notify]
 verify_jwt = true
+
+# Admin-only: generates the improvement report PDF and emails it. Keeps JWT
+# verification and re-checks the admin role inside the function, the same way
+# restaurant-notify does.
+[functions.restaurant-report]
+verify_jwt = true
+
+# Public: records the optional resources a restaurant asks for after
+# submitting. Writes three booleans and nothing else.
+[functions.restaurant-interests]
+verify_jwt = false
