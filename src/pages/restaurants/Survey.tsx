@@ -19,6 +19,7 @@ import { QuestionField } from "@/components/restaurants/QuestionField";
 import { ProgramDisclaimer } from "@/components/restaurants/ProgramDisclaimer";
 import { submitRestaurant } from "@/program/api";
 import { normalizeWebsite } from "@/program/url";
+import { formatPhone, isCompletePhone } from "@/program/phone";
 import { enqueue } from "@/program/offline-queue";
 import { OfflineBanner } from "@/components/restaurants/OfflineBanner";
 import {
@@ -206,7 +207,11 @@ const Survey = () => {
     if (!/^\d{5}(-\d{4})?$/.test(restaurant.postal_code.trim())) {
       next.postal_code = "Please enter a 5-digit ZIP code.";
     }
-    if (!restaurant.phone.trim()) next.phone = "Please enter a phone number.";
+    if (!restaurant.phone.trim()) {
+      next.phone = "Please enter a phone number.";
+    } else if (!isCompletePhone(restaurant.phone)) {
+      next.phone = "Please enter a 10-digit phone number.";
+    }
     if (restaurant.cuisine.length === 0) {
       next.cuisine = "Please choose at least one cuisine so families can find you.";
     }
@@ -500,10 +505,14 @@ const Survey = () => {
                   label="Phone"
                   required
                   type="tel"
+                  placeholder="(919)555-0100"
                   value={draft.restaurant.phone}
-                  onChange={(v) => setRestaurant({ phone: v })}
+                  // Formatted as it is typed, so the number stored and shown
+                  // on a listing looks the same for every restaurant.
+                  onChange={(v) => setRestaurant({ phone: formatPhone(v) })}
                   error={errors.phone}
                   autoComplete="tel"
+                  inputMode="tel"
                 />
                 <TextField
                   id="website"
