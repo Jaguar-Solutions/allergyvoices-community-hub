@@ -30,7 +30,12 @@ interface ImprovementReportProps {
   contact?: RestaurantContact;
   /** False when the restaurant has never submitted the survey. */
   hasSubmission: boolean;
+  /** Survey schema the latest submission was captured under. */
+  submissionSchemaVersion?: number;
 }
+
+/** The survey version the rules engine is written against. */
+const CURRENT_SURVEY_SCHEMA = 2;
 
 const EMAIL_STATUS_LABEL = {
   not_sent: "Not sent",
@@ -55,6 +60,7 @@ export function ImprovementReport({
   restaurantName,
   contact,
   hasSubmission,
+  submissionSchemaVersion,
 }: ImprovementReportProps) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -194,6 +200,26 @@ export function ImprovementReport({
             )}
           </dl>
         )}
+
+        {/* A pre-v2 submission answers questions the rules no longer read, so
+            the report comes out nearly empty. Saying so here is the difference
+            between "the generator is broken" and "there is nothing to report
+            on yet" — and stops a thin PDF being emailed by mistake. */}
+        {hasSubmission &&
+          submissionSchemaVersion !== undefined &&
+          submissionSchemaVersion < CURRENT_SURVEY_SCHEMA && (
+            <div className="rounded-lg border border-brand-sun/40 bg-brand-sun/5 p-3">
+              <p className="font-inter text-sm text-foreground">
+                This restaurant last answered survey version{" "}
+                {submissionSchemaVersion}, before the questions were rewritten.
+              </p>
+              <p className="mt-1 font-inter text-sm text-muted-foreground">
+                Most of its answers no longer map to a rule, so a report will be
+                nearly empty. Ask the restaurant to update its listing before
+                sending one.
+              </p>
+            </div>
+          )}
 
         {!hasSubmission && (
           <p className="font-inter text-sm text-muted-foreground">

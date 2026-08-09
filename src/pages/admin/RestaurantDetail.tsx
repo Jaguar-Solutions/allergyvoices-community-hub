@@ -336,6 +336,7 @@ function RestaurantDetailInner() {
                 restaurantName={restaurant.name}
                 contact={contact}
                 hasSubmission={Boolean(latest)}
+                submissionSchemaVersion={latest?.schema_version}
               />
 
               <Card>
