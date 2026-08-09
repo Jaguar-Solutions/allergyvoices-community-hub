@@ -5,7 +5,7 @@
  *
  * If the RSS URL changes, edit RSS_URL below.
  */
-import { detectAllergens, isoDateOf, stripHtml, writeRecall } from "./shared.js";
+import { daysAgo, detectAllergens, isoDateOf, stripHtml, writeRecall } from "./shared.js";
 import type { RecallDraft } from "./shared.js";
 
 /**
@@ -23,6 +23,31 @@ import type { RecallDraft } from "./shared.js";
  * Docs: https://www.fsis.usda.gov/science-data/developer-resources/recall-api
  */
 const API_URL = "https://www.fsis.usda.gov/fsis/api/recall/v/1";
+
+/**
+ * How far back to accept records.
+ *
+ * The API returns its entire archive — the first unbounded run wrote 862
+ * drafts going back to 2020. Matches the openFDA ingester's window so the
+ * two sources stay in step, with headroom for a few days of failed runs.
+ */
+const LOOKBACK_DAYS = 21;
+
+/**
+ * Read-only relay used when the direct request is refused.
+ *
+ * FSIS sits behind Akamai, which 403s datacenter IP ranges — GitHub Actions
+ * runners included, and browser-like headers do not help, so the block is
+ * almost certainly TLS fingerprinting rather than User-Agent. The data is
+ * public and unauthenticated, and the relay only fetches and returns it.
+ *
+ * This is a dependency on a third party for food-safety data, which is worth
+ * removing: ask FSIS to allow-list a source, or run this job somewhere with a
+ * residential egress. Until then the alternative is no FSIS alerts at all,
+ * which is worse. Set FSIS_PROXY="" to disable and fail instead.
+ */
+const PROXY_PREFIX =
+  process.env.FSIS_PROXY ?? "https://r.jina.ai/";
 
 interface FsisRecall {
   field_title?: string;
@@ -74,6 +99,45 @@ function classify(item: FsisRecall): RecallDraft["recall_class"] {
   return "unspecified";
 }
 
+/** Direct first; relay only if the direct call is refused. */
+async function fetchRecalls(): Promise<FsisRecall[]> {
+  const headers = {
+    "User-Agent": "AllergyVoices-Ingest/1.0 (+https://allergyvoices.com)",
+    Accept: "application/json",
+  };
+
+  const direct = await fetch(API_URL, { headers }).catch(() => null);
+  if (direct?.ok) return (await direct.json()) as FsisRecall[];
+
+  if (!PROXY_PREFIX) {
+    throw new Error(`HTTP ${direct?.status ?? "network error"} (relay disabled)`);
+  }
+
+  console.warn(
+    `[fsis] Direct request refused (HTTP ${direct?.status ?? "?"}); retrying via relay.`,
+  );
+  // Deliberately no Accept header: sending "application/json" makes the relay
+  // answer with its own envelope instead of the upstream body. Both shapes are
+  // handled anyway, so a change at their end degrades rather than breaks.
+  const relayed = await fetch(`${PROXY_PREFIX}${API_URL}`, {
+    headers: {
+      "User-Agent": headers["User-Agent"],
+      "x-return-format": "text",
+    },
+  });
+  if (!relayed.ok) throw new Error(`relay HTTP ${relayed.status}`);
+
+  const body = (await relayed.text()).trim();
+  const parsed: unknown = JSON.parse(body);
+
+  // Upstream array, or the relay's { data: { text } } envelope around it.
+  if (Array.isArray(parsed)) return parsed as FsisRecall[];
+  const inner = (parsed as { data?: { text?: string; content?: string } })?.data;
+  const payload = inner?.text ?? inner?.content;
+  if (!payload) throw new Error("relay returned an unexpected body");
+  return JSON.parse(payload) as FsisRecall[];
+}
+
 function toDraft(item: FsisRecall): RecallDraft | null {
   const title = (item.field_title ?? "").trim();
   const reason = (item.field_recall_reason ?? []).join(", ");
@@ -85,6 +149,9 @@ function toDraft(item: FsisRecall): RecallDraft | null {
 
   const recallDate = isoDateOf(item.field_recall_date ?? item.field_last_modified_date);
   if (!recallDate) return null;
+
+  // The archive goes back years; only recent records are news.
+  if (recallDate < daysAgo(LOOKBACK_DAYS).toISOString().slice(0, 10)) return null;
 
   return {
     product_name: extractProductName(item) || "FSIS recall",
@@ -103,14 +170,7 @@ function toDraft(item: FsisRecall): RecallDraft | null {
 async function main() {
   let items: FsisRecall[];
   try {
-    const response = await fetch(API_URL, {
-      headers: {
-        "User-Agent": "AllergyVoices-Ingest/1.0 (+https://allergyvoices.com)",
-        Accept: "application/json",
-      },
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    items = (await response.json()) as FsisRecall[];
+    items = await fetchRecalls();
   } catch (err) {
     console.error(`[fsis] API fetch failed for ${API_URL}`);
     console.error(err instanceof Error ? err.message : err);
