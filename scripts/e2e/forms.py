@@ -76,40 +76,97 @@ with sync_playwright() as p:
     v2 = phone.input_value()
     check("survey", v2 == "(919)555-0100", f"phone normalises punctuation (got '{v2}')")
 
-    # required-field validation
-    pg.get_by_role("button", name="Submit").click(); pg.wait_for_timeout(700)
+    # The survey is a five-step wizard: validation is per step, Submit exists
+    # only on the last one, and later questions are not in the DOM path until
+    # their step is reached.
+    pg.get_by_role("button", name="Continue").click()
+    pg.wait_for_timeout(700)
     summary = pg.locator('[role="alert"]').first
     has_summary = summary.count() > 0
-    check("survey", has_summary, "submit with empty form surfaces an error summary")
-    if has_summary:
-        txt = summary.inner_text()
-        focused = pg.evaluate("() => document.activeElement?.getAttribute('role')")
-        check("survey", focused == "alert", f"focus moves to the error summary (activeElement role={focused})")
+    check("survey", has_summary, "Continue on an empty step surfaces an error summary")
+    check("survey", "Step 1 of 5" in pg.inner_text("body"),
+          "an invalid step does not advance")
+    check("survey", pg.get_by_role("button", name="Submit").count() == 0,
+          "no Submit button before the final step")
 
-    # conditional questions
-    pg.get_by_label("Dedicated fryer is available").check(); pg.wait_for_timeout(400)
-    check("survey", pg.get_by_text("Do you have a fryer that is not shared", exact=False).count() > 0,
-          "fryer follow-up appears when the box is ticked")
-    pg.get_by_label("Depends on the allergen").check(); pg.wait_for_timeout(400)
-    check("survey", pg.get_by_text("Which allergens does that apply to?", exact=False).count() > 0,
-          "fryer allergen question appears")
-    pg.get_by_label("Dedicated fryer is available").uncheck(); pg.wait_for_timeout(400)
-    check("survey", pg.get_by_text("Do you have a fryer that is not shared", exact=False).count() == 0,
-          "fryer follow-up disappears when unticked")
+    # Fill step 1 and advance.
+    for sel, val in [("#name", "E2E Test Kitchen"), ("#address_line1", "1 Test Way"),
+                     ("#city", "Durham"), ("#postal_code", "27701"),
+                     ("#phone", "9195550100"), ("#manager_name", "Test Person"),
+                     ("#manager_email", "test@example.com")]:
+        pg.locator(sel).fill(val)
+    pg.locator("#state").click()
+    pg.wait_for_timeout(300)
+    pg.get_by_role("option", name="North Carolina").click()
+    pg.wait_for_timeout(300)
+    pg.get_by_label("Italian", exact=True).check()
 
-    # training conditional
-    pg.get_by_label("Yes — servers and kitchen staff").check(); pg.wait_for_timeout(400)
-    check("survey", pg.get_by_text("What type of allergy training is used?", exact=False).count() > 0,
+    pg.get_by_role("button", name="Continue").click()
+    pg.wait_for_timeout(800)
+    check("survey", "Step 2 of 5" in pg.inner_text("body"), "a valid step advances")
+    check("survey", pg.get_by_role("button", name="Back").count() > 0,
+          "Back is offered after step 1")
+
+    focused = pg.evaluate("() => document.activeElement?.textContent?.slice(0, 40)")
+    check("survey", focused == "Allergy practices",
+          f"focus moves to the new step heading (got {focused!r})")
+
+    # Conditional questions, on their own steps.
+    pg.get_by_label("Yes — servers and kitchen staff").check()
+    pg.wait_for_timeout(400)
+    check("survey",
+          pg.get_by_text("What type of allergy training is used?", exact=False).count() > 0,
           "training-type follow-up appears")
 
-    # autosave + restore
-    pg.locator("#name").fill("Autosave Test Kitchen")
-    pg.wait_for_timeout(1400)
-    pg.reload(); pg.wait_for_load_state("networkidle"); pg.wait_for_timeout(1200)
-    restored = pg.locator("#name").input_value()
-    check("survey", restored == "Autosave Test Kitchen", f"draft restores after reload (got '{restored}')")
+    # Step 2 has four required questions; answering one and expecting to
+    # advance was a bug in this test, not in the form.
+    pg.get_by_label("Yes — documented process").check()
+    pg.get_by_label("Yes — ingredient/allergen information is documented").check()
+    pg.get_by_label("Most items").check()
+    pg.wait_for_timeout(300)
+
+    pg.get_by_role("button", name="Continue").click()
+    pg.wait_for_timeout(800)
+    check("survey", "Step 3 of 5" in pg.inner_text("body"), "advances to cross-contact")
+
+    pg.get_by_label("Dedicated fryer is available").check()
+    pg.wait_for_timeout(400)
+    check("survey",
+          pg.get_by_text("Do you have a fryer that is not shared", exact=False).count() > 0,
+          "fryer follow-up appears when the box is ticked")
+    pg.get_by_label("Dedicated fryer is available").uncheck()
+    pg.wait_for_timeout(400)
+    check("survey",
+          pg.get_by_text("Do you have a fryer that is not shared", exact=False).count() == 0,
+          "fryer follow-up disappears when unticked")
+
+    # Back preserves what was typed.
+    pg.get_by_role("button", name="Back").click()
+    pg.wait_for_timeout(700)
+    pg.get_by_role("button", name="Back").click()
+    pg.wait_for_timeout(700)
+    check("survey", pg.locator("#name").input_value() == "E2E Test Kitchen",
+          "Back preserves earlier answers")
+
+    # Submit only on the final step.
+    for _ in range(5):
+        if pg.get_by_role("button", name="Continue").count() == 0:
+            break
+        pg.get_by_role("button", name="Continue").click()
+        pg.wait_for_timeout(700)
+    check("survey", "Step 5 of 5" in pg.inner_text("body"), "reaches the final step")
+    check("survey", pg.get_by_role("button", name="Submit").count() == 1,
+          "Submit appears only on the final step")
+
+    # Draft and step both survive a reload.
+    pg.wait_for_timeout(1300)
+    pg.reload()
+    pg.wait_for_load_state("networkidle")
+    pg.wait_for_timeout(1500)
+    check("survey", "Step 5 of 5" in pg.inner_text("body"), "reload restores the step")
     if pg.get_by_role("button", name="Start over").count():
-        pg.get_by_role("button", name="Start over").click(); pg.wait_for_timeout(500)
+        pg.get_by_role("button", name="Start over").click()
+        pg.wait_for_timeout(600)
         check("survey", pg.locator("#name").input_value() == "", "Start over clears the draft")
 
     # ------------------------------------------------------------ city form

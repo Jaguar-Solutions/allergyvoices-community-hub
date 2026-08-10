@@ -387,6 +387,25 @@ export const SURVEY_SECTIONS: SurveySection[] = [
       "Two different things: the restaurant and practice information above, which is what we would publish, and your contact details, which we never publish.",
     questions: [
       {
+        /**
+         * Scope of the submission. Not a public facet: it tells us how to
+         * handle the record, not something a family needs on a listing.
+         *
+         * No migration — answers are jsonb, so a new question costs nothing.
+         * A group answering for many locations needs a different conversation
+         * about how those listings are created, which is a follow-up.
+         */
+        id: "location_scope",
+        type: "single",
+        label: "Is this submission for one location or multiple locations?",
+        help: "If you're answering for more than one location, we'll get in touch about how best to list them.",
+        options: [
+          { value: "one", label: "One location" },
+          { value: "multiple", label: "Multiple locations" },
+          { value: "group", label: "Restaurant group or chain" },
+        ],
+      },
+      {
         id: "publish_consent",
         type: "single",
         label:

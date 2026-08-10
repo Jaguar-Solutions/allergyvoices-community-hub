@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Loader2, Save } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Save } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import { Container, PageHeader, PageLayout, Section } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -62,7 +62,37 @@ interface DraftState {
   restaurant: RestaurantFields;
   contact: ContactFields;
   answers: Answers;
+  /** Which step the restaurant was on. Restored with the answers. */
+  step?: number;
 }
+
+/** Step 0 is restaurant identity; the rest are the survey's own sections. */
+const TOTAL_STEPS = 1 + SURVEY_SECTIONS.length;
+
+/**
+ * Identity fields validated on step 0.
+ *
+ * Kept beside the survey questions rather than inside `validate()` so a step
+ * can be checked on its own — the whole point of a wizard is not being told
+ * about a mistake four screens away.
+ */
+/** Shown beside the progress bar. */
+const STEP_TITLES = [
+  "Restaurant information",
+  ...SURVEY_SECTIONS.map((section) => section.title),
+];
+
+const STEP_ZERO_FIELDS = [
+  "name",
+  "address_line1",
+  "city",
+  "state",
+  "postal_code",
+  "phone",
+  "cuisine",
+  "manager_name",
+  "manager_email",
+] as const;
 
 const EMPTY_DRAFT: DraftState = {
   restaurant: {
@@ -90,6 +120,10 @@ function loadDraft(): { draft: DraftState; restored: boolean } {
         restaurant: { ...EMPTY_DRAFT.restaurant, ...parsed.restaurant },
         contact: { ...EMPTY_DRAFT.contact, ...parsed.contact },
         answers: parsed.answers ?? {},
+        // Carried through explicitly: this function rebuilds the draft field
+        // by field, so anything not named here is silently dropped — which is
+        // how the restored step came back as "start again from the top".
+        step: parsed.step,
       },
       restored: true,
     };
@@ -142,6 +176,10 @@ const Survey = () => {
   }, []);
 
   const [draft, setDraft] = useState<DraftState>(initial.draft);
+  const [step, setStep] = useState<number>(
+    Math.min(Math.max(initial.draft.step ?? 0, 0), TOTAL_STEPS - 1),
+  );
+  const stepHeadingRef = useRef<HTMLSpanElement>(null);
   const [draftRestored, setDraftRestored] = useState(initial.restored);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -164,14 +202,14 @@ const Survey = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       try {
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+        localStorage.setItem(DRAFT_KEY, JSON.stringify({ ...draft, step }));
         setSavedAt(new Date());
       } catch {
         // A full or disabled localStorage shouldn't break the form.
       }
     }, 800);
     return () => clearTimeout(timer);
-  }, [draft]);
+  }, [draft, step]);
 
   const setRestaurant = (fields: Partial<RestaurantFields>) =>
     setDraft((d) => ({ ...d, restaurant: { ...d.restaurant, ...fields } }));
@@ -235,15 +273,76 @@ const Survey = () => {
     return next;
   }
 
+  /** The field names a given step is responsible for. */
+  function fieldsForStep(index: number): string[] {
+    if (index === 0) return [...STEP_ZERO_FIELDS];
+    return (SURVEY_SECTIONS[index - 1]?.questions ?? []).map((q) => q.id);
+  }
+
+  /**
+   * Errors belonging to one step.
+   *
+   * Reuses the whole-form validator rather than duplicating its rules, so a
+   * step check and the final submit check can never disagree — which is the
+   * failure mode that makes a wizard let someone through and then reject them
+   * at the end.
+   */
+  function validateStep(index: number): Record<string, string> {
+    const all = validate();
+    const mine = new Set(fieldsForStep(index));
+    return Object.fromEntries(Object.entries(all).filter(([k]) => mine.has(k)));
+  }
+
+  const goToStep = (next: number) => {
+    setStep(next);
+    setErrors({});
+    // Focus the new step's heading so a keyboard or screen-reader user is told
+    // where they landed instead of being left at the bottom of the page.
+    requestAnimationFrame(() => {
+      stepHeadingRef.current?.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  };
+
+  const handleContinue = () => {
+    const found = validateStep(step);
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      requestAnimationFrame(() => {
+        errorSummaryRef.current?.focus();
+        focusField(Object.keys(found)[0]);
+      });
+      return;
+    }
+    goToStep(Math.min(step + 1, TOTAL_STEPS - 1));
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    // Enter in a text field submits the form. On any step but the last that
+    // should advance, not send a half-finished survey.
+    if (step < TOTAL_STEPS - 1) {
+      handleContinue();
+      return;
+    }
+
     const found = validate();
     setErrors(found);
 
     if (Object.keys(found).length > 0) {
-      // Send focus to the summary so keyboard and screen reader users land on
-      // the problem instead of hunting for red text.
-      requestAnimationFrame(() => errorSummaryRef.current?.focus());
+      // A wizard can hide the offending field on another step, so jump to the
+      // first step that has a problem before pointing at it. Being told
+      // something is wrong with no way to see it is worse than a long form.
+      const firstBadStep = Array.from({ length: TOTAL_STEPS }, (_, i) => i).find((i) =>
+        fieldsForStep(i).some((f) => f in found),
+      );
+      if (firstBadStep !== undefined && firstBadStep !== step) setStep(firstBadStep);
+
+      requestAnimationFrame(() => {
+        errorSummaryRef.current?.focus();
+        focusField(Object.keys(found)[0]);
+      });
       return;
     }
 
@@ -402,6 +501,34 @@ const Survey = () => {
             apply to you.
           </p>
 
+          {/* Progress. A bare "Step 2 of 5" tells someone how far they are but
+              not how much is left in feel; the bar does that at a glance, and
+              the list names what is coming so the end is visible from the
+              start. */}
+          <nav aria-label="Survey progress" className="mb-8">
+            <div className="flex items-baseline justify-between gap-3">
+              <p className="font-inter text-sm font-medium text-primary">
+                Step {step + 1} of {TOTAL_STEPS}
+              </p>
+              <p className="font-inter text-sm text-muted-foreground">
+                {STEP_TITLES[step]}
+              </p>
+            </div>
+            <div
+              className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted"
+              role="progressbar"
+              aria-valuenow={step + 1}
+              aria-valuemin={1}
+              aria-valuemax={TOTAL_STEPS}
+              aria-label={`Step ${step + 1} of ${TOTAL_STEPS}: ${STEP_TITLES[step]}`}
+            >
+              <div
+                className="h-full rounded-full bg-primary transition-all duration-300"
+                style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }}
+              />
+            </div>
+          </nav>
+
           <form onSubmit={handleSubmit} noValidate className="space-y-12">
             {/* Honeypot: hidden from humans, irresistible to bots. */}
             <div className="sr-only" aria-hidden="true">
@@ -417,8 +544,12 @@ const Survey = () => {
               />
             </div>
 
-            <fieldset className="space-y-6">
-              <SectionHeading step={1} title="Restaurant information" />
+            <fieldset className={step === 0 ? "space-y-6" : "hidden"} aria-hidden={step !== 0}>
+              <SectionHeading
+                headingRef={stepHeadingRef}
+                step={1}
+                title="Restaurant information"
+              />
 
               <TextField
                 id="name"
@@ -499,10 +630,15 @@ const Survey = () => {
                 />
               </div>
 
+              <p className="font-inter text-sm text-muted-foreground">
+                This is the number guests call — not the private contact number
+                below.
+              </p>
+
               <div className="grid gap-6 sm:grid-cols-2">
                 <TextField
                   id="phone"
-                  label="Phone"
+                  label="Public phone number"
                   required
                   type="tel"
                   placeholder="(919)555-0100"
@@ -561,7 +697,7 @@ const Survey = () => {
               </fieldset>
             </fieldset>
 
-            <fieldset className="space-y-6">
+            <fieldset className={step === 0 ? "space-y-6" : "hidden"} aria-hidden={step !== 0}>
               <legend className="font-poppins text-lg font-bold text-foreground">
                 Who we should talk to
               </legend>
@@ -601,8 +737,18 @@ const Survey = () => {
             </fieldset>
 
             {SURVEY_SECTIONS.map((section, index) => (
-              <fieldset key={section.id} className="space-y-8">
-                <SectionHeading step={index + 2} title={section.title} />
+              <fieldset
+                key={section.id}
+                // Hidden rather than unmounted: React would otherwise discard
+                // the inputs, and the draft is only flushed on a debounce.
+                className={step === index + 1 ? "space-y-8" : "hidden"}
+                aria-hidden={step !== index + 1}
+              >
+                <SectionHeading
+                  headingRef={step === index + 1 ? stepHeadingRef : undefined}
+                  step={index + 2}
+                  title={section.title}
+                />
                 {section.intro && (
                   <p className="font-inter leading-relaxed text-muted-foreground">
                     {section.intro}
@@ -634,12 +780,36 @@ const Survey = () => {
                   ? `Answers saved to this device at ${savedAt.toLocaleTimeString()}`
                   : "Your answers save automatically as you type"}
               </p>
-              <Button type="submit" size="lg" disabled={submitting}>
-                {submitting && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+              {/* Submit exists only on the final step. A submit button visible
+                  on step 2 invites someone to send a half-finished survey and
+                  then be told about four screens of problems at once. */}
+              <div className="flex flex-wrap items-center gap-3">
+                {step > 0 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    onClick={() => goToStep(step - 1)}
+                  >
+                    <ChevronLeft className="mr-1 h-4 w-4" aria-hidden="true" />
+                    Back
+                  </Button>
                 )}
-                {submitting ? "Submitting…" : "Submit"}
-              </Button>
+
+                {step < TOTAL_STEPS - 1 ? (
+                  <Button type="button" size="lg" onClick={handleContinue}>
+                    Continue
+                    <ChevronRight className="ml-1 h-4 w-4" aria-hidden="true" />
+                  </Button>
+                ) : (
+                  <Button type="submit" size="lg" disabled={submitting}>
+                    {submitting && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+                    )}
+                    {submitting ? "Submitting…" : "Submit"}
+                  </Button>
+                )}
+              </div>
             </div>
           </form>
         </Container>
@@ -649,25 +819,32 @@ const Survey = () => {
 };
 
 /**
- * The restaurant-information step plus the survey's own sections.
+ * The heading above the current step.
  *
  * Contact details are part of step 1, not a step of their own — they are two
  * halves of "who you are", and splitting them made a four-section survey
  * announce itself as six.
  */
-const TOTAL_STEPS = 1 + SURVEY_SECTIONS.length;
-
-/**
- * A "Step 3 of 6" label above each group. The form is long, and without any
- * sense of progress people abandon it partway.
- */
-function SectionHeading({ step, title }: { step: number; title: string }) {
+function SectionHeading({
+  step,
+  title,
+  headingRef,
+}: {
+  step: number;
+  title: string;
+  /** Focused on step change so keyboard users are told where they landed. */
+  headingRef?: React.Ref<HTMLSpanElement>;
+}) {
   return (
     <legend className="space-y-1">
       <span className="block font-inter text-sm font-medium uppercase tracking-wide text-primary">
         Step {step} of {TOTAL_STEPS}
       </span>
-      <span className="block font-poppins text-xl font-bold text-foreground">
+      <span
+        ref={headingRef}
+        tabIndex={-1}
+        className="block font-poppins text-xl font-bold text-foreground focus-visible:outline-none"
+      >
         {title}
       </span>
     </legend>

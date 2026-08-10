@@ -42,7 +42,7 @@ const HOW_IT_WORKS = [
   {
     step: "1",
     title: "Complete the survey",
-    body: "About 5–7 minutes on how your restaurant handles allergy requests today. Every question is optional except the basics, and there are no wrong answers.",
+    body: "About 5–7 minutes on how your restaurant handles allergy requests today. Required questions are clearly marked. Everything else is optional, and there are no wrong answers.",
   },
   {
     step: "2",
