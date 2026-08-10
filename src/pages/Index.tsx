@@ -20,6 +20,8 @@ import {
 } from "@/components/layout";
 import FoodAllergyInfographics from "@/components/FoodAllergyInfographics";
 import NewsFeed from "@/components/NewsFeed";
+import { ResourceCard } from "@/components/content/ResourceCard";
+import { getPublishedResources } from "@/content/loader";
 import { SurveyInvitation } from "@/components/restaurants/SurveyInvitation";
 import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
@@ -63,6 +65,24 @@ const QUICK_LINKS = [
     tint: "bg-brand-cyan/15 text-brand-cyan",
   },
 ];
+
+/**
+ * Four published guides for the homepage.
+ *
+ * Selected by slug from what is actually published, so a guide that is
+ * unpublished or renamed drops out of the homepage rather than 404ing from
+ * it.
+ */
+const FEATURED_SLUGS = [
+  "newly-diagnosed",
+  "dining-out-script",
+  "school-forms-checklists",
+  "travel-checklist",
+];
+
+const FEATURED_RESOURCES = FEATURED_SLUGS
+  .map((slug) => getPublishedResources().find((r) => r.slug === slug))
+  .filter((r): r is NonNullable<typeof r> => Boolean(r));
 
 const Index = () => {
   const [email, setEmail] = useState("");
@@ -280,48 +300,79 @@ const Index = () => {
               <p className="font-inter text-sm font-medium uppercase tracking-wide text-primary">
                 Latest updates
               </p>
+              {/* Named for what it actually contains. The heading used to say
+                  "What's new in food allergy" above a list of Allergic Living
+                  stories, beside a link to "All findings" — which are our own
+                  source-based summaries, not these. Two different things
+                  under one label. */}
               <h2 className="font-poppins font-bold text-2xl md:text-3xl text-foreground mt-1">
-                What's new in food allergy
+                News from trusted sources
               </h2>
+              <p className="mt-2 max-w-2xl font-inter text-sm leading-relaxed text-muted-foreground">
+                Reporting from Allergic Living. These open on their site —
+                they aren't written or reviewed by AllergyVoices.
+              </p>
             </div>
-            <Link
-              to="/findings"
-              className="hidden sm:inline-flex items-center gap-1 font-inter text-sm font-medium text-primary hover:underline"
-            >
-              All findings <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </Link>
           </div>
           <NewsFeed />
+
+          {/* Our own writing, kept distinct and pointed at deliberately.
+              External reporting is more frequent and stays at the top for
+              freshness; this is the shorter, slower shelf beside it. */}
+          <div className="mt-10 rounded-2xl border border-border bg-background p-5 md:p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <h3 className="font-poppins text-lg font-bold text-foreground">
+                  AllergyVoices findings
+                </h3>
+                <p className="mt-1 font-inter text-sm leading-relaxed text-muted-foreground">
+                  Plain-language summaries of published research and regulatory
+                  decisions, each linking to its original source.
+                </p>
+              </div>
+              <Button asChild variant="outline" className="shrink-0">
+                <Link to="/findings">
+                  Read the findings
+                  <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
+                </Link>
+              </Button>
+            </div>
+          </div>
         </Container>
       </Section>
 
-      {/* Featured tools placeholder */}
+      {/* Was a "Coming soon" panel promising printable chef cards,
+          school-form templates, a birthday-party game plan and a travel
+          checklist. Three of those four have been published for a while, so
+          the panel was advertising work already done as though it were not —
+          and asking people to subscribe to wait for it. These are the real
+          ones. */}
       <Section>
         <Container width="wide">
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-brand-cyan/5 via-background to-brand-coral/5 p-8 md:p-10">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand-sun/10 blur-3xl"
-            />
-            <div className="relative flex items-start gap-4">
-              <div className="rounded-xl bg-brand-sun/20 p-2.5">
-                <BookOpen className="w-6 h-6 text-amber-700" aria-hidden="true" />
-              </div>
-              <div>
-                <p className="font-inter text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Coming soon
-                </p>
-                <h2 className="font-poppins font-semibold text-xl md:text-2xl text-foreground mt-1">
-                  Featured tools & checklists
-                </h2>
-                <p className="font-inter text-sm md:text-base text-muted-foreground mt-2 max-w-2xl leading-relaxed">
-                  Printable chef cards, school-form templates, a birthday-party
-                  game plan, and a travel checklist. Subscribe below to get
-                  them as they're published.
-                </p>
-              </div>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <div>
+              <p className="font-inter text-sm font-medium uppercase tracking-wide text-primary">
+                Practical tools
+              </p>
+              <h2 className="mt-1 font-poppins text-2xl font-bold text-foreground md:text-3xl">
+                Guides and checklists you can use today
+              </h2>
             </div>
+            <Link
+              to="/resources"
+              className="hidden items-center gap-1 font-inter text-sm font-medium text-primary hover:underline sm:inline-flex"
+            >
+              All resources <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
           </div>
+
+          <ul className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {FEATURED_RESOURCES.map((resource) => (
+              <li key={resource.slug} className="min-w-0">
+                <ResourceCard resource={resource} />
+              </li>
+            ))}
+          </ul>
         </Container>
       </Section>
 
