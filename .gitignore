@@ -52,3 +52,6 @@ legacy-supabase-export
 # Scratch area. Holds a build zip and recovered git lock files; nothing here
 # should ever reach a commit.
 _to_delete/
+
+# Screenshots written by npm run test:e2e
+.e2e-screenshots/

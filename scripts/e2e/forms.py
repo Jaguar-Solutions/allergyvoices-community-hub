@@ -22,10 +22,17 @@ would have added redundant aria-labels that make a screen reader announce
 things twice. If you extend this file, keep name computation in the browser.
 """
 
+import os
+import pathlib
 import sys
 from playwright.sync_api import sync_playwright
 
 B = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:4173"
+
+# Screenshots land in a gitignored directory rather than the repo root, where
+# an earlier version left four PNGs sitting in `git status`.
+SHOTS = pathlib.Path(os.environ.get("E2E_SHOT_DIR", ".e2e-screenshots"))
+SHOTS.mkdir(exist_ok=True)
 issues = []
 console = []
 
@@ -261,7 +268,7 @@ with sync_playwright() as p:
             note("mobile", f"{path}: horizontal overflow")
         else:
             print(f"  ok     {path}: no horizontal overflow")
-        m.screenshot(path=f"e2e-{shot}.png", full_page=False)
+        m.screenshot(path=str(SHOTS / f"{shot}.png"), full_page=False)
 
     print("\n=== CONSOLE ERRORS ===")
     real = [c for c in console if "ERR_CONNECTION_REFUSED" not in c and "favicon" not in c]
