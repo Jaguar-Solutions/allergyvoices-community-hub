@@ -24,7 +24,7 @@ interface Doc {
   slug: string;
   title: string;
   intro: string;
-  sections: { heading: string; body: string[] }[];
+  sections: { heading: string; body: string[]; anchor?: string }[];
 }
 
 const DOCS: Doc[] = [
@@ -65,7 +65,6 @@ const DOCS: Doc[] = [
         heading: "How long we keep it",
         body: [
           "Restaurant submissions are kept as a version history so a listing can be corrected and audited. Newsletter addresses are kept until you unsubscribe. City and ambassador requests are kept while we are still working through expansion in that area.",
-          "*[For review: we do not currently run an automatic deletion job. These are intentions, not commitments, and should either become commitments backed by a scheduled task or be reworded.]*",
         ],
       },
       {
@@ -89,7 +88,8 @@ const DOCS: Doc[] = [
     intro: "The basis on which this site is offered.",
     sections: [
       {
-        heading: "Educational information only",
+        anchor: "medical-disclaimer",
+        heading: "Medical disclaimer",
         body: [
           "Everything here is general educational information. It is not medical advice, and it is not a substitute for care from a qualified clinician who knows your situation. Decisions about your own allergy belong with your allergist.",
           "In an emergency, use your prescribed epinephrine and seek urgent medical care.",
@@ -118,7 +118,6 @@ const DOCS: Doc[] = [
         heading: "Liability",
         body: [
           "AllergyVoices is provided as-is, without warranties. To the fullest extent permitted by law, we are not liable for decisions made on the basis of information published here.",
-          "*[For review: a lawyer should set the limitation-of-liability and governing-law language appropriate to the entity and state.]*",
         ],
       },
     ],
@@ -227,15 +226,17 @@ const Policies = () => {
             Last updated {UPDATED}
           </p>
 
+          {/* Open questions live in docs/legal-review-items.md, not in the
+              public copy — a policy page reading like a work order undermines
+              the thing it is trying to establish. */}
           <Disclaimer kind="info" title="Draft pending legal review" className="mt-4">
-            These policies describe how AllergyVoices actually works today, but
-            they have not been reviewed by a lawyer. Passages needing a
-            reviewer&rsquo;s decision are marked in the text.
+            This policy describes how AllergyVoices currently operates and will
+            be updated following legal review.
           </Disclaimer>
 
           <div className="mt-10 space-y-10">
             {doc.sections.map((section) => (
-              <section key={section.heading}>
+              <section key={section.heading} id={section.anchor} className={section.anchor ? "scroll-mt-24" : undefined}>
                 <h2 className="font-poppins text-xl font-bold text-foreground">
                   {section.heading}
                 </h2>

@@ -2,7 +2,14 @@
 
 User-agent: *
 Allow: /
+
+# Admin and auth surfaces.
 Disallow: /admin
 Disallow: /auth
+
+# Post-submission and offline-collection screens. Nothing to index, and a
+# confirmation page in search results is confusing to land on.
+Disallow: /restaurants/submitted
+Disallow: /restaurants/field
 
 Sitemap: https://allergyvoices.com/sitemap.xml

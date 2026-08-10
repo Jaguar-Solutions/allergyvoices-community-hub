@@ -7,7 +7,12 @@
  * recalls and allergy alerts together at the recalls-rappels.canada.ca subdomain.
  */
 import Parser from "rss-parser";
-import { detectAllergens, isoDateOf, stripHtml, writeRecall } from "./shared.js";
+import {
+  detectAllergensInReason,
+  isoDateOf,
+  stripHtml,
+  writeRecall,
+} from "./shared.js";
 import type { RecallDraft } from "./shared.js";
 
 const RSS_URL = "https://recalls-rappels.canada.ca/en/feed/cfia-alerts-recalls";
@@ -52,9 +57,10 @@ function extractRecallNumber(item: RssItem): string | undefined {
 function toDraft(item: RssItem): RecallDraft | null {
   const title = (item.title ?? "").trim();
   const body = stripHtml((item.content ?? item.contentSnippet ?? "").toString());
-  const haystack = `${title} ${body}`;
-
-  const allergens = detectAllergens(haystack);
+  // CFIA states the reason in the title ("... recalled due to undeclared
+  // milk"). The body carries agency boilerplate and ingredient lists, which
+  // is exactly the text that must not decide the tag.
+  const allergens = detectAllergensInReason(title, "");
   if (allergens.length === 0) return null;
 
   const recallDate = isoDateOf(item.pubDate);

@@ -19,7 +19,7 @@ export const LAUNCH_REGION = {
   state: "North Carolina",
   stateCode: "NC",
   /** Named communities, in the order they should be listed. */
-  cities: ["Raleigh", "Cary", "Durham"],
+  cities: ["Raleigh", "Cary", "Durham", "Chapel Hill"],
 } as const;
 
 /** "Raleigh, Cary, Durham and surrounding communities" */

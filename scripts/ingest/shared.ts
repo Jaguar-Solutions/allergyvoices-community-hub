@@ -39,12 +39,14 @@ const ALLERGEN_PATTERNS: AllergenPattern[] = [
   {
     allergen: "tree-nuts",
     pattern:
-      /\b(tree[ -]?nuts?|almond|cashew|walnut|pecan|hazelnut|filbert|pistachio|brazil[ -]?nut|macadamia|chestnut|pine[ -]?nut|coconut)\b/i,
+      // Plurals matter: recall text says "pecans, pistachios", and a pattern
+      // without the optional s silently tagged only the milk beside them.
+      /\b(tree[ -]?nuts?|almonds?|cashews?|walnuts?|pecans?|hazelnuts?|filberts?|pistachios?|brazil[ -]?nuts?|macadamias?|chestnuts?|pine[ -]?nuts?|coconuts?)\b/i,
   },
   { allergen: "peanut", pattern: /\bpeanuts?\b/i },
   { allergen: "milk", pattern: /\b(milk|dairy|casein|whey|lactose|cream|butter|cheese)\b/i },
-  { allergen: "egg", pattern: /\beggs?|albumin\b/i },
-  { allergen: "sesame", pattern: /\b(sesame|tahini|benne)\b/i },
+  { allergen: "egg", pattern: /\b(eggs?|albumin)\b/i },
+  { allergen: "sesame", pattern: /\b(sesames?|sesame seeds?|tahini|benne)\b/i },
   { allergen: "wheat", pattern: /\b(wheat|gluten|spelt|farro|durum|semolina)\b/i },
   { allergen: "soy", pattern: /\b(soy|soya|soybean|edamame|tofu)\b/i },
 ];
@@ -53,6 +55,43 @@ const ALLERGEN_PATTERNS: AllergenPattern[] = [
  * Extract Top-9 allergens mentioned in free text. Returns deduped list.
  * Conservative: only matches when the text says "undeclared X" or just names X.
  */
+/**
+ * Wording that marks a recall as allergen-related.
+ *
+ * Matched against the agency's stated *reason*, never the page body. FSIS
+ * describes itself on every notice as responsible for "meat, poultry, or egg
+ * product" safety, so searching the whole notice tagged every FSIS recall —
+ * Listeria, import violations, all of it — as an egg allergen recall.
+ */
+const ALLERGEN_REASON =
+  /\b(undeclared|unreported|mislabel(?:ed|ing)?|misbrand(?:ed|ing)?|allergens?|allerg(?:y|ies|ic)|intolerance|not declared|fail(?:ure|ed) to declare|cross[- ]?contact|labell?ed as|incorrectl?y? labell?ed|wrong label|declar(?:es|ed|ation))\b/i;
+
+/**
+ * Whether the agency says this recall is about an allergen.
+ *
+ * Deliberately a whitelist on the reason rather than a blacklist of
+ * contaminants: a new contaminant we have not thought of should default to
+ * exclusion, not to appearing on a page families read for allergen risk.
+ */
+export function isAllergenRecall(reason: string): boolean {
+  return ALLERGEN_REASON.test(reason ?? "");
+}
+
+/**
+ * Allergens named in the recall reason.
+ *
+ * Scope is the point: pass the stated reason and the product name, never the
+ * full notice. An allergen mentioned in boilerplate, an ingredient list, or a
+ * consumer-advice paragraph is not what was recalled.
+ */
+export function detectAllergensInReason(
+  reason: string,
+  productName = "",
+): Allergen[] {
+  if (!isAllergenRecall(reason)) return [];
+  return detectAllergens(`${reason} ${productName}`);
+}
+
 export function detectAllergens(text: string): Allergen[] {
   const found = new Set<Allergen>();
   for (const { allergen, pattern } of ALLERGEN_PATTERNS) {

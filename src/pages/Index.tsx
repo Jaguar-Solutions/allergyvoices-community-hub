@@ -26,6 +26,8 @@ import { SurveyInvitation } from "@/components/restaurants/SurveyInvitation";
 import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { LAUNCH_BADGE, LAUNCH_CITIES_PHRASE } from "@/config/launch";
+import { useQuery } from "@tanstack/react-query";
+import { fetchPublishedRestaurants } from "@/program/api";
 import { useToast } from "@/hooks/use-toast";
 
 const QUICK_LINKS = [
@@ -85,6 +87,15 @@ const FEATURED_RESOURCES = FEATURED_SLUGS
   .filter((r): r is NonNullable<typeof r> => Boolean(r));
 
 const Index = () => {
+  // Cheap: the directory page already caches this query, so the homepage
+  // shares the result rather than issuing a second request.
+  const { data: listings } = useQuery({
+    queryKey: ["published-restaurants"],
+    queryFn: fetchPublishedRestaurants,
+    retry: 1,
+  });
+  const hasListings = (listings?.length ?? 0) > 0;
+
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -200,8 +211,13 @@ const Index = () => {
                 <Button asChild size="lg" className="font-poppins">
                   <Link to="/resources">Explore Family Resources</Link>
                 </Button>
+                {/* "Find Restaurants" promises listings that do not exist
+                    before launch. Reverts automatically once one is
+                    published — same source of truth as the directory. */}
                 <Button asChild size="lg" variant="outline" className="font-poppins">
-                  <Link to="/restaurants/directory">Find Restaurants</Link>
+                  <Link to="/restaurants/directory">
+                    {hasListings ? "Find Restaurants" : "Explore the Directory Launch"}
+                  </Link>
                 </Button>
               </div>
 

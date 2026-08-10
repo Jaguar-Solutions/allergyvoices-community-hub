@@ -80,9 +80,16 @@ const RestaurantDirectory = () => {
 
   return (
     <PageLayout>
+      {/* Before launch the old description claimed restaurants had already
+          shared information, which a search result would have shown to people
+          the directory cannot yet help. */}
       <SEOHead
-        title="Restaurant Directory"
-        description="Restaurants that voluntarily shared how they handle food allergy requests. Search by name, city, cuisine, or allergen."
+        title={preLaunch ? "Restaurant Directory — launching soon" : "Restaurant Directory"}
+        description={
+          preLaunch
+            ? `AllergyVoices is launching its restaurant allergy-transparency directory in ${LAUNCH_CITIES_PHRASE}. Restaurants nationwide may participate.`
+            : "Search restaurants that voluntarily share how they handle food-allergy requests, including staff training, ingredient information and cross-contact practices."
+        }
       />
       <PageHeader
         eyebrow="Restaurant directory"
@@ -312,12 +319,10 @@ function EmptyState({
           {LAUNCH_REGION.cities.join(" · ")}
         </span>
 
-        <h2 className="mt-4 font-poppins text-2xl font-bold text-foreground md:text-3xl">
-          {LAUNCH_REGION.bareName} directory launching soon
-        </h2>
-
-        <p className="mt-3 font-inter leading-relaxed text-muted-foreground">
-          We&apos;re currently enrolling restaurants in {LAUNCH_CITIES_PHRASE}.{" "}
+        {/* No heading here: the page header already says "launching soon",
+            and saying it twice on one screen reads as a rendering fault. This
+            card carries the actions. */}
+        <p className="mt-4 font-inter leading-relaxed text-muted-foreground">
           {NATIONWIDE_NOTE}
         </p>
 

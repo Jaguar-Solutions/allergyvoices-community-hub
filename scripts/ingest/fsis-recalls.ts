@@ -5,7 +5,14 @@
  *
  * If the RSS URL changes, edit RSS_URL below.
  */
-import { daysAgo, detectAllergens, isoDateOf, stripHtml, writeRecall } from "./shared.js";
+import {
+  daysAgo,
+  detectAllergensInReason,
+  isAllergenRecall,
+  isoDateOf,
+  stripHtml,
+  writeRecall,
+} from "./shared.js";
 import type { RecallDraft } from "./shared.js";
 
 /**
@@ -144,7 +151,18 @@ function toDraft(item: FsisRecall): RecallDraft | null {
   const summary = stripHtml(item.field_summary ?? "");
   const products = (item.field_product_items ?? []).join(" ");
 
-  const allergens = detectAllergens(`${title} ${reason} ${summary} ${products}`);
+  // Gate on the agency's own reason, not the notice text. FSIS prints
+  // "meat, poultry, or egg product" on every notice, which previously tagged
+  // Listeria and import-violation recalls as undeclared-egg recalls.
+  if (!isAllergenRecall(reason)) return null;
+
+  // The gate has already established this is an allergen recall; the title
+  // is where FSIS actually names which allergen ("... due to undeclared milk").
+  // FSIS's structured reason is a category ("Misbranding, Unreported
+  // Allergens"); the title is where it names the allergen. Product lists and
+  // the notice summary are deliberately excluded — they enumerate every
+  // ingredient, not the one that was undeclared.
+  const allergens = detectAllergensInReason(reason, title);
   if (allergens.length === 0) return null;
 
   const recallDate = isoDateOf(item.field_recall_date ?? item.field_last_modified_date);

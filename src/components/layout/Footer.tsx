@@ -18,7 +18,7 @@ const ABOUT_LINKS = [
   { label: "Privacy Policy", href: "/policies/privacy" },
   { label: "Terms of Use", href: "/policies/terms" },
   { label: "Restaurant Participation", href: "/policies/restaurant-participation" },
-  { label: "Medical Disclaimer", href: "/policies/terms" },
+  { label: "Medical Disclaimer", href: "/policies/terms#medical-disclaimer" },
 ];
 
 const SOCIAL_LINKS = [

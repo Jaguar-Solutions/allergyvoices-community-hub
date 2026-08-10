@@ -176,8 +176,16 @@ describe("allergens and limitations", () => {
 });
 
 describe("cardHighlights", () => {
-  it("shows at most three practice answers", () => {
-    expect(cardHighlights(deriveFacets(FULL_ANSWERS))).toHaveLength(3);
+  it("shows a small, fixed set of practice answers", () => {
+    // Four now: ingredient information joined the card when it gained an
+    // icon. Bounded so a card cannot grow into a profile.
+    expect(cardHighlights(deriveFacets(FULL_ANSWERS)).length).toBeLessThanOrEqual(4);
+  });
+
+  it("gives every highlight an icon for the card to draw", () => {
+    for (const h of cardHighlights(deriveFacets(FULL_ANSWERS))) {
+      expect(h.icon, h.label).toBeTruthy();
+    }
   });
 
   it("never puts cross-contact detail on a card", () => {

@@ -184,10 +184,18 @@ export function quickSummary(facets: Facets): SummaryRow[] {
 export interface CardHighlight {
   label: string;
   value: string;
+  /**
+   * Which icon to draw beside it.
+   *
+   * A key rather than a component: this module is imported by the PDF
+   * renderer and the ingest scripts as well as the UI, and none of those can
+   * resolve a React icon. The card maps the key to a glyph.
+   */
+  icon: "process" | "training" | "people" | "ingredients" | "menu";
 }
 
 /**
- * The three practice answers a directory card shows.
+ * The practice answers a directory card shows.
  *
  * Deliberately the restaurant's own answer ("Menu changes: Some items")
  * rather than a checkmark or a pass/fail. A checkmark implies a threshold
@@ -199,14 +207,27 @@ export function cardHighlights(facets: Facets): CardHighlight[] {
   const highlights: CardHighlight[] = [];
 
   const process = knownLabel("allergy_process", single(facets, "allergy_process"));
-  if (process) highlights.push({ label: "Allergy process", value: process });
+  if (process) {
+    highlights.push({ label: "Allergy process", value: process, icon: "process" });
+  }
 
   const training = knownLabel("staff_training", single(facets, "staff_training"));
-  if (training) highlights.push({ label: "Staff training", value: training });
+  if (training) {
+    highlights.push({ label: "Staff training", value: training, icon: "training" });
+  }
 
   const manager = managerOrChefAvailable(facets);
   if (manager) {
-    highlights.push({ label: "Can speak with", value: manager });
+    highlights.push({ label: "Can speak with", value: manager, icon: "people" });
+  }
+
+  const ingredients = knownLabel("ingredient_info", single(facets, "ingredient_info"));
+  if (ingredients) {
+    highlights.push({
+      label: "Ingredient info",
+      value: ingredients,
+      icon: "ingredients",
+    });
   }
 
   return highlights;

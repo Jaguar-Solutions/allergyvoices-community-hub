@@ -2,10 +2,14 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   BookOpenCheck,
+  ChefHat,
+  ClipboardList,
   ExternalLink,
   MapPin,
+  MessagesSquare,
   Phone,
   Quote,
+  UtensilsCrossed,
 } from "lucide-react";
 import {
   allergenMenu,
@@ -31,6 +35,21 @@ const ALLERGEN_TINT: Record<string, string> = {
   fish: "bg-allergen-fish",
   shellfish: "bg-allergen-shellfish",
 };
+
+/**
+ * Icons for the practice rows, keyed the way `cardHighlights` returns them.
+ *
+ * Same glyphs as the "Your Restaurant" preview in the homepage hero, so a
+ * real listing looks like the thing a restaurant was shown when it signed up
+ * rather than a plainer relative of it.
+ */
+const HIGHLIGHT_ICON = {
+  process: MessagesSquare,
+  training: ChefHat,
+  people: UtensilsCrossed,
+  ingredients: ClipboardList,
+  menu: BookOpenCheck,
+} as const;
 
 export type CardVariant = "compact" | "feature";
 
@@ -111,7 +130,7 @@ export function RestaurantCard({
   );
 
   const allergenList = allergens.length > 0 && (
-    <div>
+    <div className="border-t border-border pt-4">
       {/* Not "accommodates". The restaurant told us these are allergies it
           gets asked about often enough to be ready to discuss — that is a
           different claim from being able to serve a safe meal, and the card
@@ -137,23 +156,34 @@ export function RestaurantCard({
   );
 
   const answers = highlights.length > 0 && (
-    <dl
+    <ul
       className={cn(
-        "grid gap-x-4 gap-y-2.5",
-        isFeature ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-2",
+        "grid gap-x-3 gap-y-4",
+        isFeature ? "grid-cols-1 min-[420px]:grid-cols-2" : "grid-cols-1 min-[380px]:grid-cols-2",
       )}
     >
-      {highlights.map((highlight) => (
-        <div key={highlight.label} className="min-w-0">
-          <dt className="truncate font-inter text-xs text-muted-foreground">
-            {highlight.label}
-          </dt>
-          <dd className="break-words font-inter text-sm font-medium text-foreground">
-            {highlight.value}
-          </dd>
-        </div>
-      ))}
-    </dl>
+      {highlights.map((highlight) => {
+        const Icon = HIGHLIGHT_ICON[highlight.icon] ?? ClipboardList;
+        return (
+          <li key={highlight.label} className="flex items-start gap-2.5">
+            <span
+              className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10"
+              aria-hidden="true"
+            >
+              <Icon className="h-4 w-4 text-primary" />
+            </span>
+            <span className="min-w-0">
+              <span className="block font-inter text-[0.7rem] uppercase leading-tight tracking-wide text-muted-foreground">
+                {highlight.label}
+              </span>
+              <span className="block break-words font-poppins text-sm font-semibold leading-snug text-foreground">
+                {highlight.value}
+              </span>
+            </span>
+          </li>
+        );
+      })}
+    </ul>
   );
 
   const footer = (

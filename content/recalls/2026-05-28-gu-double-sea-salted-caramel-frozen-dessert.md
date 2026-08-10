@@ -1,6 +1,7 @@
 ---
 product_name: Gü Double Sea Salted Caramel Frozen Dessert
 undeclared_allergens:
+  - tree-nuts
   - soy
 recall_reason: >-
   Hazelnuts (nuts) and soya

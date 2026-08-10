@@ -1,7 +1,6 @@
 ---
 product_name: Shama Falooda Almond flavour drink
 undeclared_allergens:
-  - tree-nuts
   - milk
 recall_reason: "Milk\nThis product contains milk making it a possible health risk for anyone with an allergy to milk or intolerance to\_milk\_or milk constituents."
 recall_date: '2026-05-22'

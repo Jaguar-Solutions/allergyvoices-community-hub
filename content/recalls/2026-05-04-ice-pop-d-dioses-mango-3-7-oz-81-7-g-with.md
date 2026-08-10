@@ -2,6 +2,7 @@
 product_name: Ice Pop, D'Dioses Mango, 3.7 oz (81.7 g), with
 brand: D'Dioses Fruit Pops, Inc.
 undeclared_allergens:
+  - tree-nuts
   - milk
 recall_reason: 'May contain undeclared milk, pecans, pistachios, yellow #5 and red #40.'
 recall_date: '2026-05-04'

@@ -12,7 +12,7 @@
 import {
   dashIsoFromCompact,
   daysAgo,
-  detectAllergens,
+  detectAllergensInReason,
   isoDate,
   writeRecall,
 } from "./shared.js";
@@ -107,8 +107,13 @@ function buildSourceUrl(recallNumber: string | undefined): string {
 
 function toDraft(r: OpenFDARecall): RecallDraft | null {
   const reason = r.reason_for_recall ?? "";
-  const allergens = detectAllergens(reason);
-  if (allergens.length === 0) return null; // not an allergen recall
+  // Already scoped to the reason field, but a Listeria recall of a cheese
+  // would still name a dairy word. The gate is what makes it an allergen
+  // recall rather than a recall that mentions an allergen.
+  // Reason only. The product description lists every ingredient, so passing
+  // it tagged a shrimp product with shellfish for an additive recall.
+  const allergens = detectAllergensInReason(reason);
+  if (allergens.length === 0) return null;
 
   const recallDate = dashIsoFromCompact(
     r.recall_initiation_date ?? r.report_date ?? "",

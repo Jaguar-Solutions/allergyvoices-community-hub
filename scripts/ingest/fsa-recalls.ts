@@ -7,7 +7,13 @@
  * allergen-detection regex naturally filters to AA, but we don't fail if a
  * non-allergy item slips into the feed &mdash; it's just skipped.
  */
-import { detectAllergens, isoDateOf, stripHtml, writeRecall } from "./shared.js";
+import {
+  detectAllergensInReason,
+  isAllergenRecall,
+  isoDateOf,
+  stripHtml,
+  writeRecall,
+} from "./shared.js";
 import type { RecallDraft } from "./shared.js";
 
 /**
@@ -56,8 +62,12 @@ function toDraft(alert: FsaAlert): RecallDraft | null {
   const products = alert.productDetails?.map((p) => p.productName ?? "").join(", ") ?? "";
   const body = stripHtml([risk, alert.descriptionOfAction ?? ""].join(" ")).trim();
 
-  // Product names carry the allergen as often as the risk statement does.
-  const allergens = detectAllergens(`${title} ${risk} ${products}`);
+  // FSA issues Allergy Alerts alongside contamination alerts; only the
+  // former belong here. The risk statement and title carry the reason.
+  const reason = `${title} ${risk}`;
+  if (!isAllergenRecall(reason)) return null;
+
+  const allergens = detectAllergensInReason(reason);
   if (allergens.length === 0) return null;
 
   const recallDate = isoDateOf(alert.created ?? alert.modified);
