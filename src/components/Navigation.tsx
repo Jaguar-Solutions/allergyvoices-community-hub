@@ -70,16 +70,35 @@ const Navigation = () => {
         setOpenGroup(null);
       }
     };
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpenGroup(null);
-    };
     document.addEventListener("mousedown", handleClick);
-    document.addEventListener("keydown", handleEsc);
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-      document.removeEventListener("keydown", handleEsc);
-    };
+    return () => document.removeEventListener("mousedown", handleClick);
   }, [openGroup]);
+
+  // Escape closes whichever menu is open. This used to be registered only
+  // alongside the desktop dropdown, so an open mobile menu had no keyboard
+  // way out — the only escape was finding the toggle again.
+  useEffect(() => {
+    if (!openGroup && !isMobileOpen) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpenGroup(null);
+      setIsMobileOpen(false);
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [openGroup, isMobileOpen]);
+
+  // The mobile menu covers the page, so the page behind it should not scroll:
+  // without this, flicking the menu scrolls the article underneath and the
+  // menu appears to slide away on its own.
+  useEffect(() => {
+    if (!isMobileOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [isMobileOpen]);
 
   const linkClass =
     "font-inter text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 px-1 py-1";
@@ -88,10 +107,15 @@ const Navigation = () => {
   return (
     <nav
       className={cn(
-        "fixed top-0 inset-x-0 z-50 transition-all duration-200",
+        // A translucent material the page scrolls under, not an opaque strip.
+        // The blur is heavy and saturated so the bar reads as glass rather
+        // than as a washed-out panel, and once content is actually passing
+        // beneath it the separation is a short fading edge rather than a 1px
+        // rule drawn the full width of the viewport.
+        "supports-blur fixed top-0 inset-x-0 z-50 transition-[background-color,box-shadow] duration-200",
         isScrolled
-          ? "bg-background/90 backdrop-blur-md shadow-sm border-b border-border/60"
-          : "bg-background/70 backdrop-blur-sm",
+          ? "scroll-edge bg-background/80 backdrop-blur-xl backdrop-saturate-150 shadow-sm"
+          : "bg-background/60 backdrop-blur-lg backdrop-saturate-150",
       )}
       aria-label="Primary"
     >
@@ -123,20 +147,31 @@ const Navigation = () => {
                     >
                       {group.name}
                       <ChevronDown
-                        className={cn("h-3.5 w-3.5 transition-transform", isOpen && "rotate-180")}
+                        className={cn("h-3.5 w-3.5 transition-transform duration-200", isOpen && "rotate-180")}
                         aria-hidden="true"
                       />
                     </button>
                     {isOpen && (
-                      <div className="absolute left-1/2 -translate-x-1/2 mt-3 w-80 rounded-xl border border-border bg-popover shadow-lg p-2">
-                        <ul className="space-y-1">
+                      /* The panel is anchored to the button that opened it:
+                         it scales up from the trigger, so the relationship
+                         between control and content is visible rather than the
+                         menu simply existing on the next frame.
+
+                         Placement and motion sit on two elements on purpose.
+                         The enter keyframe writes `transform` wholesale, so
+                         centring with -translate-x-1/2 on the animated node
+                         would be dropped for the length of the animation and
+                         the menu would arrive off-centre. */
+                      <div className="absolute left-1/2 top-full z-50 mt-3 w-80 -translate-x-1/2">
+                        <div className="origin-top rounded-xl border border-border bg-popover p-2 shadow-lg animate-in fade-in-0 zoom-in-95 duration-150 ease-out">
+                          <ul className="space-y-1">
                           {group.children.map((child) => (
                             <li key={child.href}>
                               <NavLink
                                 to={child.href}
                                 className={({ isActive }) =>
                                   cn(
-                                    "block rounded-lg px-3 py-2.5 hover:bg-muted transition-colors",
+                                    "block rounded-lg px-3 py-2.5 transition-colors hover:bg-muted active:bg-muted",
                                     isActive && "bg-muted",
                                   )
                                 }
@@ -152,7 +187,8 @@ const Navigation = () => {
                               </NavLink>
                             </li>
                           ))}
-                        </ul>
+                          </ul>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -178,7 +214,7 @@ const Navigation = () => {
             type="button"
             aria-label={isMobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMobileOpen}
-            className="lg:hidden -mr-2 inline-flex h-11 w-11 items-center justify-center rounded-md transition-colors hover:bg-muted"
+            className="lg:hidden -mr-2 inline-flex h-11 w-11 items-center justify-center rounded-md transition-[background-color,transform] duration-150 hover:bg-muted active:scale-[0.94] active:bg-muted"
             onClick={() => setIsMobileOpen((v) => !v)}
           >
             {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -187,7 +223,7 @@ const Navigation = () => {
 
         {/* Mobile menu */}
         {isMobileOpen && (
-          <div className="lg:hidden py-4 border-t border-border/60 bg-background/95 backdrop-blur-md">
+          <div className="lg:hidden origin-top border-t border-border/60 bg-background/95 py-4 backdrop-blur-xl backdrop-saturate-150 animate-in fade-in-0 slide-in-from-top-2 duration-200 ease-out">
             <ul className="flex flex-col gap-1">
               {NAV.flatMap((group) => {
                 if (group.children) {
@@ -205,6 +241,7 @@ const Navigation = () => {
                           className={({ isActive }) =>
                             cn(
                               "block rounded-md px-3 py-2 font-inter text-sm font-medium",
+                              "transition-colors active:bg-muted",
                               isActive ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted",
                             )
                           }

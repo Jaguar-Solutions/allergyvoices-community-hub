@@ -110,9 +110,12 @@ const NewsFeed = () => {
     <div className="space-y-6">
       <div className="grid md:grid-cols-2 gap-6">
         {newsItems.map((item) => (
-          <Card 
-            key={item.guid} 
-            className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          <Card
+            key={item.guid}
+            // Lifts rather than grows: a 5% scale on a card of body text
+            // resamples every glyph mid-transition, and it was the only card
+            // on the site that moved differently from the rest.
+            className="rounded-2xl shadow-lg transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-xl"
           >
             <CardContent className="p-6 space-y-4">
               <div className="flex items-center justify-between">

@@ -16,6 +16,12 @@
     --brand-spring: 76 56% 51%;           /* Spring green */
     --brand-berry: 357 78% 57%;           /* Strawberry red */
 
+    /* Display-size variants of the two wordmark colours, used only by the
+       headline gradient. Set by the contrast sweep described on
+       .text-gradient-brand, not by eye. */
+    --brand-cyan-display: 190 65% 43%;    /* 3.05:1 on the page */
+    --brand-coral-display: 13 88% 59%;    /* 3.04:1 on the page */
+
     /* Per-allergen subtle tints (used as card backgrounds) */
     --allergen-peanut: 28 55% 92%;        /* warm tan */
     --allergen-tree-nuts: 25 35% 90%;     /* soft brown-cream */
@@ -162,6 +168,9 @@
   body {
     @apply bg-background text-foreground font-inter antialiased;
     text-rendering: optimizeLegibility;
+    /* Inter now loads as a variable font with an optical size axis, so let the
+       browser pick the drawing for the rendered size. */
+    font-optical-sizing: auto;
   }
 
   /* Visible focus states everywhere (WCAG 2.2 AA) */
@@ -169,25 +178,117 @@
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
-  /* Heading defaults */
+  /* Heading defaults.
+
+     Tracking is size-specific, never one value for every heading: letters read
+     too far apart as type grows, and too tight as it shrinks. These pair with
+     leading that tightens as size increases. Set on the elements rather than
+     per-usage so a new page inherits the same type ramp instead of restating
+     it — and expressed in em, so they scale with the user's text size.
+
+     h1/h2 are matched to the sizes actually used (text-3xl..text-6xl for h1,
+     text-2xl..text-3xl for h2); h4-h6 sit near body size and get none. */
   h1, h2, h3, h4, h5, h6 {
     @apply font-poppins;
   }
 
-  /* Reduce motion for users who prefer it */
+  h1 {
+    letter-spacing: -0.022em;
+    line-height: 1.08;
+  }
+
+  h2 {
+    letter-spacing: -0.016em;
+    line-height: 1.15;
+  }
+
+  h3 {
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  /* Reduced motion is not "no feedback" — it is feedback without the
+     vestibular part. Movement no longer animates (a press or a card lift
+     changes state instantly instead of travelling), and looping animation
+     stops; colour, opacity and shadow still transition, so a hover, a press
+     and a menu opening stay legible. The previous rule cut those to 0.01ms
+     too, which read as broken rather than calm.
+
+     Note it deliberately does not set `transform: none`: several layouts
+     centre with -translate-x-1/2, and clearing that moves elements. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
+      transition-property: color, background-color, border-color, fill, stroke,
+        opacity, box-shadow !important;
+      transition-duration: 150ms !important;
+    }
+  }
+
+  /* Translucent chrome becomes solid rather than frosted: at this setting the
+     blur is the accessibility problem, not the colour. */
+  @media (prefers-reduced-transparency: reduce) {
+    .supports-blur {
+      backdrop-filter: none !important;
+      background-color: hsl(var(--background)) !important;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .supports-blur {
+      backdrop-filter: none !important;
+      background-color: hsl(var(--background)) !important;
+      border-color: hsl(var(--foreground));
     }
   }
 }
 
 @layer utilities {
+  /* A fading edge where content passes under floating chrome, instead of a
+     1px rule drawn across the whole viewport. The divider only exists where
+     something is actually overlapping. */
+  .scroll-edge::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: 1.25rem;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--background) / 0.75),
+      hsl(var(--background) / 0)
+    );
+  }
+
+  /* The headline gradient, cyan to coral.
+
+     Every point along this blend is text, so every point has to clear the
+     3:1 large-text minimum — not just the two stops. The wordmark colours
+     did not: the sweep bottomed out at 2.48:1 and the first half of the
+     phrase failed. Dropping cyan five points of lightness and coral three
+     puts the whole sweep at 3.04:1 with the hues unchanged, so it still
+     reads as the logo. Lightening either stop reopens the failure.
+
+     Interpolation is left in sRGB deliberately. Going around the hue wheel
+     keeps the chroma up and kills the grey midpoint, but it routes through
+     yellow-green, which put 100% of the sweep under 3:1 — a worse trade
+     than a slightly muted middle. */
+  .text-gradient-brand {
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--brand-cyan-display)),
+      hsl(var(--brand-coral-display))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   /* Soft brand gradient for hero / decorative backgrounds */
   .bg-brand-soft {
     background-image:

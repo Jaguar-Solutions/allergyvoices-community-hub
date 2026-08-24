@@ -193,7 +193,7 @@ const Index = () => {
               </span>
               <h1 className="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
                 Every ingredient matters.{" "}
-                <span className="bg-gradient-to-r from-brand-cyan to-brand-coral bg-clip-text text-transparent">
+                <span className="text-gradient-brand">
                   Every voice counts.
                 </span>
               </h1>
