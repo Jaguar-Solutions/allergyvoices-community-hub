@@ -101,59 +101,27 @@
     --sidebar-ring: 213 78% 53%;
   }
 
-  .dark {
-    --background: 222 32% 8%;
-    --background-subtle: 222 28% 12%;
-    --foreground: 210 40% 96%;
-    --surface: 222 28% 12%;
-    --surface-elevated: 222 24% 16%;
+  /* No dark palette, deliberately.
 
-    --card: 222 28% 12%;
-    --card-foreground: 210 40% 96%;
+     One lived here — a full second set of these variables — but it was never
+     reachable: nothing ever added the `dark` class, so it read as a finished
+     feature while being about a fifth of one. Seventeen of the tokens above
+     were never redefined in it, including all nine --allergen-* tints. Those
+     are near-white pastels used as chip backgrounds under `text-foreground/80`,
+     and dark mode's foreground is near-white too, so switching it on would
+     have rendered every allergen label on every restaurant card at ~1:1
+     against its own background. Invisible, on the element that tells someone
+     which allergen a kitchen accommodates.
 
-    --popover: 222 28% 12%;
-    --popover-foreground: 210 40% 96%;
+     Supporting dark mode here is not a toggle. Every lightness above was set
+     by measuring contrast against white — the whole -strong family and the
+     headline gradient included — so a second theme means redoing that pass,
+     then carrying two of them through every new component. That is a real
+     piece of work, and worth doing deliberately if it is ever wanted. It is
+     not worth leaving a decorative half of it in the file in the meantime.
 
-    --primary: 213 78% 60%;
-    --primary-foreground: 222 32% 8%;
-    --primary-hover: 213 78% 65%;
-    --primary-strong: 213 78% 70%;
-
-    --secondary: 152 48% 50%;
-    --secondary-foreground: 222 32% 8%;
-    --secondary-hover: 152 48% 55%;
-    --secondary-strong: 152 55% 62%;
-
-    --accent: 13 88% 65%;
-    --accent-foreground: 222 32% 8%;
-    --accent-strong: 13 85% 72%;           /* coral as text, on dark surfaces */
-    --accent-hover: 13 88% 70%;
-
-    --positive: 152 48% 50%;
-    --positive-foreground: 222 32% 8%;
-    --warning: 35 92% 60%;
-    --warning-foreground: 28 80% 14%;
-
-    --muted: 222 24% 18%;
-    --muted-foreground: 215 16% 70%;
-
-    --destructive: 0 62% 45%;
-    --destructive-foreground: 210 40% 96%;
-    --destructive-strong: 0 75% 72%;
-
-    --border: 222 24% 20%;
-    --input: 222 24% 20%;
-    --ring: 213 78% 60%;
-
-    --sidebar-background: 222 28% 12%;
-    --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 213 78% 60%;
-    --sidebar-primary-foreground: 222 32% 8%;
-    --sidebar-accent: 222 24% 18%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 222 24% 20%;
-    --sidebar-ring: 213 78% 60%;
-  }
+     `darkMode: ["class"]` stays in tailwind.config.ts on purpose: it is what
+     keeps `dark:` variants from following the OS. See the note there. */
 }
 
 @layer base {

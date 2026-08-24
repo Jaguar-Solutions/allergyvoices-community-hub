@@ -1,6 +1,11 @@
 import type { Config } from "tailwindcss";
 
 export default {
+  // Deliberately inert, not aspirational: the site ships a light palette
+  // only (see the note in src/index.css). Keeping this as "class" is what
+  // stops the one `dark:` utility in the tree — alert.tsx's
+  // dark:border-destructive — from activating on OS preference, which is
+  // what Tailwind's "media" default would do if this line were removed.
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
