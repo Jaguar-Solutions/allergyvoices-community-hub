@@ -12,6 +12,17 @@
   RewriteEngine On
   RewriteBase /
 
+  # /menus/ is the separate AllergyVoices menu application (its own repo,
+  # built with VITE_BASE_PATH=/menus/ and uploaded to public_html/menus/).
+  # Its client-side routes (/menus/r/:slug, /menus/region/:slug) must fall
+  # back to ITS index.html, never to this site's. The menu build ships its
+  # own .htaccess, but hidden files are easy to lose in an upload, so this
+  # rule guarantees direct menu links resolve either way.
+  RewriteCond %{REQUEST_URI} ^/menus/
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^menus/ /menus/index.html [L]
+
   # Don't rewrite real files (assets, sitemap.xml, robots.txt, .htaccess).
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

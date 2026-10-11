@@ -308,3 +308,44 @@ tokens.
   site is a calm reference, not a forum.
 - **Auto-publishing AI medical content.** Hard editorial rule. Drafts go
   to PRs as `needs-review` and a human merges.
+
+## Decision 10 &mdash; The restaurant allergen-menu product is a separate application
+
+**Choice.** The interactive restaurant menu product (public menus, ingredient
+and allergen data, allergen computation, restaurant menu administration, QR
+codes, and the future restaurant accounts and billing) lives in its own
+repository and deployment unit, `menu.allergyvoices` (locally
+`../menubuilder`). This site keeps consumer resources, recalls, findings,
+organisation information, the restaurant directory, and the marketing entry
+point for the product.
+
+**How they meet today.** The menu app is built with `VITE_BASE_PATH=/menus/`
+and uploaded by hand to `public_html/menus/` on Hostinger, outside this SPA.
+Two pieces of this repo know about it: the service worker's
+`navigateFallbackDenylist` (so `/menus/` navigations are never answered with
+this site's shell) and a rewrite in `public/.htaccess` that sends
+`/menus/<client-route>` to `/menus/index.html` so direct and QR links resolve.
+The restaurant program page links to `/menus/` as a plain anchor, labelled
+as a demonstration of fictional restaurants.
+
+**Intended end state.**
+
+| Surface | Where |
+| --- | --- |
+| Marketing, pricing, product explanation | `allergyvoices.com/menus` (this repo) |
+| Public restaurant menus | `menus.allergyvoices.com/r/:slug` |
+| Restaurant portal (Phase 2) | `menus.allergyvoices.com/dashboard` |
+| Menu API | `menus.allergyvoices.com/api/...` |
+| Directory of restaurants with published menus | `allergyvoices.com/restaurants/directory` |
+
+**The boundary.** The two projects never share a database. When the directory
+starts listing restaurants with published menus, it reads the menu app's
+read-only, published-only summary endpoint (`GET /api/public/restaurants`:
+slug, name, market, region, last-confirmed date, menu path; no menu content,
+no admin fields) and links out. Nothing in this repo may import from, or
+query the storage of, the menu app, and vice versa. The subdomain and DNS
+move has not been made; until it is, `/menus/` is the entry point.
+
+**Language.** Neither site calls a menu or an item "safe", "verified" or
+"approved". The information is supplied and confirmed by the restaurant;
+AllergyVoices presents it and does not inspect or certify kitchens.

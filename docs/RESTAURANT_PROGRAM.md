@@ -185,10 +185,12 @@ Rules that keep the program and the service separate:
   restaurant has bought anything. The program page says so out loud.
 
 Menus we build are served from `/menus/r/<slug>` on the same domain, outside
-this SPA. Two things protect that path: the `.htaccess` rewrite only falls
-back to `index.html` for paths with no real file, and the service worker's
-`navigateFallbackDenylist` excludes `/menus/`. Remove either and every menu
-link resolves to the React app's 404 page.
+this SPA (the menu application is a separate repository; see
+`ARCHITECTURE.md`, Decision 10). Two things protect that path: the
+`.htaccess` rewrite sends `/menus/<route>` to `/menus/index.html` (never to
+this site's `index.html`), and the service worker's `navigateFallbackDenylist`
+excludes `/menus/`. Remove either and every menu link resolves to the React
+app's 404 page.
 
 ## What an admin can change
 

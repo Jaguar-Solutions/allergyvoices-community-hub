@@ -189,6 +189,20 @@ const ProgramLanding = () => (
                 everyone else — no badge, no better placement, no difference at
                 all.
               </p>
+              {/* The menu application is a separate site served under /menus/,
+                  outside this SPA, so this is a plain link rather than a Route. */}
+              <p className="mt-4 font-inter text-sm leading-relaxed text-muted-foreground">
+                <a
+                  href="/menus/"
+                  className="inline-flex items-center gap-1.5 font-semibold text-primary underline-offset-4 hover:underline"
+                >
+                  See a demonstration allergen menu
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </a>{" "}
+                — two fictional restaurants showing how a guest filters a menu by
+                the allergens they avoid, using information the restaurant
+                provides and confirms.
+              </p>
             </div>
           </div>
         </div>
