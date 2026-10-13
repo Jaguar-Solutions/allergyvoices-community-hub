@@ -338,7 +338,13 @@ as a demonstration of fictional restaurants.
 | Menu API | `menus.allergyvoices.com/api/...` |
 | Directory of restaurants with published menus | `allergyvoices.com/restaurants/directory` |
 
-**The boundary.** The two projects never share a database. When the directory
+**The boundary (amended 2026-10-11 for Phase 2).** The two projects never
+share tables. Phase 2 of the menu app will keep its data in a dedicated
+`menus` schema inside this site's Supabase PostgreSQL, owned and accessed by
+two least-privilege roles (`menus_migrator`, `menus_app`) that have no
+privileges on `public` or `auth`, and will use this project's Supabase Auth
+(email OTP) as the identity provider while enforcing restaurant membership in
+the menu API. See `../menubuilder/docs/PHASE2_PLAN.md`. When the directory
 starts listing restaurants with published menus, it reads the menu app's
 read-only, published-only summary endpoint (`GET /api/public/restaurants`:
 slug, name, market, region, last-confirmed date, menu path; no menu content,
