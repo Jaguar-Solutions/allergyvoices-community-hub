@@ -1,0 +1,26 @@
+# Throwaway: reproduces the CI approval gate on GITHUB_TOKEN-created PRs.
+# Removed once the fix is verified.
+name: zz CI repro — bot PR
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  repro:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: date -u > .github/ci-repro.txt
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "test: reproduce the CI approval gate on bot PRs"
+          branch: bot/ci-repro
+          title: "CI repro: bot-authored PR (do not merge)"
+          body: |
+            Throwaway PR that reproduces the approval gate on PRs created with
+            the default GITHUB_TOKEN. It will be closed, not merged.
+          add-paths: .github/ci-repro.txt
