@@ -171,6 +171,21 @@ For the auto-merge and bot-PR/issue workflows to work:
 - **Settings → General → Pull Requests:** check **"Allow auto-merge"**
 - **Settings → Secrets and variables → Actions:** add `SUPABASE_URL` and
   `SUPABASE_ANON_KEY` (used only by the keepalive ping)
+- **Settings → Secrets and variables → Actions:** add `BOT_PR_TOKEN`, a
+  fine-grained personal access token scoped to this repository with
+  **Contents: read and write** and **Pull requests: read and write**. The
+  ingest workflows open their PRs with it. Without it they fall back to the
+  default `GITHUB_TOKEN`, and GitHub then holds every `pull_request` CI run
+  on those PRs at the workflow-approval gate ("This workflow run required
+  approval"), so CI never actually runs on a recall PR. Set a calendar
+  reminder for the token's expiry; when it lapses the fallback kicks in
+  silently and CI goes dark again.
+- **Settings → Rules → Rulesets → `main`:** add **Require status checks to
+  pass** with the check `Lint, test, content check, build`. Do this only
+  after `BOT_PR_TOKEN` exists: without CI running on bot PRs, a required
+  check would block auto-merge and stop recalls from publishing. Without
+  the rule, auto-merge merges the PR seconds after it opens, before CI has
+  reported anything, whatever the PR body promises.
 
 ### Run any ingestor manually
 
