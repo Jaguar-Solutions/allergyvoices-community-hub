@@ -1,0 +1,27 @@
+---
+product_name: Textured Soy Protein; packaged in 1lb
+brand: El Ruisenor De Mexico, Inc.
+undeclared_allergens:
+  - soy
+recall_reason: undeclared allergen ingredient (Soy)
+recall_date: '2026-08-24'
+region: us
+agency: fda
+agency_recall_id: H-0155-2027
+recall_class: class-iii
+source_url: https://api.fda.gov/food/enforcement.json?search=recall_number:%22H-0155-2027%22
+upcs: []
+status: published
+last_reviewed: '2026-11-03'
+reviewed_by: openFDA ingestor
+---
+
+**Full openFDA product description:**
+
+Textured Soy Protein; packaged in 1lb, 5lb, 33lb clear plastic units. No UPC
+
+**Distribution:** Recalling firm distributes primarily to California customers both retail and wholesale. Additional distribution to limited customers in Hawaii, Illinois, Kansas, Nevada, Oregon, and Washington.
+
+**Code info:** A-15-26
+
+**Quantity:** 123.5 pounds
